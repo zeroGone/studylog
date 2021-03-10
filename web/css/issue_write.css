@@ -1,0 +1,56 @@
+@import url(issue.css);
+
+body {
+    height: 100%;
+}
+
+.main-container {
+    margin-top: 0;
+    padding-top: 15vh;
+    min-height: 70vh;
+    height: auto;
+}
+
+input {
+    background-color: transparent;
+    outline: none;
+    color: var(--light-blue-black);
+    display: block;
+}
+
+.issue-title {
+    width: 100%;
+    font-size: 2vw;
+    font-weight: bold;
+    text-align: center;
+    margin: 0 auto;
+}
+
+.issue-tag {
+    text-align: center;
+}
+
+.issue-category {
+    opacity: 0.5;
+    cursor: pointer;
+}
+
+.issue-category:hover,
+.issue-category:active {
+    opacity: 1;
+}
+
+.save-button {
+    cursor: pointer;
+}
+
+.comment-input-box {
+    margin-top: 0;
+    border-radius: 5px;
+}
+
+.comment-input {
+    border: none;
+    min-height: 25vh;
+    height: auto;
+}
