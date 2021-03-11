@@ -3,41 +3,32 @@ package io.zerogone.filter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.core.annotation.Order;
-import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
 
-import javax.servlet.*;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@Component
 @WebFilter(description = "Check Login Information In Session",
-        filterName = "Login Checker", urlPatterns = "/*")
-@Order(1)
-public class LoginCheckFilter implements Filter {
+        filterName = "Login Checker", urlPatterns = "*")
+@Order(2)
+public class LoginCheckFilter extends OncePerRequestFilter {
     private static final String LOGIN_PROPERTY_IN_SESSION = "userInfo";
     private static final String INDEX_URL = "/";
 
     private static final Log logger = LogFactory.getLog(LoginCheckFilter.class);
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-        logger.info("Login checker is created");
-    }
-
-    @Override
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
-        HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
-
-        logger.debug("request uri : " + httpServletRequest.getRequestURI());
-
+    protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
         if (hasUserInfoInSession(httpServletRequest.getSession())
                 || isPossibleAccessForUnknown(httpServletRequest.getRequestURI())) {
-            filterChain.doFilter(servletRequest, servletResponse);
+            filterChain.doFilter(httpServletRequest, httpServletResponse);
         } else {
+            logger.info("Unknown access");
             httpServletResponse.sendRedirect(INDEX_URL);
         }
     }
@@ -51,7 +42,15 @@ public class LoginCheckFilter implements Filter {
     }
 
     @Override
-    public void destroy() {
-        logger.info("Login checker is destoried");
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        return isWebResources(request.getRequestURI());
+    }
+
+    private boolean isWebResources(String uri) {
+        return uri.matches("\\/css\\/.*\\.css|" +
+                "\\/js\\/.*\\.js|" +
+                "\\/img\\/.*\\.jpg|" +
+                "\\/img\\/.*\\.png|" +
+                "\\/img\\/logo.ico");
     }
 }

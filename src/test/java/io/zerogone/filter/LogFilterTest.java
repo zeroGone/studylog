@@ -1,7 +1,6 @@
 package io.zerogone.filter;
 
 import io.zerogone.config.WebConfiguration;
-import io.zerogone.model.User;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = WebConfiguration.class, loader = AnnotationConfigWebContextLoader.class)
 @WebAppConfiguration
-public class LoginCheckFilterTest {
+public class LogFilterTest {
     @Autowired
     private WebApplicationContext webApplicationContext;
 
@@ -29,14 +28,13 @@ public class LoginCheckFilterTest {
 
     @Before
     public void setUp() {
-        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).addFilter(new LoginCheckFilter()).build();
+        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).addFilter(new LogFilter()).build();
     }
 
     @Test
     public void testFilterIsWorking() throws Exception {
         mockMvc.perform(get("/")).andExpect(status().isOk()).andExpect(view().name("index"));
-        mockMvc.perform(get("/mypage")).andExpect(status().is3xxRedirection());
-        mockMvc.perform(get("/mypage").sessionAttr("userInfo", new User())).andExpect(status().isOk()).andExpect(view().name("mypage"));
-        mockMvc.perform(get("/issue/1")).andExpect(status().is3xxRedirection());
+        mockMvc.perform(get("/mypage")).andExpect(status().isOk());
+        mockMvc.perform(get("/css/index.css")).andExpect(status().isOk());
     }
 }
