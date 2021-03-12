@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
+import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
@@ -20,6 +21,9 @@ public class DatabaseConfigurationTest {
     @Autowired
     private EntityManagerFactory entityManagerFactory;
 
+    @Autowired
+    PlatformTransactionManager platformTransactionManager;
+
     @Test
     public void testDataSourceLoaded() {
         Assert.assertNotNull(dataSource);
@@ -30,5 +34,10 @@ public class DatabaseConfigurationTest {
         Assert.assertNotNull(entityManagerFactory);
         Assert.assertEquals("true", entityManagerFactory.getProperties().get("hibernate.show_sql"));
         Assert.assertEquals("org.hibernate.dialect.MySQL5InnoDBDialect", entityManagerFactory.getProperties().get("hibernate.dialect"));
+    }
+
+    @Test
+    public void testTransactionManagerLoaded() {
+        Assert.assertNotNull(platformTransactionManager);
     }
 }
