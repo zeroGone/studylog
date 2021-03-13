@@ -13,12 +13,13 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebFilter(description = "Check Login Information In Session",
-        filterName = "Login Checker", urlPatterns = "*")
-@Order(2)
+//@WebFilter(description = "Check Login Information In Session",
+//        filterName = "Login Checker", urlPatterns = "*")
+//@Order(2)
 public class LoginCheckFilter extends OncePerRequestFilter {
     private static final String LOGIN_PROPERTY_IN_SESSION = "userInfo";
     private static final String INDEX_URL = "/";
+    private static final String SWAGGER_URL = "/swagger-ui.html";
 
     private static final Log logger = LogFactory.getLog(LoginCheckFilter.class);
 
@@ -43,7 +44,11 @@ public class LoginCheckFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        return isWebResources(request.getRequestURI());
+        return isSwaggerPage(request.getRequestURI()) || isWebResources(request.getRequestURI());
+    }
+
+    private boolean isSwaggerPage(String uri) {
+        return SWAGGER_URL.equals(uri) || "/favicon.ico".equals(uri);
     }
 
     private boolean isWebResources(String uri) {
