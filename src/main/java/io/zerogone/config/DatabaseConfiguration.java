@@ -19,7 +19,9 @@ import java.util.Properties;
 @PropertySource("classpath:application.properties")
 @EnableTransactionManagement
 public class DatabaseConfiguration {
-    private static final String MODEL_PACKAGE_LOCATION = "io.zerogone.model";
+    private static final String[] MODEL_PACKAGE_LOCATION = new String[]{
+            "io.zerogone.blog.model"
+    };
 
     private final Environment environment;
 
