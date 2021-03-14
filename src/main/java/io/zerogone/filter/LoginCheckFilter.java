@@ -44,11 +44,7 @@ public class LoginCheckFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        return isSwaggerPage(request.getRequestURI()) || isWebResources(request.getRequestURI());
-    }
-
-    private boolean isSwaggerPage(String uri) {
-        return SWAGGER_URL.equals(uri) || "/favicon.ico".equals(uri);
+        return isWebResources(request.getRequestURI());
     }
 
     private boolean isWebResources(String uri) {
