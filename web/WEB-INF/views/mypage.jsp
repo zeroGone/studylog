@@ -36,17 +36,12 @@
                     </div>
                 </article>
                 <article class="profile-nick">
-                    <div class="profile-nick-body">
-                        <div class="profile-header2">nickname</div>
-                        <div class="profile-text">
-                            <div>
-                                <i class="fas fa-user-secret"></i>
-                                <input class="profile-input profile-content" value="zeroGone"></input>
-                            </div>
+                    <div class="profile-header2">nickname</div>
+                    <div class="profile-text">
+                        <div>
+                            <i class="fas fa-user-secret"></i>
+                            <span class="profile-content">zeroGone</span>
                         </div>
-                    </div>
-                    <div class="profile-edit-button">
-                        <i class="fas fa-edit"></i>
                     </div>
                 </article>
             </div>
