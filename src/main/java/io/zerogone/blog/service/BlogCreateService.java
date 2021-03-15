@@ -5,7 +5,7 @@ import io.zerogone.blog.model.BlogDto;
 import io.zerogone.blog.model.BlogMember;
 import io.zerogone.blog.model.MemberRole;
 import io.zerogone.blog.repository.BlogSaveRepository;
-import io.zerogone.model.User;
+import io.zerogone.user.model.User;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;

@@ -3,7 +3,7 @@ package io.zerogone.blog.controller;
 import io.zerogone.blog.model.Blog;
 import io.zerogone.blog.model.BlogDto;
 import io.zerogone.blog.service.BlogCreateService;
-import io.zerogone.model.User;
+import io.zerogone.user.model.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

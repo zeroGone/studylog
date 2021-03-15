@@ -1,6 +1,6 @@
 package io.zerogone.blog.model;
 
-import io.zerogone.model.User;
+import io.zerogone.user.model.User;
 
 import java.util.List;
 

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.zerogone.blog.model.BlogDto;
 import io.zerogone.config.WebConfiguration;
-import io.zerogone.model.User;
+import io.zerogone.user.model.User;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
