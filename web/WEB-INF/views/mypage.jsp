@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -47,33 +48,12 @@
             </div>
         </section>
         <section class="blog">
-            <article class="blog-item">
-                <div class="blog-icon"><i class="fab fa-teamspeak"></i></div>
-                <div class="blog-name">블로그1</div>
-            </article>
-            <article class="blog-item">
-                <div class="blog-icon"><i class="fas fa-user-friends"></i></div>
-                <div class="blog-name">몇글자까지 허용하냐</div>
-            </article>
-            <article class="blog-item">
-                <div class="blog-icon"><i class="fas fa-award"></i></div>
-                <div class="blog-name">zzzzzzzzzz</div>
-            </article>
-            <article class="blog-item">
-                <div class="blog-icon"><i class="fas fa-bomb"></i></div>
-                <div class="blog-name">zzzz</div>
-            </article>
-            <article class="blog-item">
-                <div class="blog-icon"><i class="far fa-dizzy"></i></div>
-                <div class="blog-name">블로그2</div>
-            </article>
-            <article class="blog-item">
-                <div class="blog-icon"><i class="far fa-eye"></i></div>
-                <div class="blog-name">블로그3</div>
-            </article>
-            <article class="blog-create-button">
-                <i class="fas fa-plus"></i>
-            </article>
+            <c:forEach items="${blogs}" var="blog">
+                <article class="blog-item">
+                    <div class="blog-icon"><i class="fab fa-teamspeak"></i></div>
+                    <div class="blog-name">${blog.name}</div>
+                </article>
+            </c:forEach>
         </section>
     </div>
 </div>

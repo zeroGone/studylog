@@ -1,6 +1,7 @@
 package io.zerogone.blog.model;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Blog {
@@ -15,10 +16,17 @@ public class Blog {
     @Column(nullable = false)
     private String name;
 
+    public String getName() {
+        return name;
+    }
+
     private String introduce;
 
     @Column(name = "img_url")
     private String imgUrl;
+
+    @OneToMany(mappedBy = "blogId")
+    private List<BlogMember> members;
 
     public Blog() {
 
