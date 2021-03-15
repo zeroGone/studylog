@@ -1,10 +1,11 @@
 package io.zerogone.blog.service;
 
+import io.zerogone.blog.exception.InvalidBlogMemberException;
 import io.zerogone.blog.model.Blog;
 import io.zerogone.blog.model.BlogDto;
 import io.zerogone.blog.model.BlogMember;
 import io.zerogone.blog.model.MemberRole;
-import io.zerogone.blog.repository.BlogSaveRepository;
+import io.zerogone.blog.repository.BlogSaveDao;
 import io.zerogone.model.User;
 import org.springframework.stereotype.Service;
 
@@ -15,21 +16,24 @@ import java.util.stream.Collectors;
 
 @Service
 public class BlogCreateService {
-    private final BlogSaveRepository blogSaveRepository;
+    private final BlogSaveDao blogSaveDao;
 
-    public BlogCreateService(BlogSaveRepository blogSaveRepository) {
-        this.blogSaveRepository = blogSaveRepository;
+    public BlogCreateService(BlogSaveDao blogSaveDao) {
+        this.blogSaveDao = blogSaveDao;
     }
 
     @Transactional
-    public Blog createBlog(User creator, BlogDto blogDto) throws IllegalArgumentException {
+    public Blog createBlog(User creator, BlogDto blogDto) throws InvalidBlogMemberException {
         Blog blog = convertToBlogEntity(blogDto);
 
         List<BlogMember> members = new ArrayList<>();
         members.add(convertToBlogAdmin(creator));
-        members.addAll(convertToBlogMembers(blogDto.getMembers()));
 
-        return blogSaveRepository.save(blog, members);
+        if (blogDto.getMembers() != null) {
+            members.addAll(convertToBlogMembers(blogDto.getMembers()));
+        }
+
+        return blogSaveDao.save(blog, members);
     }
 
     private Blog convertToBlogEntity(BlogDto blogDto) {
