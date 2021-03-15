@@ -1,4 +1,4 @@
-package io.zerogone.model;
+package io.zerogone.user.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
