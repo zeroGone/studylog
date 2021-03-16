@@ -23,7 +23,7 @@
                     <div class="profile-text">
                         <div>
                             <i class="far fa-user"></i>
-                            <span class="profile-content">김영곤</span>
+                            <span class="profile-content">${userInfo.name}</span>
                         </div>
                     </div>
                 </article>
@@ -32,7 +32,7 @@
                     <div class="profile-text">
                         <div>
                             <i class="fab fa-google"></i>
-                            <span class="profile-content">dudrhs571@gmail.com</span>
+                            <span class="profile-content">${userInfo.email}</span>
                         </div>
                     </div>
                 </article>
@@ -41,7 +41,7 @@
                     <div class="profile-text">
                         <div>
                             <i class="fas fa-user-secret"></i>
-                            <span class="profile-content">zeroGone</span>
+                            <span class="profile-content">${userInfo.nickName}</span>
                         </div>
                     </div>
                 </article>
