@@ -6,7 +6,7 @@ body {
     margin: 0;
 }
 
-.container {
+.main-container {
     width: 100%;
     height: 100vh;
     z-index: 1;
@@ -266,7 +266,6 @@ body {
     border-radius: 50%;
 }
 
-
 .blog-create-images-edit-container {
     position: absolute;
     top: 50%;
@@ -279,6 +278,7 @@ body {
     transform: translate(-50%, -50%);
     transition: all 0.5s;
     cursor: pointer;
+    outline: none;
 }
 
 .blog-create-images-edit-button {
@@ -300,13 +300,8 @@ body {
     opacity: 1;
 }
 
-
 .blog-create-info {
     padding: 1vw;
-}
-
-.blog-create-texts-container {
-
 }
 
 .blog-create-name {
@@ -332,11 +327,9 @@ body {
 
 .blog-create-input {
     position: relative;
-
     outline: none;
     font-size: medium;
     font-family: Handon3gyeopsal300g, sans-serif;
-    /*margin-top: 1vh;*/
     border: 1px solid var(--gray);
     border-radius: 5px;
     background-color: white;
@@ -350,7 +343,6 @@ body {
     right: 0;
     width: 5vw;
     height: 100%;
-
     border: none;
     border-radius: 5px;
     background-color: var(--sky);
@@ -359,7 +351,6 @@ body {
     font-size: medium;
     font-weight: bold;
     cursor: pointer;
-
 }
 
 .divider {
