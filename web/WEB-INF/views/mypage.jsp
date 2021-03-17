@@ -7,6 +7,8 @@
     <script src="/js/mypage.js" defer></script>
     <script src="/js/header.js" defer></script>
     <script src="/js/sidebar.js" defer></script>
+    <script src="/js/member_invite.js?ver=1.1" defer></script>
+    <script src="/js/img_upload.js?ver=1.0" defer></script>
     <script src="https://kit.fontawesome.com/b63e743ce0.js" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -86,10 +88,13 @@
     <article class="blog-create-box">
         <form class="blog-create-form">
             <div class="blog-create-image-container">
-                <img src="/img/user-default/1.png" alt="blog-create-image" class="blog-create-image">
-                <div class="blog-create-images-edit-container">
-                    <i class="fas fa-plus blog-create-images-edit-button"></i>
+                <input type="file" id="image-input" class="image-input" name="files1" accept="image/*"/>
+                <div id="preview" class="preview">
+                    <img src="/img/user-default/5.png" class="blog-create-image" alt="blog-default-image">
                 </div>
+                <button type="button" class="blog-create-images-edit-container">
+                    <i class="fas fa-plus blog-create-images-edit-button"></i>
+                </button>
             </div>
 
             <div class="blog-create-info">
@@ -110,38 +115,13 @@
 
                 <div class="blog-create-member-invite">
                     <label for="blog-create-member" class="blog-create-label">member</label>
-                    <input id="blog-create-member" type="text" class="blog-create-input" maxlength="40"
-                           placeholder="초대받는 분의 이메일을 입력하세요">
+                    <div class="blog-create-member-invite-inputs">
+                        <input id="blog-create-member" type="text" class="blog-create-input" maxlength="40"
+                               placeholder="초대받는 분의 이메일을 입력하세요">
+                        <button type="button" class="blog-create-member-invite-search">검색</button>
+                    </div>
                 </div>
                 <ul class="blog-create-member-list">
-                    <li class="blog-create-member-item">
-                        <img class="blog-create-member-img" src="/img/user-default/3.png" alt="user img">
-                        <div class="blog-create-member-texts">
-                            <span class="blog-create-member-name">김영곤</span>
-                            <span class="blog-create-member-email">dudrhs571@gmail.com</span>
-                        </div>
-                    </li>
-                    <li class="blog-create-member-item">
-                        <img class="blog-create-member-img" src="/img/user-default/3.png" alt="user img">
-                        <div class="blog-create-member-texts">
-                            <span class="blog-create-member-name">김영곤</span>
-                            <span class="blog-create-member-email">dudrhs571@gmail.com</span>
-                        </div>
-                    </li>
-                    <li class="blog-create-member-item">
-                        <img class="blog-create-member-img" src="/img/user-default/3.png" alt="user img">
-                        <div class="blog-create-member-texts">
-                            <span class="blog-create-member-name">김영곤</span>
-                            <span class="blog-create-member-email">dudrhs571@gmail.com</span>
-                        </div>
-                    </li>
-                    <li class="blog-create-member-item">
-                        <img class="blog-create-member-img" src="/img/user-default/3.png" alt="user img">
-                        <div class="blog-create-member-texts">
-                            <span class="blog-create-member-name">김영곤</span>
-                            <span class="blog-create-member-email">dudrhs571@gmail.com</span>
-                        </div>
-                    </li>
                 </ul>
                 <div class="blog-create-save-button">저장</div>
             </div>
