@@ -1,6 +1,7 @@
 package io.zerogone.controller;
 
 import io.zerogone.config.WebConfiguration;
+import io.zerogone.issue.controller.IssueController;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,6 +36,6 @@ public class IssueControllerTest {
     @Test
     public void testIssuesPage() throws Exception {
         Assert.assertNotNull(webApplicationContext.getBean(IssueController.class));
-        mockMvc.perform(get("/issues")).andExpect(status().isOk()).andExpect(view().name("issue_list"));
+        mockMvc.perform(get("/issue/list")).andExpect(status().isOk()).andExpect(view().name("issue_list"));
     }
 }
