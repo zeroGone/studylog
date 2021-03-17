@@ -58,8 +58,6 @@ body {
 .profile-nick {
     grid-column: 1/3;
     grid-row: 2;
-    display: grid;
-    grid-template-columns: 6fr 1fr;
 }
 
 .profile-text, .profile-header1, .profile-header2 {
@@ -93,27 +91,13 @@ body {
 }
 
 .profile-header2 {
+    border-top-right-radius: 5px;
     border-top-left-radius: 5px;
     background-color: var(--deep-dark-sky);
 }
 
 .profile-content {
     padding-left: 1vw;
-}
-
-.profile-input {
-    padding-left: 1vw;
-    width: 30vw;
-    font-size: large;
-    outline: none;
-}
-
-.profile-nick-body {
-    grid-column: 1;
-}
-
-.profile-nick-body > .profile.text {
-    border-top-right-radius: 5px;
 }
 
 .profile-edit-button {

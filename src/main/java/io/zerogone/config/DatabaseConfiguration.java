@@ -56,6 +56,7 @@ public class DatabaseConfiguration {
         Properties properties = new Properties();
         properties.setProperty("hibernate.dialect", Objects.requireNonNull(environment.getProperty("hibernate.dialect")));
         properties.setProperty("hibernate.show_sql", Objects.requireNonNull(environment.getProperty("hibernate.show_sql")));
+        properties.setProperty("hibernate.format_sql", Objects.requireNonNull(environment.getProperty("hibernate.format_sql")));
         return properties;
     }
 
