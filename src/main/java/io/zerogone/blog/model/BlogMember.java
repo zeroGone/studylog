@@ -1,5 +1,7 @@
 package io.zerogone.blog.model;
 
+import io.zerogone.blog.service.MemberRoleConverter;
+
 import javax.persistence.*;
 
 @Entity
@@ -15,11 +17,8 @@ public class BlogMember {
     @Column(name = "blog_id", nullable = false)
     private int blogId;
 
-    public void setBlogId(int blogId) {
-        this.blogId = blogId;
-    }
-
-    @Enumerated(EnumType.STRING)
+    @Column(name = "role_id")
+    @Convert(converter = MemberRoleConverter.class)
     private MemberRole role;
 
     public BlogMember() {
@@ -31,8 +30,7 @@ public class BlogMember {
         this.role = role;
     }
 
-    public int getId() {
-        return id;
+    public void setBlogId(int blogId) {
+        this.blogId = blogId;
     }
-
 }
