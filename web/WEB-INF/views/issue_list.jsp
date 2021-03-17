@@ -3,7 +3,7 @@
 <head>
     <title>StudyLog</title>
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/img/logo.ico" type="image/x-icon">
-    <link rel="stylesheet" href="css/issue_list.css">
+    <link rel="stylesheet" href="/css/issue_list.css">
     <script src="/js/header.js" defer></script>
     <script src="/js/sidebar.js" defer></script>
     <script src="https://kit.fontawesome.com/b63e743ce0.js" crossorigin="anonymous"></script>
@@ -13,7 +13,7 @@
 <jsp:include page="include/sidebar.jsp"/>
 <div class="main-container">
     <section class="title">
-        <img src="img/issue_icon.png" alt="issue_icon" class="title-icon">
+        <img src="/img/issue_icon.png" alt="issue_icon" class="title-icon">
         <h1 class="title-header">Issue</h1>
         <div class="title-footer">Notice, Request, Question, Chat</div>
     </section>
@@ -21,21 +21,21 @@
         <div class="issue-notice-header">notice</div>
         <ul class="issue-notice-list">
             <li class="issue-notice-item">
-                <img class="issue-notice-writer-img" src="img/user-default/5.png" alt="user img"/>
+                <img class="issue-notice-writer-img" src="/img/user-default/5.png" alt="user img"/>
                 <div class="issue-notice-content">
                     <div class="issue-notice-title">어떠한 글을 쓸까요어떠한 글을 쓸까요어떠한 글을 쓸까</div>
                     <div class="issue-notice-date">2021-02-21</div>
                 </div>
             </li>
             <li class="issue-notice-item">
-                <img class="issue-notice-writer-img" src="img/user-default/5.png" alt="user img"/>
+                <img class="issue-notice-writer-img" src="/img/user-default/5.png" alt="user img"/>
                 <div class="issue-notice-content">
                     <div class="issue-notice-title">어떠한 글을 쓸까요어떠한 글을 쓸까요어떠한 글을 쓸까요</div>
                     <div class="issue-notice-date">2021-02-21</div>
                 </div>
             </li>
             <li class="issue-notice-item">
-                <img class="issue-notice-writer-img" src="img/user-default/5.png" alt="user img"/>
+                <img class="issue-notice-writer-img" src="/img/user-default/5.png" alt="user img"/>
                 <div class="issue-notice-content">
                     <div class="issue-notice-title">어떠한 글을 쓸까요어떠한 글을 쓸까요어떠한 글을 쓸까요</div>
                     <div class="issue-notice-date">2021-02-21</div>
