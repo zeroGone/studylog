@@ -1,12 +1,12 @@
-@import "/css/color.css";
-@import "/css/reset.css";
+@import "color.css";
+@import "reset.css";
 
 body {
     background-color: var(--gray-white);
     margin: 0;
 }
 
-.main-container {
+.container {
     width: 100%;
     height: 100vh;
     z-index: 1;
@@ -227,7 +227,8 @@ body {
 
 .blog-create-form {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    /*grid-template-columns: repeat(2, 1fr);*/
+    grid-template-columns: 1fr 4fr;
     color: var(--dark-blue);
     font-size: larger;
     grid-row-gap: 2vh;
@@ -238,11 +239,14 @@ body {
     position: relative;
     width: 100%;
     height: 100%;
-    cursor: pointer;
     background-color: rgba(var(--light-sky-rgb), 0.5);
 }
 
-.blog-create-image {
+.image-input {
+    display: none;
+}
+
+.preview {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -251,8 +255,17 @@ body {
     transform: translate(-50%, -50%);
     border-radius: 50%;
     transition: all 0.3s;
-    box-shadow: 0 1px 10px 0 var(--blue-black);
+    box-shadow: 0px 1px 10px 0px var(--blue-black);
+    object-fit: cover;
+    /*background-color: var(--white);*/
 }
+
+.blog-create-image {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
+
 
 .blog-create-images-edit-container {
     position: absolute;
@@ -265,6 +278,7 @@ body {
     background-color: rgba(var(--blue-black-rgb), 0);
     transform: translate(-50%, -50%);
     transition: all 0.5s;
+    cursor: pointer;
 }
 
 .blog-create-images-edit-button {
@@ -299,15 +313,30 @@ body {
     margin-bottom: 2vh;
 }
 
+.blog-create-input-introduce {
+    height: 5vh;
+}
+
+.blog-create-member-invite {
+    position: relative;
+}
+
 .blog-create-label {
     display: block;
+    margin-bottom: 1vh;
+}
+
+.blog-create-member-invite-inputs {
+    position: relative;
 }
 
 .blog-create-input {
+    position: relative;
+
     outline: none;
     font-size: medium;
     font-family: Handon3gyeopsal300g, sans-serif;
-    margin-top: 1vh;
+    /*margin-top: 1vh;*/
     border: 1px solid var(--gray);
     border-radius: 5px;
     background-color: white;
@@ -315,17 +344,27 @@ body {
     padding: 1vh 0.5vw;
 }
 
-.blog-create-input-introduce {
-    height: 5vh;
+
+.blog-create-member-invite-search {
+    position: absolute;
+    right: 0;
+    width: 5vw;
+    height: 100%;
+
+    border: none;
+    border-radius: 5px;
+    background-color: var(--sky);
+    color: white;
+    text-align: center;
+    font-size: medium;
+    font-weight: bold;
+    cursor: pointer;
+
 }
 
 .divider {
     margin: 2vh 0;
     border-bottom: 1px solid white;
-}
-
-.blog-create-member-invite {
-
 }
 
 .blog-create-member-list {
@@ -352,12 +391,20 @@ body {
     text-indent: 10px;
 }
 
+.blog-create-member-id {
+    display: none;
+}
+
 .blog-create-member-name {
     display: block;
 }
 
 .blog-create-member-email {
     display: block;
+}
+
+.blog-create-member-nickName {
+    display: none;
 }
 
 .blog-create-save-button {
