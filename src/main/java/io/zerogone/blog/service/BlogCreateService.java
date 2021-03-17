@@ -1,10 +1,7 @@
 package io.zerogone.blog.service;
 
 import io.zerogone.blog.exception.InvalidBlogMemberException;
-import io.zerogone.blog.model.Blog;
-import io.zerogone.blog.model.BlogDto;
-import io.zerogone.blog.model.BlogMember;
-import io.zerogone.blog.model.MemberRole;
+import io.zerogone.blog.model.*;
 import io.zerogone.blog.repository.BlogSaveDao;
 import io.zerogone.model.User;
 import org.springframework.stereotype.Service;
@@ -23,31 +20,30 @@ public class BlogCreateService {
     }
 
     @Transactional
-    public Blog createBlog(User creator, BlogDto blogDto) throws InvalidBlogMemberException {
+    public BlogVo createBlog(User creator, BlogDto blogDto) throws InvalidBlogMemberException {
         Blog blog = convertToBlogEntity(blogDto);
-
-        List<BlogMember> members = new ArrayList<>();
-        members.add(convertToBlogAdmin(creator));
-
-        if (blogDto.getMembers() != null) {
-            members.addAll(convertToBlogMembers(blogDto.getMembers()));
-        }
-
-        return blogSaveDao.save(blog, members);
+        List<BlogMember> blogMembers = convertToBlogMemberEntities(creator, blogDto.getMembers());
+        return convertToVo(blogSaveDao.save(blog, blogMembers));
     }
 
     private Blog convertToBlogEntity(BlogDto blogDto) {
         return new Blog(blogDto.getName(), blogDto.getIntroduce(), blogDto.getImageUrl());
     }
 
-    private BlogMember convertToBlogAdmin(User user) {
-        return new BlogMember(user.getId(), MemberRole.ADMIN);
+    private List<BlogMember> convertToBlogMemberEntities(User creator, List<User> members) {
+        List<BlogMember> blogMembers = new ArrayList<>();
+        blogMembers.add(new BlogMember(creator.getId(), MemberRole.ADMIN));
+
+        if (members != null) {
+            blogMembers.addAll(members
+                    .stream()
+                    .map(user -> new BlogMember(user.getId(), MemberRole.INVITING))
+                    .collect(Collectors.toList()));
+        }
+        return blogMembers;
     }
 
-    private List<BlogMember> convertToBlogMembers(List<User> users) {
-        return users
-                .stream()
-                .map(user -> new BlogMember(user.getId(), MemberRole.INVITING))
-                .collect(Collectors.toList());
+    private BlogVo convertToVo(Blog blog) {
+        return new BlogVo(blog.getId(), blog.getName(), blog.getIntroduce(), blog.getImgUrl());
     }
 }
