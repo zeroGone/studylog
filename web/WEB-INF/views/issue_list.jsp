@@ -53,10 +53,10 @@
                 <div class="search-icon"><i class="fas fa-search"></i></div>
                 <input class="search-input" type="text" value="title"/>
             </article>
-            <div class="create-button">
+            <a class="create-button" href="/issue/write">
                 <div class="create-button-icon"><i class="fas fa-pen"></i></div>
                 New issue
-            </div>
+            </a>
             <div class="divider"></div>
             <li class="item">
                 <div class="item-category item-notice">notice</div>

@@ -170,6 +170,7 @@ body {
     text-align: center;
     color: var(--sky);
     cursor: pointer;
+    text-decoration: none;
 }
 
 .create-button-icon {
