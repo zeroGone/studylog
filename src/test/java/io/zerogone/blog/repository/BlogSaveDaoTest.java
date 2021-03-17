@@ -23,7 +23,6 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {WebConfiguration.class, DatabaseConfiguration.class}, loader = AnnotationConfigWebContextLoader.class)
@@ -50,12 +49,12 @@ public class BlogSaveDaoTest {
         BlogMember blogMember = new BlogMember(Integer.MAX_VALUE, MemberRole.ADMIN);
 
         Assert.assertNotNull(blogSaveDao.save(blog, new ArrayList<>(Collections.singletonList(blogMember))));
-        Assert.assertEquals(blog,blogSaveDao.save(blog, new ArrayList<>(Collections.singletonList(blogMember))));
+        Assert.assertEquals(blog, blogSaveDao.save(blog, new ArrayList<>(Collections.singletonList(blogMember))));
     }
 
     @Test
     @Transactional
-    public void save_AppropriateParameters_ReturnSameBlogInstance(){
+    public void save_AppropriateParameters_ReturnSameBlogInstance() {
         Blog blog = new Blog("testBlog", "This is temporary instance fot testing", null);
         BlogMember blogMember1 = new BlogMember(1, MemberRole.ADMIN);
         BlogMember blogMember2 = new BlogMember(2, MemberRole.INVITING);
