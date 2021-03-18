@@ -7,14 +7,27 @@
     <script src="/js/mypage.js" defer></script>
     <script src="/js/header.js" defer></script>
     <script src="/js/sidebar.js" defer></script>
-    <script src="/js/member_invite.js?ver=1.1" defer></script>
-    <script src="/js/img_upload.js?ver=1.0" defer></script>
+    <script src="/js/member_invite.js" defer></script>
     <script src="https://kit.fontawesome.com/b63e743ce0.js" crossorigin="anonymous"></script>
 </head>
 <body>
 <jsp:include page="include/header.jsp"/>
 <jsp:include page="include/sidebar.jsp"/>
+
 <div class="main-container">
+    <div class="alert-container">
+        <div class="alert-contents">
+            <i class="fas fa-exclamation-circle alert-icon"></i>
+            <div class="alert-message">
+                This is test.
+            </div>
+            <div class="alert-buttons">
+                <input type="button" class="alert-register" value="등록" />
+                <input type="button" class="alert-confirm" value="확인" />
+                <input type="button" class="alert-cancel" value="취소" />
+            </div>
+        </div>
+    </div>
     <div class="mypage">
         <section class="profile">
             <img class="profile-img" src="/img/user-default/1.png" alt="user profile img">
