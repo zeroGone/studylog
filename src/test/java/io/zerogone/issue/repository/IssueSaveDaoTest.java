@@ -16,6 +16,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.web.context.WebApplicationContext;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {WebConfiguration.class, DatabaseConfiguration.class}, loader = AnnotationConfigWebContextLoader.class)
@@ -34,7 +35,10 @@ public class IssueSaveDaoTest {
     @Test
     @Transactional
     public void save() {
-        Issue instanceBeforeSaving = new Issue("issue test instance", "test", IssueCategory.NOTICE, 1);
-        Assert.assertEquals(instanceBeforeSaving, issueSaveDao.save(instanceBeforeSaving));
+        Issue testInstance = new Issue("test", "instance", IssueCategory.REQUEST, 1);
+        issueSaveDao.save(testInstance);
+
+        Assert.assertNotEquals(0, testInstance.getId());
+        Assert.assertEquals(LocalDate.now(), testInstance.getCreateDate());
     }
 }
