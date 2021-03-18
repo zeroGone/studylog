@@ -41,4 +41,32 @@ public class Issue {
         this.category = category;
         this.blogMemberId = blogMemberId;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getContents() {
+        return contents;
+    }
+
+    public boolean isClose() {
+        return isClose;
+    }
+
+    public LocalDate getCreateDate() {
+        return LocalDate.of(createDate.getYear(), createDate.getMonth(), createDate.getDayOfMonth());
+    }
+
+    public IssueCategory getCategory() {
+        return category;
+    }
+
+    public int getBlogMemberId() {
+        return blogMemberId;
+    }
 }
