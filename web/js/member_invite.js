@@ -16,12 +16,12 @@ class blog {
     }
 }
 
-let blogInfo;
+let currentData;
+let focusLocation;
 
 const userSearchButton = document.querySelector('.blog-create-member-invite-search').addEventListener('click', getUserInfo);
-const blogCreateSaveButton = document.querySelector('.blog-create-save-button').addEventListener('click', postBlogInfo);
-
-document.querySelector('#blog-create-member').setAttribute('onkeypress', 'if( event.keyCode == 13 ){getUserInfo();}');;
+const saveButton = document.querySelector('.blog-create-save-button').addEventListener('click', informBlogNameUndefined);
+document.querySelector('#blog-create-member').setAttribute('onkeypress', 'if( event.keyCode == 13 ){getUserInfo();}');
 
 function createElement(tagName, className, text, attributeNames, attributeValues) {
     const element = document.createElement(tagName);
@@ -72,38 +72,54 @@ function findOverlapList(findId) {
     return false;
 }
 
-function appendUserList(data, emailInput) {
+
+function appendUserList(data) {
+    const ul = document.querySelector('.blog-create-member-list');
+
+    const li = createElement('li', 'blog-create-member-item');
+    const img = createElement('img', 'blog-create-member-img', '', 'src', '../img/user-default/1.png');
+    const div = createElement('div', 'blog-create-member-texts');
+
+    const id = createElement('span', 'blog-create-member-id', `${data.id}`);
+    const name = createElement('span', 'blog-create-member-name', `${data.name}`);
+    const email = createElement('span', 'blog-create-member-email', `${data.email}`);
+    const nickName = createElement('span', 'blog-create-member-nickName', `${data.nickName}`);
+
+    li.appendChild(img);
+    li.appendChild(div);
+
+    div.appendChild(id);
+    div.appendChild(name);
+    div.appendChild(email);
+    div.appendChild(nickName);
+
+    ul.appendChild(li);
+}
+
+function confirmUserList(data) {
     const isOverlap = findOverlapList(data.id);
 
     if (isOverlap) {
-        alert('이미 등록된 유저입니다.');
+        activeAlertContainer('overlap');
+        document.querySelector('#blog-create-member').value = '';
     } else {
-        const isRegister = confirm(`${data.name}님을 등록하시겠습니까?`);
-        if (isRegister) {
-            const ul = document.querySelector('.blog-create-member-list');
+        displayRegisterAlert();
 
-            const li = createElement('li', 'blog-create-member-item');
-            const img = createElement('img', 'blog-create-member-img', '', 'src', '../img/user-default/1.png');
-            const div = createElement('div', 'blog-create-member-texts');
-
-            const id = createElement('span', 'blog-create-member-id', `${data.id}`);
-            const name = createElement('span', 'blog-create-member-name', `${data.name}`);
-            const email = createElement('span', 'blog-create-member-email', `${data.email}`);
-            const nickName = createElement('span', 'blog-create-member-nickName', `${data.nickName}`);
-
-            li.appendChild(img);
-            li.appendChild(div);
-
-            div.appendChild(id);
-            div.appendChild(name);
-            div.appendChild(email);
-            div.appendChild(nickName);
-
-            ul.appendChild(li);
-
-            emailInput.value = '';
-        }
+        const alertContainer = document.querySelector('.alert-container');
+        const alertMessage = alertContainer.querySelector('.alert-message');
+        alertMessage.innerHTML = `${data.name}님을 등록하시겠습니까?`;
+        const register = alertContainer.querySelector('.alert-register');
+        register.addEventListener('click', clickToRegisterUser);
+        const cancel = alertContainer.querySelector('.alert-cancel');
+        cancel.addEventListener('click', hideAlertContainer);
     }
+}
+
+function clickToRegisterUser() {
+    appendUserList(currentData);
+    hideAlertContainer();
+    hideAlertRegister();
+    document.querySelector('#blog-create-member').value = '';
 }
 
 function getUserInfo() {
@@ -117,84 +133,103 @@ function getUserInfo() {
         },
         mode: 'no-cors'
     }).then(response => {
-        if (response.ok) {
-            console.log('success')
-        } else {
-            console.log('failure')
-        }
         return response.json();
     }).then(data => {
-        console.log(data);
         if (data.errorMessage === "검색 결과 없음") {
-            alert(data.errorMessage);
+            activeAlertContainer(data.errorMessage);
         } else {
-            appendUserList(data, emailInput);
+            currentData = data;
+            confirmUserList(currentData);
         }
     }).catch(error => {
-        console.log('error')
+        console.error(error);
     })
 }
 
-function postBlogInfo() {
-    getValues();
-    console.log(blogInfo);
-    console.log(JSON.stringify(blogInfo));
-    fetch("api/blog", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(blogInfo),
-    }).then((response) => console.log(response))
-}
+function activeAlertContainer(type) {
+    displayConfirmAlert();
 
-function informInputUndefined(key, value) {
-    if (value === '') {
-        if (key === 'name') {
-            alert('블로그 이름을 입력해주세요.');
-            return false;
-        }
-        return false;
+    const alertMessage = document.querySelector('.alert-message');
+    if (type === 'name') {
+        alertMessage.innerHTML = '블로그 이름을 입력해주세요.';
+        focusLocation = 'name';
+    } else if (type === '검색 결과 없음') {
+        alertMessage.innerHTML = '해당 유저가 존재하지 않습니다.';
+        focusLocation = 'member';
+    } else if (type === 'overlap') {
+        alertMessage.innerHTML = '이미 등록된 유저입니다.';
+        focusLocation = 'member';
     }
 
-    return true;
+    const confirm = document.querySelector('.alert-confirm');
+    confirm.setAttribute('onkeypress', 'if( event.keyCode == 13 ){hideAlertContainer();}');
+    confirm.addEventListener('click', hideAlertContainer);
+    confirm.focus();
 }
 
-function getValues() {
-    let blogInfoObj = {
-        name: document.querySelector('#blog-create-name').value,
-        introduce: document.querySelector('#blog-create-introduce').value,
-        imgUrl: document.querySelector('.blog-create-image').getAttribute('src'),
-        members: getBlogUsers()
-    };
+function displayRegisterAlert() {
+    displayAlertContainer();
+    displayAlertRegister();
+    hideAlertConfirm();
+    displayAlertCancel();
+}
 
-    let isInput = true;
-    for (let key in blogInfoObj) {
-        isInput = informInputUndefined(key, blogInfoObj[key]);
-        if (!isInput) {
-            break;
-        }
+function displayConfirmAlert() {
+    displayAlertContainer();
+    hideAlertRegister();
+    displayAlertConfirm();
+    hideAlertCancel();
+}
+
+function displayAlertContainer() {
+    const alertContainer = document.querySelector('.alert-container');
+    alertContainer.classList.add('alert');
+}
+
+function hideAlertContainer() {
+    const alertContainer = document.querySelector('.alert-container');
+    alertContainer.classList.remove('alert');
+
+    if (focusLocation === 'name') {
+        document.querySelector('#blog-create-name').focus();
+    } else if (focusLocation === 'member') {
+        document.querySelector('#blog-create-member').focus();
     }
-
-    blogInfo = new blog(blogInfoObj.name, blogInfoObj.introduce, blogInfoObj.imgUrl, blogInfoObj.members);
-
-    return blogInfo;
 }
 
-function getBlogUsers() {
-    const blogUserArray = [];
-    const blogUsers = document.querySelectorAll('.blog-create-member-item');
+function displayAlertConfirm() {
+    const alertConfirm = document.querySelector('.alert-confirm');
+    alertConfirm.classList.add('display');
+}
 
-    blogUsers.forEach((element) => {
-        const userId = element.children.item(1).children.item(0).innerHTML;
-        const userName = element.children.item(1).children.item(1).innerHTML;
-        const userEmail = element.children.item(1).children.item(2).innerHTML;
-        const userNickname = element.children.item(1).children.item(3).innerHTML;
+function hideAlertConfirm() {
+    const alertConfirm = document.querySelector('.alert-confirm');
+    alertConfirm.classList.remove('display');
+}
 
-        const memberInfo = new user(userId, userName, userEmail, userNickname);
+function displayAlertRegister() {
+    const alertRegister = document.querySelector('.alert-register');
+    alertRegister.classList.add('display');
+}
 
-        blogUserArray.push(memberInfo);
-    }, 0);
+function hideAlertRegister() {
+    const alertRegister = document.querySelector('.alert-register');
+    alertRegister.classList.remove('display');
+}
 
-    return blogUserArray;
+function displayAlertCancel() {
+    const alertCancel = document.querySelector('.alert-cancel');
+    alertCancel.classList.add('display');
+}
+
+function hideAlertCancel() {
+    const alertCancel = document.querySelector('.alert-cancel');
+    alertCancel.classList.remove('display');
+}
+
+function informBlogNameUndefined() {
+    const blogName = document.querySelector('#blog-create-name');
+    if (blogName.value === '') {
+        activeAlertContainer('name');
+    }
 }
