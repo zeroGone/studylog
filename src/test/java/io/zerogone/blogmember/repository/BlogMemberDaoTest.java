@@ -5,6 +5,7 @@ import io.zerogone.blogmember.model.BlogMember;
 import io.zerogone.blogmember.model.MemberRole;
 import io.zerogone.config.DatabaseConfiguration;
 import io.zerogone.config.WebConfiguration;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -45,6 +46,10 @@ public class BlogMemberDaoTest {
         blogMembers.add(new BlogMember(1, 1, MemberRole.ADMIN));
         blogMembers.add(new BlogMember(2, 1, MemberRole.INVITING));
         blogMemberDao.save(blogMembers);
+
+        for (BlogMember blogMember : blogMembers) {
+            Assert.assertNotEquals(0, blogMember.getId());
+        }
     }
 
     @Test
@@ -53,6 +58,10 @@ public class BlogMemberDaoTest {
         List<BlogMember> blogMembers = new ArrayList<>();
         blogMembers.add(new BlogMember(1, 1, MemberRole.ADMIN));
         blogMemberDao.save(blogMembers);
+
+        for (BlogMember blogMember : blogMembers) {
+            Assert.assertNotEquals(0, blogMember.getId());
+        }
     }
 
     @Test
@@ -62,6 +71,10 @@ public class BlogMemberDaoTest {
         List<BlogMember> blogMembers = new ArrayList<>();
         blogMembers.add(new BlogMember(Integer.MAX_VALUE, 1, MemberRole.ADMIN));
         blogMemberDao.save(blogMembers);
+
+        for (BlogMember blogMember : blogMembers) {
+            Assert.assertNotEquals(0, blogMember.getId());
+        }
     }
 
     @Test
@@ -71,5 +84,9 @@ public class BlogMemberDaoTest {
         List<BlogMember> blogMembers = new ArrayList<>();
         blogMembers.add(new BlogMember(1, Integer.MAX_VALUE, MemberRole.ADMIN));
         blogMemberDao.save(blogMembers);
+
+        for (BlogMember blogMember : blogMembers) {
+            Assert.assertNotEquals(0, blogMember.getId());
+        }
     }
 }
