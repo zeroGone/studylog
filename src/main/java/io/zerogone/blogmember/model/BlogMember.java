@@ -1,6 +1,6 @@
-package io.zerogone.blog.model;
+package io.zerogone.blogmember.model;
 
-import io.zerogone.blog.service.MemberRoleConverter;
+import io.zerogone.blogmember.converter.MemberRoleConverter;
 
 import javax.persistence.*;
 
@@ -21,16 +21,29 @@ public class BlogMember {
     @Convert(converter = MemberRoleConverter.class)
     private MemberRole role;
 
+    public BlogMember(int userId, int blogId, MemberRole role) {
+        this.userId = userId;
+        this.blogId = blogId;
+        this.role = role;
+    }
+
     public BlogMember() {
 
     }
 
-    public BlogMember(int userId, MemberRole role) {
-        this.userId = userId;
-        this.role = role;
+    public int getId() {
+        return id;
     }
 
-    public void setBlogId(int blogId) {
-        this.blogId = blogId;
+    public int getUserId() {
+        return userId;
+    }
+
+    public int getBlogId() {
+        return blogId;
+    }
+
+    public MemberRole getRole() {
+        return role;
     }
 }

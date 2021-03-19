@@ -1,6 +1,6 @@
-package io.zerogone.blog.model;
+package io.zerogone.blogmember.model;
 
-import io.zerogone.blog.exception.MemberRoleConvertException;
+import io.zerogone.blogmember.exception.MemberRoleConvertException;
 
 import java.util.Arrays;
 import java.util.Objects;

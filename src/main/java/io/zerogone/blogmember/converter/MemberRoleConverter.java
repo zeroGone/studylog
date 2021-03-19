@@ -1,6 +1,6 @@
-package io.zerogone.blog.service;
+package io.zerogone.blogmember.converter;
 
-import io.zerogone.blog.model.MemberRole;
+import io.zerogone.blogmember.model.MemberRole;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
