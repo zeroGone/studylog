@@ -1,8 +1,9 @@
-package io.zerogone.repository;
+package io.zerogone.user.repository;
 
 import io.zerogone.config.DatabaseConfiguration;
 import io.zerogone.config.WebConfiguration;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -19,13 +20,15 @@ import javax.persistence.NoResultException;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {WebConfiguration.class, DatabaseConfiguration.class}, loader = AnnotationConfigWebContextLoader.class)
 @WebAppConfiguration
-public class UserRepositoryTest {
+public class UserSearchDaoTest {
     @Autowired
     private WebApplicationContext webApplicationContext;
 
-    @Test
-    public void testRepositoryLoaded() {
-        Assert.assertNotNull(webApplicationContext.getBean(UserRepository.class));
+    private UserSearchDao userSearchDao;
+
+    @Before
+    public void setUp() throws Exception {
+        userSearchDao = webApplicationContext.getBean(UserSearchDao.class);
     }
 
     @Rule
@@ -33,10 +36,8 @@ public class UserRepositoryTest {
 
     @Test
     public void testFindUserByEmail() {
-        UserRepository userRepository = webApplicationContext.getBean(UserRepository.class);
-        Assert.assertNotNull(userRepository.findUserByEmail("dudrhs571@gmail.com"));
-
         expectedException.expect(NoResultException.class);
-        Assert.assertNotNull(userRepository.findUserByEmail("dud123"));
+        Assert.assertNull(userSearchDao.findUserByEmail("dudrhs571"));
+        Assert.assertNotNull(userSearchDao.findUserByEmail("dudrhs571@gmail.com"));
     }
 }

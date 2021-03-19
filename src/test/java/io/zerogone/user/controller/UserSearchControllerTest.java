@@ -1,7 +1,7 @@
-package io.zerogone.filter;
+package io.zerogone.user.controller;
 
+import io.zerogone.config.DatabaseConfiguration;
 import io.zerogone.config.WebConfiguration;
-import io.zerogone.user.model.User;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,28 +15,35 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = WebConfiguration.class, loader = AnnotationConfigWebContextLoader.class)
+@ContextConfiguration(classes = {WebConfiguration.class, DatabaseConfiguration.class}, loader = AnnotationConfigWebContextLoader.class)
 @WebAppConfiguration
-public class LoginCheckFilterTest {
+public class UserSearchControllerTest {
     @Autowired
     private WebApplicationContext webApplicationContext;
 
     private MockMvc mockMvc;
 
     @Before
-    public void setUp() {
-        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).addFilter(new LoginCheckFilter()).build();
+    public void setUp() throws Exception {
+        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
     }
 
     @Test
-    public void testFilterIsWorking() throws Exception {
-        mockMvc.perform(get("/")).andExpect(status().isOk()).andExpect(view().name("index"));
-        mockMvc.perform(get("/mypage")).andExpect(status().is3xxRedirection());
-        mockMvc.perform(get("/mypage").sessionAttr("userInfo", new User())).andExpect(status().isOk()).andExpect(view().name("mypage"));
-        mockMvc.perform(get("/issue/1")).andExpect(status().is3xxRedirection());
+    public void testUserSearchApi() throws Exception {
+        mockMvc.perform(get("/api/user").param("email", "dudrhs571@gmail.com"))
+                .andExpect(status().isOk())
+                .andDo(print());
+
+        mockMvc.perform(get("/api/user").param("email", "dudrhs571"))
+                .andExpect(status().is4xxClientError())
+                .andDo(print());
+
+        mockMvc.perform(get("/api/user").param("email", "%"))
+                .andExpect(status().is4xxClientError())
+                .andDo(print());
     }
 }
