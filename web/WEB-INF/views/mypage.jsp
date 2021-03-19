@@ -136,7 +136,7 @@
                 </div>
                 <ul class="blog-create-member-list">
                 </ul>
-                <div class="blog-create-save-button">저장</div>
+                <button class="blog-create-save-button">저장</button>
             </div>
         </form>
     </article>
