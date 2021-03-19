@@ -227,7 +227,6 @@ body {
 
 .blog-create-form {
     display: grid;
-    /*grid-template-columns: repeat(2, 1fr);*/
     grid-template-columns: 1fr 4fr;
     color: var(--dark-blue);
     font-size: larger;
@@ -237,8 +236,6 @@ body {
 
 .blog-create-image-container {
     position: relative;
-    width: 100%;
-    height: 100%;
     background-color: rgba(var(--light-sky-rgb), 0.5);
 }
 
@@ -257,7 +254,6 @@ body {
     transition: all 0.3s;
     box-shadow: 0px 1px 10px 0px var(--blue-black);
     object-fit: cover;
-    /*background-color: var(--white);*/
 }
 
 .blog-create-image {
@@ -272,13 +268,13 @@ body {
     left: 50%;
     width: 8vw;
     height: 8vw;
+    border: none;
     border-radius: 50%;
     text-align: center;
     background-color: rgba(var(--blue-black-rgb), 0);
     transform: translate(-50%, -50%);
     transition: all 0.5s;
     cursor: pointer;
-    outline: none;
 }
 
 .blog-create-images-edit-button {
@@ -308,21 +304,9 @@ body {
     margin-bottom: 2vh;
 }
 
-.blog-create-input-introduce {
-    height: 5vh;
-}
-
-.blog-create-member-invite {
-    position: relative;
-}
-
 .blog-create-label {
     display: block;
     margin-bottom: 1vh;
-}
-
-.blog-create-member-invite-inputs {
-    position: relative;
 }
 
 .blog-create-input {
@@ -333,10 +317,22 @@ body {
     border: 1px solid var(--gray);
     border-radius: 5px;
     background-color: white;
-    width: -webkit-fill-available;
+    width: 100%;
     padding: 1vh 0.5vw;
 }
 
+.blog-create-input-introduce {
+    height: 5vh;
+}
+
+.blog-create-member-invite {
+    position: relative;
+}
+
+
+.blog-create-member-invite-inputs {
+    position: relative;
+}
 
 .blog-create-member-invite-search {
     position: absolute;
@@ -379,7 +375,8 @@ body {
 
 .blog-create-member-texts {
     line-height: 1.4;
-    text-indent: 10px;
+    text-indent: 0.5vw;
+    overflow: hidden;
 }
 
 .blog-create-member-id {
@@ -392,6 +389,9 @@ body {
 
 .blog-create-member-email {
     display: block;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    font-size: small;
 }
 
 .blog-create-member-nickName {
@@ -402,6 +402,7 @@ body {
     float: right;
     width: 5vw;
     line-height: 2vw;
+    border: none;
     border-radius: 5px;
     background-color: var(--sky);
     color: white;
