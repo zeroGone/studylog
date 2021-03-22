@@ -22,6 +22,7 @@ import org.springframework.web.context.WebApplicationContext;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -108,5 +109,23 @@ public class BlogApiControllerTest {
                 .content(new ObjectMapper().writeValueAsString(blogDto)))
                 .andDo(print())
                 .andExpect(status().is4xxClientError());
+    }
+
+    @Test
+    public void handleBlogSearchApi() throws Exception {
+        mockMvc.perform(get("/api/blog").param("name", "studylog"))
+                .andExpect(status().isOk())
+                .andDo(print());
+
+        mockMvc.perform(get("/api/blog").param("name", "test"))
+                .andExpect(status().isOk())
+                .andDo(print());
+    }
+
+    @Test
+    public void handleBlogSearchApi_NotExistedName_ReturnNotFound() throws Exception {
+        mockMvc.perform(get("/api/blog").param("name", "jinmin is zzang"))
+                .andExpect(status().is4xxClientError())
+                .andDo(print());
     }
 }

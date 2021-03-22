@@ -57,4 +57,16 @@ public class BlogDao {
         TypedQuery<Blog> typedQuery = entityManager.createQuery(criteriaQuery);
         return typedQuery.getResultList();
     }
+
+    public Blog findByName(String name) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Blog> criteriaQuery = criteriaBuilder.createQuery(Blog.class);
+
+        Root<Blog> root = criteriaQuery.from(Blog.class);
+        criteriaQuery.select(root);
+        criteriaQuery.where(criteriaBuilder.equal(root.get("name"), name));
+
+        TypedQuery<Blog> blogTypedQuery = entityManager.createQuery(criteriaQuery);
+        return blogTypedQuery.getSingleResult();
+    }
 }
