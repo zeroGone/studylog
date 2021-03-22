@@ -66,10 +66,13 @@
         <section class="blog">
             <c:forEach items="${blogs}" var="blog">
                 <article class="blog-item">
-                    <div class="blog-icon"><i class="fab fa-teamspeak"></i></div>
+                    <div class="blog-icon"></div>
                     <div class="blog-name">${blog.name}</div>
                 </article>
             </c:forEach>
+            <article class="blog-create-button">
+                <i class="fas fa-plus"></i>
+            </article>
         </section>
     </div>
 </div>
