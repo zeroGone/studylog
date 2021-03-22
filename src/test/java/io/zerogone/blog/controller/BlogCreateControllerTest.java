@@ -1,10 +1,10 @@
 package io.zerogone.blog.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.zerogone.blog.model.BlogDto;
 import io.zerogone.config.WebConfiguration;
-import io.zerogone.user.model.User;
+import io.zerogone.user.model.CurrentUserInfo;
+import io.zerogone.user.model.UserDto;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,7 +21,6 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -41,39 +40,73 @@ public class BlogCreateControllerTest {
     }
 
     @Test
-    public void testRequestBodyDataIsProperlyMapped() throws Exception {
-        User user = new User();
-        user.setName("김영곤");
-        user.setId(1);
-        user.setEmail("dudrhs571@gmail.com");
-        user.setNickName("zeroGone");
+    public void handleBlogCreateApi_InValidBlogMemeber_ReturnBadRequest() throws Exception {
+        CurrentUserInfo creator = new CurrentUserInfo();
+        creator.setId(1);
+        UserDto member = new UserDto();
+        member.setId(Integer.MAX_VALUE);
+
+        BlogDto blogDto = new BlogDto();
+        blogDto.setName("test dto2");
+        blogDto.setMembers(new ArrayList<>(Collections.singletonList(member)));
+
         mockMvc.perform(MockMvcRequestBuilders
-                .post("/api/blog").sessionAttr("userInfo", user)
+                .post("/api/blog").sessionAttr("userInfo", creator)
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(makeJsonData()))
+                .content(new ObjectMapper().writeValueAsString(blogDto)))
+                .andDo(print())
+                .andExpect(status().is4xxClientError());
+    }
+
+    @Test
+    public void handleBlogCreateApi_IncludeSameBlogName_ReturnBadRequest() throws Exception {
+        CurrentUserInfo creator = new CurrentUserInfo();
+        creator.setId(1);
+
+        BlogDto blogDto = new BlogDto();
+        blogDto.setName("test dto");
+
+        mockMvc.perform(MockMvcRequestBuilders
+                .post("/api/blog").sessionAttr("userInfo", creator)
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(new ObjectMapper().writeValueAsString(blogDto)))
+                .andDo(print())
+                .andExpect(status().is4xxClientError());
+    }
+
+    @Test
+    public void handleBlogCreateApi_BlogMemberIsNone_ReturnCreated() throws Exception {
+        CurrentUserInfo creator = new CurrentUserInfo();
+        creator.setId(1);
+
+        BlogDto blogDto = new BlogDto();
+        blogDto.setName("test");
+
+        mockMvc.perform(MockMvcRequestBuilders
+                .post("/api/blog").sessionAttr("userInfo", creator)
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(new ObjectMapper().writeValueAsString(blogDto)))
                 .andDo(print())
                 .andExpect(status().isCreated());
     }
 
-    private String makeJsonData() throws JsonProcessingException {
-        BlogDto blogDto = makeBlogDto();
-        blogDto.setMembers(makeUsers());
-        System.out.println(new ObjectMapper().writeValueAsString(blogDto));
-        return new ObjectMapper().writeValueAsString(blogDto);
-    }
+    @Test
+    public void handleBlogCreateApi_IncludeInvalidBlogMember_ReturnBadRequest() throws Exception {
+        CurrentUserInfo creator = new CurrentUserInfo();
+        creator.setId(1);
 
-    private BlogDto makeBlogDto() {
+        UserDto userDto = new UserDto();
+        userDto.setId(Integer.MAX_VALUE);
+
         BlogDto blogDto = new BlogDto();
-        blogDto.setName("신현청라 스터디팟");
-        return blogDto;
-    }
+        blogDto.setName("test create blog : 2021-03-22 16:52");
+        blogDto.setMembers(Collections.singletonList(userDto));
 
-    private List<User> makeUsers() {
-        User user2 = new User();
-        user2.setId(1);
-        user2.setName("모세현");
-        user2.setNickName("모세");
-        user2.setEmail("ahtpgus@naver.com");
-        return new ArrayList<>(Collections.singletonList(user2));
+        mockMvc.perform(MockMvcRequestBuilders
+                .post("/api/blog").sessionAttr("userInfo", creator)
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(new ObjectMapper().writeValueAsString(blogDto)))
+                .andDo(print())
+                .andExpect(status().is4xxClientError());
     }
 }

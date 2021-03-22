@@ -1,6 +1,6 @@
 package io.zerogone.blog.model;
 
-import io.zerogone.user.model.User;
+import io.zerogone.user.model.UserDto;
 
 import java.util.List;
 
@@ -8,7 +8,7 @@ public class BlogDto {
     private String name;
     private String introduce;
     private String imageUrl;
-    private List<User> members;
+    private List<UserDto> members;
 
     public String getName() {
         return name;
@@ -34,11 +34,11 @@ public class BlogDto {
         this.imageUrl = imageUrl;
     }
 
-    public List<User> getMembers() {
+    public List<UserDto> getMembers() {
         return members;
     }
 
-    public void setMembers(List<User> members) {
+    public void setMembers(List<UserDto> members) {
         this.members = members;
     }
 }

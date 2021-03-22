@@ -2,48 +2,31 @@ package io.zerogone.blog.service;
 
 import io.zerogone.blog.model.Blog;
 import io.zerogone.blog.model.BlogDto;
-import io.zerogone.blog.model.BlogMember;
-import io.zerogone.blog.model.MemberRole;
-import io.zerogone.blog.repository.BlogSaveRepository;
-import io.zerogone.user.model.User;
+import io.zerogone.blog.model.BlogVo;
+import io.zerogone.blog.repository.BlogDao;
+import io.zerogone.blogmember.exception.BlogMembersStateException;
+import io.zerogone.blogmember.service.BlogMemberCreateService;
+import io.zerogone.user.model.CurrentUserInfo;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class BlogCreateService {
-    private final BlogSaveRepository blogSaveRepository;
+    private final BlogDao BlogDao;
+    private final BlogMemberCreateService blogMemberCreateService;
 
-    public BlogCreateService(BlogSaveRepository blogSaveRepository) {
-        this.blogSaveRepository = blogSaveRepository;
+    public BlogCreateService(BlogDao BlogDao, BlogMemberCreateService blogMemberCreateService) {
+        this.BlogDao = BlogDao;
+        this.blogMemberCreateService = blogMemberCreateService;
     }
 
     @Transactional
-    public Blog createBlog(User creator, BlogDto blogDto) throws IllegalArgumentException {
-        Blog blog = convertToBlogEntity(blogDto);
+    public BlogVo createBlog(CurrentUserInfo creator, BlogDto blogDto) throws BlogMembersStateException {
+        Blog blog = new Blog(blogDto.getName(), blogDto.getIntroduce(), blogDto.getImageUrl());
+        BlogDao.save(blog);
 
-        List<BlogMember> members = new ArrayList<>();
-        members.add(convertToBlogAdmin(creator));
-        members.addAll(convertToBlogMembers(blogDto.getMembers()));
-
-        return blogSaveRepository.save(blog, members);
-    }
-
-    private Blog convertToBlogEntity(BlogDto blogDto) {
-        return new Blog(blogDto.getName(), blogDto.getIntroduce(), blogDto.getImageUrl());
-    }
-
-    private BlogMember convertToBlogAdmin(User user) {
-        return new BlogMember(user.getId(), MemberRole.ADMIN);
-    }
-
-    private List<BlogMember> convertToBlogMembers(List<User> users) {
-        return users
-                .stream()
-                .map(user -> new BlogMember(user.getId(), MemberRole.INVITING))
-                .collect(Collectors.toList());
+        blogMemberCreateService.createBlogMembers(blog.getId(), creator, blogDto.getMembers());
+        return new BlogVo(blog);
     }
 }
