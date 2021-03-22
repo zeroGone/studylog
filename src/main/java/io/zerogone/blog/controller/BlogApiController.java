@@ -23,7 +23,7 @@ public class BlogApiController {
         this.blogSearchService = blogSearchService;
     }
 
-    @GetMapping
+    @GetMapping("api/blog")
     public ResponseEntity<Object> handleBlogSearchApi(@RequestParam String name) {
         try {
             return new ResponseEntity<>(blogSearchService.getBlog(name), HttpStatus.OK);
