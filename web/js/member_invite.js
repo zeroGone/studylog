@@ -132,10 +132,15 @@ function getUserInfo() {
         },
         mode: 'no-cors'
     }).then(response => {
+        if (response.status === 400) {
+            return response.status;
+        }
         return response.json();
     }).then(data => {
         if (data.errorMessage === "검색 결과 없음") {
             activeAlertContainer(data.errorMessage);
+        } else if (data === 400) {
+            informToNotRegisterOneself();
         } else {
             currentData = data;
             confirmUserList(currentData);
@@ -157,6 +162,9 @@ function activeAlertContainer(type) {
         focusLocation = 'member';
     } else if (type === 'overlap') {
         alertMessage.innerHTML = '이미 등록된 유저입니다.';
+        focusLocation = 'member';
+    } else if (type === 'oneself') {
+        alertMessage.innerHTML = '본인은 등록할 수 없습니다.';
         focusLocation = 'member';
     }
 
@@ -224,4 +232,8 @@ function displayAlertCancel() {
 function hideAlertCancel() {
     const alertCancel = document.querySelector('.alert-cancel');
     alertCancel.classList.remove('display');
+}
+
+function informToNotRegisterOneself() {
+    return activeAlertContainer('oneself');
 }
