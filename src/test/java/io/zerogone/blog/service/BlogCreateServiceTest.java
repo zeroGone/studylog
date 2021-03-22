@@ -1,9 +1,12 @@
 package io.zerogone.blog.service;
 
-import io.zerogone.blog.exception.InvalidBlogMemberException;
 import io.zerogone.blog.model.BlogDto;
+import io.zerogone.blogmember.exception.BlogMembersStateException;
+import io.zerogone.config.DatabaseConfiguration;
 import io.zerogone.config.WebConfiguration;
-import io.zerogone.model.User;
+import io.zerogone.exception.UniquePropertyException;
+import io.zerogone.user.model.CurrentUserInfo;
+import io.zerogone.user.model.UserDto;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -22,7 +25,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = WebConfiguration.class, loader = AnnotationConfigWebContextLoader.class)
+@ContextConfiguration(classes = {WebConfiguration.class, DatabaseConfiguration.class}, loader = AnnotationConfigWebContextLoader.class)
 @WebAppConfiguration
 public class BlogCreateServiceTest {
     @Autowired
@@ -41,27 +44,39 @@ public class BlogCreateServiceTest {
     @Test
     @Transactional
     public void createBlog() {
-        User creator = new User();
+        CurrentUserInfo creator = new CurrentUserInfo();
         creator.setId(1);
         BlogDto blogDto = new BlogDto();
-        blogDto.setName("test dto");
+        blogDto.setName("test");
 
         Assert.assertNotNull(blogCreateService.createBlog(creator, blogDto));
     }
 
     @Test
     @Transactional
-    public void createBlog_InValidBlogMemeber_ThrowException() {
-        User creator = new User();
+    public void createBlog_SameBlogName_ThrowDuplicatedPropertyException() {
+        expectedException.expect(UniquePropertyException.class);
+        CurrentUserInfo creator = new CurrentUserInfo();
         creator.setId(1);
-        User member = new User();
-        member.setId(Integer.MAX_VALUE);
-
         BlogDto blogDto = new BlogDto();
         blogDto.setName("test dto");
+        Assert.assertNotNull(blogCreateService.createBlog(creator, blogDto));
+    }
+
+    @Test
+    @Transactional
+    public void createBlog_IncludeInvalidBlogMember_ThrowBlogMembersStateException() {
+        expectedException.expect(BlogMembersStateException.class);
+        CurrentUserInfo creator = new CurrentUserInfo();
+        creator.setId(1);
+
+        UserDto member = new UserDto();
+        member.setId(-1);
+
+        BlogDto blogDto = new BlogDto();
+        blogDto.setName("test");
         blogDto.setMembers(new ArrayList<>(Collections.singletonList(member)));
 
-        expectedException.expect(InvalidBlogMemberException.class);
         Assert.assertNotNull(blogCreateService.createBlog(creator, blogDto));
     }
 }

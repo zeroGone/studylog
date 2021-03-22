@@ -6,11 +6,11 @@ public class BlogVo {
     private final String introduce;
     private final String img_url;
 
-    public BlogVo(int id, String name, String introduce, String img_url) {
-        this.id = id;
-        this.name = name;
-        this.introduce = introduce;
-        this.img_url = img_url;
+    public BlogVo(Blog blog) {
+        this.id = blog.getId();
+        this.name = blog.getName();
+        this.introduce = blog.getIntroduce();
+        this.img_url = blog.getImgUrl();
     }
 
     public int getId() {
