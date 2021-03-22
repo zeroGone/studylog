@@ -8,6 +8,7 @@
     <script src="/js/header.js" defer></script>
     <script src="/js/sidebar.js" defer></script>
     <script src="/js/member_invite.js" defer></script>
+    <script src="/js/create_blog.js" defer></script>
     <script src="https://kit.fontawesome.com/b63e743ce0.js" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -131,7 +132,7 @@
                 </div>
                 <ul class="blog-create-member-list">
                 </ul>
-                <button class="blog-create-save-button">저장</button>
+                <button type="button" class="blog-create-save-button">저장</button>
             </div>
         </form>
     </article>
