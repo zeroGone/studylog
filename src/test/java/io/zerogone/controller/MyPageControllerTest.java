@@ -1,7 +1,7 @@
 package io.zerogone.controller;
 
 import io.zerogone.config.WebConfiguration;
-import io.zerogone.model.User;
+import io.zerogone.user.model.CurrentUserInfo;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,10 +35,11 @@ public class MyPageControllerTest {
 
     @Test
     public void getMypageViewNameWithUserInfo() throws Exception {
-        User user = new User();
+        CurrentUserInfo user = new CurrentUserInfo();
         user.setId(1);
         user.setName("김영곤");
         user.setNickName("zeroGone");
+        user.setEmail("dudrhs571@gmail.com");
 
         mockMvc.perform(MockMvcRequestBuilders
                 .get("/mypage").sessionAttr("userInfo", user))
