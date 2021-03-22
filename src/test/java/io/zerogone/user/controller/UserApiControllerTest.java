@@ -2,6 +2,7 @@ package io.zerogone.user.controller;
 
 import io.zerogone.config.DatabaseConfiguration;
 import io.zerogone.config.WebConfiguration;
+import io.zerogone.user.model.CurrentUserInfo;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,7 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {WebConfiguration.class, DatabaseConfiguration.class}, loader = AnnotationConfigWebContextLoader.class)
 @WebAppConfiguration
-public class UserSearchControllerTest {
+public class UserApiControllerTest {
     @Autowired
     private WebApplicationContext webApplicationContext;
 
@@ -44,6 +45,17 @@ public class UserSearchControllerTest {
 
         mockMvc.perform(get("/api/user").param("email", "%"))
                 .andExpect(status().is4xxClientError())
+                .andDo(print());
+    }
+
+    @Test
+    public void handleUserSearchApi_IncludeMemeberisSameSessionUser_ReturnBadRequest() throws Exception {
+        CurrentUserInfo userInfo = new CurrentUserInfo();
+        userInfo.setEmail("dudrhs571@gmail.com");
+        mockMvc.perform(get("/api/user")
+                .sessionAttr("userInfo", userInfo)
+                .param("email", "dudrhs571@gmail.com"))
+                .andExpect(status().isBadRequest())
                 .andDo(print());
     }
 }
