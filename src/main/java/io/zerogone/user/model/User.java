@@ -15,6 +15,17 @@ public class User {
     @Column(name = "nick_name", nullable = false, unique = true)
     private String nickName;
 
+    public User() {
+
+    }
+
+    public User(CurrentUserInfo userInfo) {
+        id = userInfo.getId();
+        name = userInfo.getName();
+        email = userInfo.getEmail();
+        nickName = userInfo.getNickName();
+    }
+
     public int getId() {
         return id;
     }
