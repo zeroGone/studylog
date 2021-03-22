@@ -1,5 +1,6 @@
 package io.zerogone.user.controller;
 
+import io.zerogone.model.Error;
 import io.zerogone.user.model.CurrentUserInfo;
 import io.zerogone.user.service.UserSearchService;
 import org.springframework.http.HttpStatus;
