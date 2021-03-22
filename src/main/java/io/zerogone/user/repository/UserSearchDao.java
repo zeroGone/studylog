@@ -1,4 +1,4 @@
-package io.zerogone.repository;
+package io.zerogone.user.repository;
 
 import io.zerogone.user.model.User;
 import org.springframework.stereotype.Repository;
@@ -6,12 +6,13 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
 @Repository
-public class UserRepository {
+public class UserSearchDao {
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -23,6 +24,7 @@ public class UserRepository {
         criteriaQuery.select(root);
         criteriaQuery.where(criteriaBuilder.equal(root.get("email"), email));
 
-        return entityManager.createQuery(criteriaQuery).getSingleResult();
+        TypedQuery<User> query = entityManager.createQuery(criteriaQuery);
+        return query.getSingleResult();
     }
 }
