@@ -9,11 +9,7 @@ public class Blog {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    public int getId() {
-        return id;
-    }
-
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
 
     public String getName() {
@@ -36,5 +32,21 @@ public class Blog {
         this.name = name;
         this.introduce = introduce;
         this.imgUrl = imgUrl;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getIntroduce() {
+        return introduce;
+    }
+
+    public String getImgUrl() {
+        return imgUrl;
     }
 }

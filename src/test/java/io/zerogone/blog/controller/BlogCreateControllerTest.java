@@ -3,7 +3,8 @@ package io.zerogone.blog.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.zerogone.blog.model.BlogDto;
 import io.zerogone.config.WebConfiguration;
-import io.zerogone.model.User;
+import io.zerogone.user.model.CurrentUserInfo;
+import io.zerogone.user.model.UserDto;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,13 +41,13 @@ public class BlogCreateControllerTest {
 
     @Test
     public void handleBlogCreateApi_InValidBlogMemeber_ReturnBadRequest() throws Exception {
-        User creator = new User();
+        CurrentUserInfo creator = new CurrentUserInfo();
         creator.setId(1);
-        User member = new User();
+        UserDto member = new UserDto();
         member.setId(Integer.MAX_VALUE);
 
         BlogDto blogDto = new BlogDto();
-        blogDto.setName("test dto");
+        blogDto.setName("test dto2");
         blogDto.setMembers(new ArrayList<>(Collections.singletonList(member)));
 
         mockMvc.perform(MockMvcRequestBuilders
@@ -58,9 +59,10 @@ public class BlogCreateControllerTest {
     }
 
     @Test
-    public void handleBlogCreateApi_BlogMemberIsNone_ReturnCreated() throws Exception {
-        User creator = new User();
+    public void handleBlogCreateApi_IncludeSameBlogName_ReturnBadRequest() throws Exception {
+        CurrentUserInfo creator = new CurrentUserInfo();
         creator.setId(1);
+
         BlogDto blogDto = new BlogDto();
         blogDto.setName("test dto");
 
@@ -69,6 +71,42 @@ public class BlogCreateControllerTest {
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(new ObjectMapper().writeValueAsString(blogDto)))
                 .andDo(print())
+                .andExpect(status().is4xxClientError());
+    }
+
+    @Test
+    public void handleBlogCreateApi_BlogMemberIsNone_ReturnCreated() throws Exception {
+        CurrentUserInfo creator = new CurrentUserInfo();
+        creator.setId(1);
+
+        BlogDto blogDto = new BlogDto();
+        blogDto.setName("test");
+
+        mockMvc.perform(MockMvcRequestBuilders
+                .post("/api/blog").sessionAttr("userInfo", creator)
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(new ObjectMapper().writeValueAsString(blogDto)))
+                .andDo(print())
                 .andExpect(status().isCreated());
+    }
+
+    @Test
+    public void handleBlogCreateApi_IncludeInvalidBlogMember_ReturnBadRequest() throws Exception {
+        CurrentUserInfo creator = new CurrentUserInfo();
+        creator.setId(1);
+
+        UserDto userDto = new UserDto();
+        userDto.setId(Integer.MAX_VALUE);
+
+        BlogDto blogDto = new BlogDto();
+        blogDto.setName("test create blog : 2021-03-22 16:52");
+        blogDto.setMembers(Collections.singletonList(userDto));
+
+        mockMvc.perform(MockMvcRequestBuilders
+                .post("/api/blog").sessionAttr("userInfo", creator)
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(new ObjectMapper().writeValueAsString(blogDto)))
+                .andDo(print())
+                .andExpect(status().is4xxClientError());
     }
 }

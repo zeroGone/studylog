@@ -1,7 +1,7 @@
 package io.zerogone.filter;
 
 import io.zerogone.config.WebConfiguration;
-import io.zerogone.model.User;
+import io.zerogone.user.model.User;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

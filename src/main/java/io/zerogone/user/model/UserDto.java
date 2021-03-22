@@ -1,20 +1,11 @@
-package io.zerogone.model;
+package io.zerogone.user.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-
-@Entity
-public class User {
-    @Id
+public class UserDto {
     private int id;
-
     private String name;
-
-    @Column(nullable = false)
-    private String email;
-    @Column(name = "nick_name", nullable = false)
     private String nickName;
+    private String email;
+    private String imgUrl;
 
     public int getId() {
         return id;
@@ -32,6 +23,14 @@ public class User {
         this.name = name;
     }
 
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -40,11 +39,11 @@ public class User {
         this.email = email;
     }
 
-    public String getNickName() {
-        return nickName;
+    public String getImgUrl() {
+        return imgUrl;
     }
 
-    public void setNickName(String nickName) {
-        this.nickName = nickName;
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
     }
 }

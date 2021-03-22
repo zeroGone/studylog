@@ -1,8 +1,7 @@
-package io.zerogone.blog.repository;
+package io.zerogone.blogmember.repository;
 
-import io.zerogone.blog.exception.InvalidBlogMemberException;
-import io.zerogone.blog.model.Blog;
-import io.zerogone.blog.model.BlogMember;
+import io.zerogone.blogmember.exception.BlogMembersStateException;
+import io.zerogone.blogmember.model.BlogMember;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Repository;
@@ -13,32 +12,25 @@ import javax.persistence.PersistenceException;
 import java.util.List;
 
 @Repository
-public class BlogSaveDao {
+public class BlogMemberDao {
     private final Log logger = LogFactory.getLog(this.getClass());
 
     @PersistenceContext
     private EntityManager entityManager;
 
-    public Blog save(Blog blog, List<BlogMember> blogMembers) throws InvalidBlogMemberException {
-        logger.debug("-----save blog start-----");
-
-        entityManager.persist(blog);
-        entityManager.flush();
-
-        logger.debug("blog id: " + blog.getId());
+    public void save(List<BlogMember> blogMembers) {
+        logger.debug("-----save blogmember start-----");
 
         for (BlogMember blogMember : blogMembers) {
-            blogMember.setBlogId(blog.getId());
             try {
                 entityManager.persist(blogMember);
             } catch (PersistenceException persistenceException) {
-                throw new InvalidBlogMemberException();
+                throw new BlogMembersStateException("It isn't allowed blog members to include invalid blog id or user id");
             }
         }
-        entityManager.flush();
-        entityManager.close();
-        logger.debug("-----save blog end-----");
 
-        return blog;
+        entityManager.flush();
+
+        logger.debug("-----save blogmember end-----");
     }
 }
