@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 @RestController
-public class BlogCreateController {
+public class BlogApiController {
     private final BlogCreateService blogCreateService;
 
-    public BlogCreateController(BlogCreateService blogCreateService) {
+    public BlogApiController(BlogCreateService blogCreateService) {
         this.blogCreateService = blogCreateService;
     }
 

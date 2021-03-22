@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = WebConfiguration.class, loader = AnnotationConfigWebContextLoader.class)
 @WebAppConfiguration
-public class BlogCreateControllerTest {
+public class BlogApiControllerTest {
     @Autowired
     private WebApplicationContext webApplicationContext;
 
