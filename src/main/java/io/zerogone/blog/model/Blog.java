@@ -1,5 +1,7 @@
 package io.zerogone.blog.model;
 
+import io.zerogone.blogmember.model.BlogMember;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -11,10 +13,6 @@ public class Blog {
 
     @Column(nullable = false, unique = true)
     private String name;
-
-    public String getName() {
-        return name;
-    }
 
     private String introduce;
 
