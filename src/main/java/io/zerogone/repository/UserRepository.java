@@ -1,6 +1,6 @@
 package io.zerogone.repository;
 
-import io.zerogone.model.User;
+import io.zerogone.user.model.User;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
