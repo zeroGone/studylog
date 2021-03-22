@@ -1,4 +1,4 @@
-class user {
+class User {
     constructor(id, name, email, nickName) {
         this.id = id;
         this.email = email;
@@ -7,7 +7,7 @@ class user {
     }
 }
 
-class blog {
+class Blog {
     constructor(name, introduce, imgUrl, members) {
         this.name = name;
         this.introduce = introduce;
@@ -20,7 +20,6 @@ let currentData;
 let focusLocation;
 
 const userSearchButton = document.querySelector('.blog-create-member-invite-search').addEventListener('click', getUserInfo);
-const saveButton = document.querySelector('.blog-create-save-button').addEventListener('click', informBlogNameUndefined);
 document.querySelector('#blog-create-member').setAttribute('onkeypress', 'if( event.keyCode == 13 ){getUserInfo();}');
 
 function createElement(tagName, className, text, attributeNames, attributeValues) {
@@ -225,11 +224,4 @@ function displayAlertCancel() {
 function hideAlertCancel() {
     const alertCancel = document.querySelector('.alert-cancel');
     alertCancel.classList.remove('display');
-}
-
-function informBlogNameUndefined() {
-    const blogName = document.querySelector('#blog-create-name');
-    if (blogName.value === '') {
-        activeAlertContainer('name');
-    }
 }
