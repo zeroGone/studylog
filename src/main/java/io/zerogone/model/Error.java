@@ -1,13 +1,13 @@
 package io.zerogone.model;
 
 public class Error {
-    private final String erroeMessage;
+    private final String errorMessage;
 
-    public Error(String erroeMessage) {
-        this.erroeMessage = erroeMessage;
+    public Error(String errorMessage) {
+        this.errorMessage = errorMessage;
     }
 
-    public String getErroeMessage() {
-        return erroeMessage;
+    public String getErrorMessage() {
+        return errorMessage;
     }
 }
