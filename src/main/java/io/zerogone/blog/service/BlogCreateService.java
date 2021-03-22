@@ -13,18 +13,18 @@ import javax.transaction.Transactional;
 
 @Service
 public class BlogCreateService {
-    private final BlogDao BlogDao;
+    private final BlogDao blogDao;
     private final BlogMemberCreateService blogMemberCreateService;
 
-    public BlogCreateService(BlogDao BlogDao, BlogMemberCreateService blogMemberCreateService) {
-        this.BlogDao = BlogDao;
+    public BlogCreateService(BlogDao blogDao, BlogMemberCreateService blogMemberCreateService) {
+        this.blogDao = blogDao;
         this.blogMemberCreateService = blogMemberCreateService;
     }
 
     @Transactional
     public BlogVo createBlog(CurrentUserInfo creator, BlogDto blogDto) throws BlogMembersStateException {
         Blog blog = new Blog(blogDto.getName(), blogDto.getIntroduce(), blogDto.getImageUrl());
-        BlogDao.save(blog);
+        blogDao.save(blog);
 
         blogMemberCreateService.createBlogMembers(blog.getId(), creator, blogDto.getMembers());
         return new BlogVo(blog);
