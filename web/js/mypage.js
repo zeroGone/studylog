@@ -1,17 +1,31 @@
 const blogCreateContainer = document.querySelector(".blog-create-container");
 
+function getArticleNode(event) {
+    return event.target.closest("article");
+}
+
+function isBlogCreateButton(article) {
+    return article.classList.contains("blog-create-button");
+}
+
+function moveBlogMainPage(article) {
+    window.location.pathname = article.querySelector(".blog-name").innerText;
+}
+
 function showBlogCreateContainer() {
     blogCreateContainer.classList.remove("hide");
 }
 
-function hideBlogCraeteContainer() {
-    blogCreateContainer.classList.add("hide");
-}
+document.querySelector(".blog").addEventListener("click", (event) => {
+    const article = getArticleNode(event);
 
-document.querySelector(".blog-create-button").addEventListener("click", () => {
-    showBlogCreateContainer();
+    if (isBlogCreateButton(article)) {
+        showBlogCreateContainer();
+    } else {
+        moveBlogMainPage(article);
+    }
 })
 
 document.querySelector(".blog-close-button").addEventListener("click", () => {
-    hideBlogCraeteContainer();
+    blogCreateContainer.classList.add("hide");
 })
