@@ -2,6 +2,7 @@ package io.zerogone.blog.service;
 
 import io.zerogone.config.DatabaseConfiguration;
 import io.zerogone.config.WebConfiguration;
+import io.zerogone.user.model.CurrentUserInfo;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -29,6 +30,13 @@ public class BlogSearchServiceTest {
     @Before
     public void setUp() {
         blogSearchService = webApplicationContext.getBean(BlogSearchService.class);
+    }
+
+    @Test
+    public void getBlogsThatUserBelongTo() {
+        CurrentUserInfo currentUserInfo = new CurrentUserInfo();
+        currentUserInfo.setId(1);
+        Assert.assertNotNull(blogSearchService.getBlogsThatUserBelongTo(currentUserInfo));
     }
 
     @Test
