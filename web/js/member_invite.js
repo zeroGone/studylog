@@ -99,7 +99,7 @@ function confirmUserList(data) {
     const isOverlap = findOverlapList(data.id);
 
     if (isOverlap) {
-        activeAlertContainer('overlap');
+        activeAlertContainer('memberOverlap');
         document.querySelector('#blog-create-member').value = '';
     } else {
         displayRegisterAlert();
@@ -154,18 +154,30 @@ function activeAlertContainer(type) {
     displayConfirmAlert();
 
     const alertMessage = document.querySelector('.alert-message');
-    if (type === 'name') {
+    if (type === 'blogNameNotValue') {
         alertMessage.innerHTML = '블로그 이름을 입력해주세요.';
-        focusLocation = 'name';
+        focusLocation = 'blogName';
     } else if (type === '검색 결과 없음') {
         alertMessage.innerHTML = '해당 유저가 존재하지 않습니다.';
         focusLocation = 'member';
-    } else if (type === 'overlap') {
+    } else if (type === 'memberOverlap') {
         alertMessage.innerHTML = '이미 등록된 유저입니다.';
         focusLocation = 'member';
-    } else if (type === 'oneself') {
+    } else if (type === 'memberOneself') {
         alertMessage.innerHTML = '본인은 등록할 수 없습니다.';
         focusLocation = 'member';
+    } else if (type === 'nameRegExp') {
+        alertMessage.innerHTML = '블로그 이름 입력 주의사항을 확인해주세요.';
+        focusLocation = 'blogName';
+    } else if (type === 'blogNameExist') {
+        alertMessage.innerHTML = '이미 존재하는 블로그 이름입니다.';
+        focusLocation = 'blogName';
+    } else if (type === 'blogNameNotExist') {
+        alertMessage.innerHTML = '사용 가능한 블로그 이름입니다.';
+        focusLocation = 'introduce';
+    } else if(type === 'blogNameCheck'){
+        alertMessage.innerHTML = '블로그 이름 중복확인을 해주세요.';
+        focusLocation = 'blogName';
     }
 
     const confirm = document.querySelector('.alert-confirm');
@@ -197,10 +209,13 @@ function hideAlertContainer() {
     const alertContainer = document.querySelector('.alert-container');
     alertContainer.classList.remove('alert');
 
-    if (focusLocation === 'name') {
+    if (focusLocation === 'blogName') {
         document.querySelector('#blog-create-name').focus();
     } else if (focusLocation === 'member') {
         document.querySelector('#blog-create-member').focus();
+    } else if (focusLocation === 'introduce') {
+        document.querySelector('#blog-create-introduce').focus();
+
     }
 }
 
@@ -235,5 +250,5 @@ function hideAlertCancel() {
 }
 
 function informToNotRegisterOneself() {
-    return activeAlertContainer('oneself');
+    return activeAlertContainer('memberOneself');
 }
