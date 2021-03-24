@@ -93,8 +93,12 @@
                 <div class="blog-create-texts-container">
                     <div class="blog-create-name">
                         <label for="blog-create-name" class="blog-create-label">name</label>
-                        <input id="blog-create-name" type="text" class="blog-create-input" maxlength="40"
-                               placeholder="블로그 이름을 설정해주세요.">
+                        <div class="blog-create-member-invite-inputs">
+                            <input id="blog-create-name" type="text" class="blog-create-input" maxlength="40"
+                                   placeholder="블로그 이름을 설정해주세요." value="" data_result="fail" />
+                            <button type="button" class="blog-create-name-check">중복확인</button>
+                        </div>
+                        <span class="blog-create-input-description">문자 사이에 띄어쓰기는 "_ (Underscore)" 처리됩니다.</span>
                     </div>
                     <div class="blog-create-sub">
                         <label for="blog-create-introduce" class="blog-create-label">introduce</label>
