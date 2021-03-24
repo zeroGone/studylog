@@ -20,15 +20,15 @@ import javax.persistence.NoResultException;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {WebConfiguration.class, DatabaseConfiguration.class}, loader = AnnotationConfigWebContextLoader.class)
 @WebAppConfiguration
-public class UserSearchDaoTest {
+public class UserDaoTest {
     @Autowired
     private WebApplicationContext webApplicationContext;
 
-    private UserSearchDao userSearchDao;
+    private UserDao userDao;
 
     @Before
     public void setUp() throws Exception {
-        userSearchDao = webApplicationContext.getBean(UserSearchDao.class);
+        userDao = webApplicationContext.getBean(UserDao.class);
     }
 
     @Rule
@@ -37,7 +37,7 @@ public class UserSearchDaoTest {
     @Test
     public void testFindUserByEmail() {
         expectedException.expect(NoResultException.class);
-        Assert.assertNull(userSearchDao.findUserByEmail("dudrhs571"));
-        Assert.assertNotNull(userSearchDao.findUserByEmail("dudrhs571@gmail.com"));
+        Assert.assertNull(userDao.findUserByEmail("dudrhs571"));
+        Assert.assertNotNull(userDao.findUserByEmail("dudrhs571@gmail.com"));
     }
 }
