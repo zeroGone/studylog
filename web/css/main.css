@@ -66,6 +66,7 @@
 
 .member-list-item-nickname {
     display: block;
+    overflow: hidden;
     font-size: x-large;
     margin: 10px;
     transition: all 0.3s;
