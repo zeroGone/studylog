@@ -13,6 +13,7 @@
         <maven.compiler.target>8</maven.compiler.target>
 
         <spring.version>4.3.30.RELEASE</spring.version>
+        <apache.commons.version>1.4</apache.commons.version>
     </properties>
 
     <dependencies>
@@ -38,6 +39,11 @@
             <artifactId>jackson-databind</artifactId>
             <version>2.12.2</version>
         </dependency>
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>${apache.commons.version}</version>
+        </dependency>
         <!--mvc end-->
         <!--test start-->
         <dependency>
@@ -62,7 +68,7 @@
         <dependency>
             <groupId>commons-dbcp</groupId>
             <artifactId>commons-dbcp</artifactId>
-            <version>1.4</version>
+            <version>${apache.commons.version}</version>
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
@@ -85,7 +91,6 @@
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
             <version>1.2.3</version>
-            <scope>test</scope>
         </dependency>
         <!--log end-->
     </dependencies>
