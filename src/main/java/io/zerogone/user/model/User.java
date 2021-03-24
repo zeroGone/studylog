@@ -1,6 +1,9 @@
 package io.zerogone.user.model;
 
+import io.zerogone.blogmember.model.BlogMember;
+
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class User {
@@ -18,6 +21,9 @@ public class User {
 
     @Column(name = "img_url")
     private String imgUrl;
+
+    @OneToMany(mappedBy = "userId")
+    private List<BlogMember> blogs;
 
     public User() {
 

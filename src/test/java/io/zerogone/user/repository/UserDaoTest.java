@@ -35,9 +35,15 @@ public class UserDaoTest {
     public ExpectedException expectedException = ExpectedException.none();
 
     @Test
-    public void testFindUserByEmail() {
+    public void findUserByEmail() {
         expectedException.expect(NoResultException.class);
         Assert.assertNull(userDao.findUserByEmail("dudrhs571"));
         Assert.assertNotNull(userDao.findUserByEmail("dudrhs571@gmail.com"));
+    }
+
+    @Test
+    public void findAllByBlogId() {
+        Assert.assertNotNull(userDao.findAllByBlogId(1));
+        Assert.assertEquals(0, userDao.findAllByBlogId(2).size());
     }
 }
