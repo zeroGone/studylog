@@ -4,13 +4,13 @@ public class BlogVo {
     private final int id;
     private final String name;
     private final String introduce;
-    private final String img_url;
+    private final String imgUrl;
 
     public BlogVo(Blog blog) {
         this.id = blog.getId();
         this.name = blog.getName();
         this.introduce = blog.getIntroduce();
-        this.img_url = blog.getImgUrl();
+        this.imgUrl = blog.getImgUrl();
     }
 
     public int getId() {
@@ -25,7 +25,7 @@ public class BlogVo {
         return introduce;
     }
 
-    public String getImg_url() {
-        return img_url;
+    public String getImgUrl() {
+        return imgUrl;
     }
 }

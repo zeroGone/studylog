@@ -1,13 +1,14 @@
 package io.zerogone.blog.model;
 
 import io.zerogone.user.model.UserDto;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 public class BlogDto {
     private String name;
     private String introduce;
-    private String imageUrl;
+    private MultipartFile image;
     private List<UserDto> members;
 
     public String getName() {
@@ -26,12 +27,12 @@ public class BlogDto {
         this.introduce = introduce;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public MultipartFile getImage() {
+        return image;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setImage(MultipartFile image) {
+        this.image = image;
     }
 
     public List<UserDto> getMembers() {

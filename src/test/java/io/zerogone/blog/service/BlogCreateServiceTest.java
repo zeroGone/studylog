@@ -49,7 +49,7 @@ public class BlogCreateServiceTest {
         BlogDto blogDto = new BlogDto();
         blogDto.setName("test");
 
-        Assert.assertNotNull(blogCreateService.createBlog(creator, blogDto));
+        Assert.assertNotNull(blogCreateService.createBlog(creator, blogDto, null));
     }
 
     @Test
@@ -60,7 +60,7 @@ public class BlogCreateServiceTest {
         creator.setId(1);
         BlogDto blogDto = new BlogDto();
         blogDto.setName("test dto");
-        Assert.assertNotNull(blogCreateService.createBlog(creator, blogDto));
+        Assert.assertNotNull(blogCreateService.createBlog(creator, blogDto, null));
     }
 
     @Test
@@ -77,6 +77,6 @@ public class BlogCreateServiceTest {
         blogDto.setName("test");
         blogDto.setMembers(new ArrayList<>(Collections.singletonList(member)));
 
-        Assert.assertNotNull(blogCreateService.createBlog(creator, blogDto));
+        Assert.assertNotNull(blogCreateService.createBlog(creator, blogDto, null));
     }
 }

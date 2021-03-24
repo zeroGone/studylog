@@ -22,22 +22,29 @@ import org.springframework.web.context.WebApplicationContext;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = WebConfiguration.class, loader = AnnotationConfigWebContextLoader.class)
 @WebAppConfiguration
-public class BlogApiControllerTest {
+public class BlogCreateControllerTest {
     @Autowired
     private WebApplicationContext webApplicationContext;
 
     private MockMvc mockMvc;
 
+    private CurrentUserInfo userInfo;
+
     @Before
     public void setUp() {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+        userInfo = new CurrentUserInfo();
+        userInfo.setId(1);
+        userInfo.setEmail("dudrhs571@gmail.com");
+        userInfo.setName("김영곤");
+        userInfo.setNickName("zeroGone");
+        userInfo.setImgUrl("/img/user-default/1.png");
     }
 
     @Test
@@ -109,23 +116,5 @@ public class BlogApiControllerTest {
                 .content(new ObjectMapper().writeValueAsString(blogDto)))
                 .andDo(print())
                 .andExpect(status().is4xxClientError());
-    }
-
-    @Test
-    public void handleBlogSearchApi() throws Exception {
-        mockMvc.perform(get("/api/blog").param("name", "studylog"))
-                .andExpect(status().isOk())
-                .andDo(print());
-
-        mockMvc.perform(get("/api/blog").param("name", "test"))
-                .andExpect(status().isOk())
-                .andDo(print());
-    }
-
-    @Test
-    public void handleBlogSearchApi_NotExistedName_ReturnNotFound() throws Exception {
-        mockMvc.perform(get("/api/blog").param("name", "jinmin is zzang"))
-                .andExpect(status().is4xxClientError())
-                .andDo(print());
     }
 }
