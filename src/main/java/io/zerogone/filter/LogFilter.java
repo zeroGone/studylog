@@ -1,7 +1,7 @@
 package io.zerogone.filter;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import ch.qos.logback.classic.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.Order;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -16,7 +16,7 @@ import java.io.IOException;
         filterName = "Log Filter", urlPatterns = "*")
 @Order(1)
 public class LogFilter extends OncePerRequestFilter {
-    private final Log logger = LogFactory.getLog(this.getClass());
+    private final Logger logger = (Logger) LoggerFactory.getLogger(this.getClass());
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
