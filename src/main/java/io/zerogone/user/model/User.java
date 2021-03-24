@@ -12,8 +12,12 @@ public class User {
 
     @Column(nullable = false, unique = true)
     private String email;
+
     @Column(name = "nick_name", nullable = false, unique = true)
     private String nickName;
+
+    @Column(name = "img_url")
+    private String imgUrl;
 
     public User() {
 
@@ -24,6 +28,7 @@ public class User {
         name = userInfo.getName();
         email = userInfo.getEmail();
         nickName = userInfo.getNickName();
+        imgUrl = userInfo.getImgUrl();
     }
 
     public int getId() {
@@ -40,5 +45,9 @@ public class User {
 
     public String getNickName() {
         return nickName;
+    }
+
+    public String getImgUrl() {
+        return imgUrl;
     }
 }
