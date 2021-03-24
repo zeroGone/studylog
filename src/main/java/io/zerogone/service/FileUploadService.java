@@ -16,6 +16,10 @@ public class FileUploadService {
 
     public String uploadFile(String savingPath, MultipartFile multipartFile) {
         logger.info("-----file upload start-----");
+        if (multipartFile == null) {
+            logger.debug("file is not existed. it returns null");
+            return null;
+        }
 
         File file = new File(savingPath + TEMPORARY_FILE_UPLOAD_PATH, multipartFile.getOriginalFilename());
         logger.debug("create uploaded file : " + file);
