@@ -294,7 +294,9 @@ body {
     display: block;
     margin-bottom: 1vh;
 }
-
+.blog-create-member-invite-inputs{
+    position: relative;
+}
 .blog-create-input {
     position: relative;
     outline: none;
@@ -306,6 +308,27 @@ body {
     width: 100%;
     padding: 1vh 0.5vw;
 }
+.blog-create-name-check{
+    position: absolute;
+    right: 0;
+    width: 5vw;
+    height: 100%;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--sky);
+    color: white;
+    text-align: center;
+    font-size: medium;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.blog-create-input-description{
+    display: block;
+    margin: 1vh 0 0 1vh;
+    font-size: small;
+    color: var(--warning);
+}
 
 .blog-create-input-introduce {
     height: 5vh;
@@ -314,7 +337,6 @@ body {
 .blog-create-member-invite {
     position: relative;
 }
-
 
 .blog-create-member-invite-inputs {
     position: relative;
