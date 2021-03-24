@@ -2,10 +2,8 @@ package io.zerogone.blog.controller;
 
 import ch.qos.logback.classic.Logger;
 import io.zerogone.blog.model.BlogDto;
+import io.zerogone.blog.model.BlogVo;
 import io.zerogone.blog.service.BlogCreateService;
-import io.zerogone.blogmember.exception.BlogMembersStateException;
-import io.zerogone.exception.UniquePropertyException;
-import io.zerogone.model.ErrorResponse;
 import io.zerogone.service.FileUploadService;
 import io.zerogone.user.model.CurrentUserInfo;
 import org.slf4j.LoggerFactory;
@@ -30,7 +28,7 @@ public class BlogCreateController {
     }
 
     @PostMapping("api/blog")
-    public ResponseEntity<Object> handleBlogCreateApi(@SessionAttribute(name = "userInfo") CurrentUserInfo userInfo,
+    public ResponseEntity<BlogVo> handleBlogCreateApi(@SessionAttribute(name = "userInfo") CurrentUserInfo userInfo,
                                                       @ModelAttribute BlogDto blog,
                                                       HttpServletRequest httpServletRequest) {
         logger.info("-----create blog start-----");
@@ -38,10 +36,6 @@ public class BlogCreateController {
                 , blog.getName(), blog.getIntroduce(), blog.getName()));
 
         String savedImageUrl = fileUploadService.uploadFile(httpServletRequest.getServletContext().getRealPath("/"), blog.getImage());
-        try {
-            return new ResponseEntity<>(blogCreateService.createBlog(userInfo, blog, savedImageUrl), HttpStatus.CREATED);
-        } catch (BlogMembersStateException | UniquePropertyException exception) {
-            return new ResponseEntity<>(new ErrorResponse(exception.getMessage()), HttpStatus.BAD_REQUEST);
-        }
+        return new ResponseEntity<>(blogCreateService.createBlog(userInfo, blog, savedImageUrl), HttpStatus.CREATED);
     }
 }
