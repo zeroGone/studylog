@@ -1,0 +1,191 @@
+@charset "utf-8";
+@import "/css/reset.css";
+
+body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.container {
+    width: 100%;
+    height: 100%;
+}
+
+@keyframes slideup {
+    from {
+        bottom: 240px;
+    }
+    to {
+        bottom: 120px;
+    }
+}
+
+.background-img {
+    bottom: 120px;
+    position: relative;
+    width: 100%;
+    animation-name: slideup;
+    animation-duration: 3s;
+    animation-timing-function: ease-in-out;
+    z-index: 1;
+}
+
+.logo {
+    margin-top: 1%;
+    margin-left: 1%;
+    width: 5%;
+    z-index: 2;
+    position: fixed;
+}
+
+.text {
+    position: fixed;
+    z-index: 2;
+    margin-top: 8%;
+    margin-left: 5%;
+}
+
+@keyframes strokeOffset {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+.letter {
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+    animation: strokeOffset 9s linear forwards;
+    animation-delay: 1s;
+}
+
+.login-box {
+    position: absolute;
+    z-index: 5;
+    top: 50%;
+    left: 75%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    height: 600px;
+    background: url("/img/index/login_background.jpg") center;
+    background-size: cover;
+    box-shadow: 0 4px 8px 0 var(--main-color);
+    border: 10px solid #E7E6F9;
+    border-radius: 50px;
+    opacity: 0;
+    animation: toLoginArea 2s ease-in-out 0s forwards;
+}
+
+.login-title {
+    text-align: center;
+    font-size: xx-large;
+    font-weight: bold;
+    color: #2F4F4F;
+    margin: 80px 0;
+}
+
+.login-button {
+    display: block;
+    margin: 40px auto;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    text-align: center;
+    box-shadow: 0 2px 4px 0 #2F4F4F;
+    transition: 0.5s;
+    border-radius: 25px;
+    background: rgba(255, 255, 255, 0.2);
+    overflow: hidden;
+}
+
+.login-button-small {
+    width: 30px;
+    padding: 10px;
+}
+
+.login-button-text {
+    display: none;
+    vertical-align: middle;
+    text-align: center;
+    font-size: 20px;
+    line-height: 2.5;
+}
+
+.login-button-img {
+    display: none;
+    vertical-align: middle;
+    width: 80px;
+    height: auto;
+    margin-left: 5px;
+}
+
+.kakao-login-button > .login-button-img {
+    width: 80px;
+}
+
+.login-button:hover {
+    background-color: rgba(255, 255, 255, 0.8);
+    width: 300px;
+}
+
+.login-button:hover > .login-button-small {
+    display: none;
+}
+
+.login-button:hover > .login-button-text {
+    display: inline-block;
+}
+
+.login-button:hover > .login-button-img {
+    display: inline-block;
+}
+
+@keyframes toLoginArea {
+    0% {
+        opacity: 0.6;
+        transform: translate(-50%, -200%);
+    }
+    15% {
+        transform: translate(-50%, -50%);
+        width: 440px;
+        height: 560px;
+        opacity: 0.7;
+    }
+    30% {
+        transform: translate(-50%, -100%);
+        width: 350px;
+        height: 600px;
+        opacity: 0.8;
+    }
+    45% {
+        transform: translate(-50%, -50%);
+        width: 440px;
+        height: 560px;
+        opacity: 0.9;
+    }
+    60% {
+        transform: translate(-50%, -75%);
+        width: 350px;
+        height: 600px;
+        opacity: 1;
+    }
+    70% {
+        transform: translate(-50%, -50%);
+        width: 440px;
+        height: 560px;
+        opacity: 1;
+
+    }
+    85% {
+        transform: translate(-50%, -60%);
+        width: 350px;
+        height: 600px;
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-50%, -50%);
+        width: 350px;
+        height: 600px;
+        opacity: 1;
+    }
+}

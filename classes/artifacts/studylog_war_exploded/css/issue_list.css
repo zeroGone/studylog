@@ -1,0 +1,249 @@
+@import url(color.css);
+@import url(reset.css);
+
+body {
+    background-color: var(--gray-white);
+}
+
+.main-container {
+    width: 100%;
+    margin-top: 15vh;
+}
+
+.title {
+    position: relative;
+    text-align: center;
+}
+
+.title-icon {
+    height: 10vh;
+    color: var(--dark-blue)
+}
+
+.title-header {
+    font-size: 5vw;
+    color: var(--light-blue-black)
+}
+
+.title-footer {
+    color: var(--gray)
+}
+
+.issue-notice {
+    width: 70vw;
+    margin: 10vh auto 0 auto;
+    background-color: white;
+    border-radius: 5px;
+    font-size: larger;
+}
+
+.issue-notice-header {
+    background-color: var(--sky);
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    color: white;
+    padding: 1vh 2vw;
+    font-family: Handon3gyeopsal600g, sans-serif;
+}
+
+.issue-notice-list {
+    padding: 2vw;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 1vw;
+    background-color: white;
+    align-items: center;
+    justify-items: center;
+}
+
+.issue-notice-item {
+    width: 100%;
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: var(--gray-white);
+}
+
+.issue-notice-writer-img {
+    height: 10vh;
+}
+
+.issue-notice-content {
+    width: 100%;
+    height: 10vh;
+    display: grid;
+    grid-template-rows: 3fr 1fr;
+}
+
+.issue-notice-title {
+    font-size: large;
+    align-self: center;
+    justify-self: center;
+    padding: 1vw;
+    height: 2vh;
+    overflow: hidden;
+}
+
+.issue-notice-date {
+    justify-self: right;
+    padding-right: 1vw;
+    font-size: medium;
+    text-align: center;
+}
+
+.issue-list {
+    width: 70vw;
+    margin: 10vh auto;
+    border-radius: 5px;
+    font-size: larger;
+}
+
+.active-buttons {
+    width: 100%;
+    height: 5vh;
+    text-align: center;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    align-items: center;
+}
+
+.open-button {
+    height: 100%;
+    line-height: 5vh;
+    vertical-align: middle;
+    color: var(--dark-blue);
+    background-color: white;
+    border-top-left-radius: 5px;
+    cursor: pointer;
+}
+
+.close-button {
+    height: 100%;
+    color: white;
+    line-height: 5vh;
+    vertical-align: middle;
+    background-color: var(--light-dark-sky);
+    border-top-right-radius: 5px;
+    cursor: pointer;
+}
+
+.search-box {
+    display: inline-block;
+    width: 70%;
+    margin-left: 2vw;
+    background-color: var(--gray-white);
+    color: var(--blue-black);
+    border-radius: 5px;
+}
+
+.search-icon {
+    display: inline-block;
+    width: 10%;
+    text-align: center;
+    cursor: pointer;
+}
+
+.search-input {
+    display: inline-block;
+    height: 5vh;
+    line-height: 5vh;
+    vertical-align: middle;
+    font-size: large;
+    width: 85%;
+    outline: none;
+    background-color: var(--gray-white);
+    color: var(--blue-black);
+}
+
+.create-button {
+    display: inline-block;
+    width: 20%;
+    float: right;
+    margin-right: 2vw;
+    height: 5vh;
+    line-height: 5vh;
+    vertical-align: middle;
+    border: 1px solid var(--gray-white);
+    box-sizing: border-box;
+    border-radius: 5px;
+    text-align: center;
+    color: var(--sky);
+    cursor: pointer;
+}
+
+.create-button-icon {
+    float: left;
+    height: 100%;
+    width: 3vw;
+    color: white;
+    background-color: var(--sky);
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.create-button-icon > i {
+    line-height: 5vh;
+}
+
+.divider {
+    margin: 2vh auto 0 auto;
+    width: 100%;
+    border-top: 1px solid var(--gray-white);
+}
+
+.items {
+    background-color: white;
+    width: 100%;
+    padding: 2vh 0 2vh 0;
+    box-sizing: border-box;
+}
+
+.item {
+    width: 95%;
+    height: 10vh;
+    margin: 2vh auto 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 6fr 1fr 1fr;
+    border-radius: 5px;
+    color: var(--dark-blue);
+    background-color: var(--gray-white);
+    align-items: center;
+    justify-items: center;
+    cursor: pointer;
+}
+
+.item-category {
+    justify-self: right;
+    border-radius: 1vw;
+    color: white;
+    padding: 1vh;
+    width: 5vw;
+    text-align: center;
+}
+
+.item-notice {
+    background-color: var(--warning);
+}
+
+.item-question {
+    background-color: var(--very-light-blue);
+}
+
+.item-chat {
+    background-color: var(--very-light-orange);
+}
+
+.item-request {
+    background-color: var(--dark-moderate-orenge);
+}
+
+.item-writer-img {
+    height: 6vh;
+    border-radius: 50%;
+}
+
+.item-date {
+    justify-self: left;
+    font-size: medium;
+}

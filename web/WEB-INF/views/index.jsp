@@ -33,9 +33,11 @@
             </div>
 
             <div class="login-button naver-login-button">
+                <a href=${naverApiUrl}>
                 <img src="/img/index/naver_small-logo.png" alt="naver-small" class="login-button-small">
                 <span class="naver-login-text login-button-text">Login with</span>
                 <img src="/img/index/naver_logo.png" alt="naver" class="login-button-img">
+                </a>
             </div>
 
             <div class="login-button kakao-login-button">
