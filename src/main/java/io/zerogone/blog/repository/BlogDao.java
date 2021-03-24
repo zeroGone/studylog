@@ -4,7 +4,6 @@ import io.zerogone.blog.model.Blog;
 import io.zerogone.blogmember.model.BlogMember;
 import io.zerogone.blogmember.model.MemberRole;
 import io.zerogone.exception.UniquePropertyException;
-import io.zerogone.user.model.User;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Repository;
@@ -40,7 +39,7 @@ public class BlogDao {
         logger.debug("-----save blog end-----");
     }
 
-    public List<Blog> findAllByUser(User user) {
+    public List<Blog> findAllByUserId(int userId) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Blog> criteriaQuery = criteriaBuilder.createQuery(Blog.class);
 
@@ -49,7 +48,7 @@ public class BlogDao {
 
         criteriaQuery.select(root);
         criteriaQuery.where(criteriaBuilder.and(
-                criteriaBuilder.equal(join.get("userId"), user.getId()),
+                criteriaBuilder.equal(join.get("userId"), userId),
                 criteriaBuilder.or(
                         criteriaBuilder.equal(join.get("role"), MemberRole.MEMBER),
                         criteriaBuilder.equal(join.get("role"), MemberRole.ADMIN))));

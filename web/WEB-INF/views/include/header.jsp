@@ -15,7 +15,7 @@
     </div>
     <div class="user-info">
         <span class="user-info-nickname">${userInfo.nickName}</span>
-        <img src="/img/user-default/1.png" alt="current-user" class="user-info-image">
+        <img src=${userInfo.imgUrl} alt="current-user" class="user-info-image">
     </div>
 </header>
 <ul class="header-notice-list">

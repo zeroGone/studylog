@@ -28,30 +28,32 @@ public class UserApiControllerTest {
 
     private MockMvc mockMvc;
 
+    private CurrentUserInfo userInfo;
+
     @Before
     public void setUp() throws Exception {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+        userInfo = new CurrentUserInfo();
+        userInfo.setId(1);
+        userInfo.setEmail("dudrhs571@gmail.com");
+        userInfo.setName("김영곤");
+        userInfo.setNickName("zeroGone");
+        userInfo.setImgUrl("/img/user-default/1.png");
     }
 
     @Test
-    public void testUserSearchApi() throws Exception {
-        mockMvc.perform(get("/api/user").param("email", "dudrhs571@gmail.com"))
+    public void handleUserSearchApi() throws Exception {
+        mockMvc.perform(get("/api/user").sessionAttr("userInfo", userInfo).param("email", "ahtpgus@naver.com"))
                 .andExpect(status().isOk())
                 .andDo(print());
 
-        mockMvc.perform(get("/api/user").param("email", "dudrhs571"))
-                .andExpect(status().is4xxClientError())
-                .andDo(print());
-
-        mockMvc.perform(get("/api/user").param("email", "%"))
-                .andExpect(status().is4xxClientError())
+        mockMvc.perform(get("/api/user").sessionAttr("userInfo", userInfo).param("email", "%"))
+                .andExpect(status().isNotFound())
                 .andDo(print());
     }
 
     @Test
     public void handleUserSearchApi_IncludeMemeberisSameSessionUser_ReturnBadRequest() throws Exception {
-        CurrentUserInfo userInfo = new CurrentUserInfo();
-        userInfo.setEmail("dudrhs571@gmail.com");
         mockMvc.perform(get("/api/user")
                 .sessionAttr("userInfo", userInfo)
                 .param("email", "dudrhs571@gmail.com"))

@@ -40,12 +40,11 @@ public class BlogControllerTest {
                 .andDo(print());
 
         mockMvc.perform(get("/test"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("main"))
+                .andExpect(status().isNotFound())
                 .andDo(print());
 
         mockMvc.perform(get("/test123213212312312321123"))
-                .andExpect(status().is4xxClientError())
+                .andExpect(status().isNotFound())
                 .andDo(print());
     }
 }
