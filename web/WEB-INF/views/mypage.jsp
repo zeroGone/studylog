@@ -24,9 +24,9 @@
                 This is test.
             </div>
             <div class="alert-buttons">
-                <input type="button" class="alert-register" value="등록" />
-                <input type="button" class="alert-confirm" value="확인" />
-                <input type="button" class="alert-cancel" value="취소" />
+                <input type="button" class="alert-register" value="등록"/>
+                <input type="button" class="alert-confirm" value="확인"/>
+                <input type="button" class="alert-cancel" value="취소"/>
             </div>
         </div>
     </div>
@@ -66,7 +66,14 @@
         <section class="blog">
             <c:forEach items="${blogs}" var="blog">
                 <article class="blog-item">
-                    <div class="blog-icon"></div>
+                    <c:choose>
+                        <c:when test="${blog.imgUrl ne null}">
+                            <img class="blog-icon" src="${blog.imgUrl}" alt="blog image"/>
+                        </c:when>
+                        <c:otherwise>
+                            <div class="blog-icon"></div>
+                        </c:otherwise>
+                    </c:choose>
                     <div class="blog-name">${blog.name}</div>
                 </article>
             </c:forEach>
