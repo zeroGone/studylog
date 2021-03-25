@@ -175,9 +175,12 @@ function activeAlertContainer(type) {
     } else if (type === 'blogNameNotExist') {
         alertMessage.innerHTML = '사용 가능한 블로그 이름입니다.';
         focusLocation = 'introduce';
-    } else if(type === 'blogNameCheck'){
+    } else if (type === 'blogNameCheck') {
         alertMessage.innerHTML = '블로그 이름 중복확인을 해주세요.';
         focusLocation = 'blogName';
+    } else if (type === 'image') {
+        alertMessage.innerHTML = 'gif, jpg, png 파일만 선택해 주세요.';
+        focusLocation = 'image';
     }
 
     const confirm = document.querySelector('.alert-confirm');
@@ -215,7 +218,8 @@ function hideAlertContainer() {
         document.querySelector('#blog-create-member').focus();
     } else if (focusLocation === 'introduce') {
         document.querySelector('#blog-create-introduce').focus();
-
+    } else if (focusLocation === 'image') {
+        document.querySelector('.blog-create-images-edit-container').focus();
     }
 }
 
