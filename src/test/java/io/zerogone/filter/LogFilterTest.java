@@ -34,7 +34,5 @@ public class LogFilterTest {
     @Test
     public void testFilterIsWorking() throws Exception {
         mockMvc.perform(get("/")).andExpect(status().isOk()).andExpect(view().name("index"));
-        mockMvc.perform(get("/mypage")).andExpect(status().isOk());
-        mockMvc.perform(get("/css/index.css")).andExpect(status().isOk());
     }
 }
