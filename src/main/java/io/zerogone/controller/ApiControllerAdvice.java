@@ -10,11 +10,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.persistence.NoResultException;
+
 @RestControllerAdvice
 public class ApiControllerAdvice {
     private final Logger logger = (Logger) LoggerFactory.getLogger(this.getClass());
 
-    @ExceptionHandler(value = {BlogMembersStateException.class, UniquePropertyException.class})
+    @ExceptionHandler(value = {BlogMembersStateException.class, UniquePropertyException.class, NoResultException.class})
     public ResponseEntity<ErrorResponse> handleBlogCreateException(Exception exception) {
         logger.debug("catch exception : " + exception.getMessage());
         return new ResponseEntity<>(new ErrorResponse(exception.getMessage()), HttpStatus.BAD_REQUEST);

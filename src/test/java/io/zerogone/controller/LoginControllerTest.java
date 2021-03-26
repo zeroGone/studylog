@@ -34,7 +34,7 @@ public class LoginControllerTest {
     }
 
     @Test
-    public void handleLoginApi() throws Exception {
+    public void doLogin() throws Exception {
         UserDto userDto = new UserDto();
         userDto.setName("김영곤");
         userDto.setEmail("dudrhs571@gmail.com");
@@ -46,5 +46,20 @@ public class LoginControllerTest {
                 .content(new ObjectMapper().writeValueAsString(userDto)))
                 .andDo(print())
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    public void doLogin_NotExistedUser_ReturnBadRequest() throws Exception {
+        UserDto userDto = new UserDto();
+        userDto.setName("이게누구여");
+        userDto.setEmail("모르는사람이여");
+
+        mockMvc.perform(MockMvcRequestBuilders
+                .post("/login")
+                .contentType("application/json")
+                .characterEncoding("utf-8")
+                .content(new ObjectMapper().writeValueAsString(userDto)))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
     }
 }
