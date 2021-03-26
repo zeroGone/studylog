@@ -11,6 +11,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @Column(nullable = false)
     private String name;
 
     @Column(nullable = false, unique = true)
@@ -27,6 +28,14 @@ public class User {
 
     public User() {
 
+    }
+
+    public User(UserDto userDto) {
+        id = userDto.getId();
+        name = userDto.getName();
+        email = userDto.getEmail();
+        nickName = userDto.getNickName();
+        imgUrl = userDto.getImgUrl();
     }
 
     public User(CurrentUserInfo userInfo) {

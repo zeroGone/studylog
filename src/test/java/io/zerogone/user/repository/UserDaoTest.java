@@ -2,6 +2,8 @@ package io.zerogone.user.repository;
 
 import io.zerogone.config.DatabaseConfiguration;
 import io.zerogone.config.WebConfiguration;
+import io.zerogone.user.model.User;
+import io.zerogone.user.model.UserDto;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -16,6 +18,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.web.context.WebApplicationContext;
 
 import javax.persistence.NoResultException;
+import javax.transaction.Transactional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {WebConfiguration.class, DatabaseConfiguration.class}, loader = AnnotationConfigWebContextLoader.class)
@@ -45,5 +48,18 @@ public class UserDaoTest {
     public void findAllByBlogId() {
         Assert.assertNotNull(userDao.findAllByBlogId(1));
         Assert.assertEquals(0, userDao.findAllByBlogId(2).size());
+    }
+
+    @Test
+    @Transactional
+    public void save() {
+        UserDto dto = new UserDto();
+        dto.setName("test0325 1513");
+        dto.setEmail("test0325 1509");
+        dto.setNickName("test0325 1509");
+        User user = new User(dto);
+
+        userDao.save(user);
+        Assert.assertNotEquals(0, user.getId());
     }
 }
