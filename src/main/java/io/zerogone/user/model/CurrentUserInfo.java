@@ -13,6 +13,17 @@ public class CurrentUserInfo {
     private String imgUrl;
     private List<CurrentUserBlog> blogs;
 
+    public CurrentUserInfo() {
+    }
+
+    public CurrentUserInfo(UserVo userVo) {
+        this.id = userVo.getId();
+        this.name = userVo.getName();
+        this.nickName = userVo.getNickName();
+        this.imgUrl = userVo.getImgUrl();
+        this.email = userVo.getEmail();
+    }
+
     public int getId() {
         return id;
     }
