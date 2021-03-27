@@ -1,9 +1,9 @@
 package io.zerogone.model;
 
-public class Error {
+public class ErrorResponse {
     private final String errorMessage;
 
-    public Error(String errorMessage) {
+    public ErrorResponse(String errorMessage) {
         this.errorMessage = errorMessage;
     }
 

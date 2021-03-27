@@ -22,8 +22,8 @@ public class BlogCreateService {
     }
 
     @Transactional
-    public BlogVo createBlog(CurrentUserInfo creator, BlogDto blogDto) throws BlogMembersStateException {
-        Blog blog = new Blog(blogDto.getName(), blogDto.getIntroduce(), blogDto.getImageUrl());
+    public BlogVo createBlog(CurrentUserInfo creator, BlogDto blogDto, String savedImgUrl) throws BlogMembersStateException {
+        Blog blog = new Blog(blogDto.getName(), blogDto.getIntroduce(), savedImgUrl);
         blogDao.save(blog);
 
         blogMemberCreateService.createBlogMembers(blog.getId(), creator, blogDto.getMembers());

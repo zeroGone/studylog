@@ -1,28 +1,35 @@
-package io.zerogone.user.controller;
+package io.zerogone.blog.controller;
 
-import io.zerogone.config.DatabaseConfiguration;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.zerogone.blog.model.BlogDto;
 import io.zerogone.config.WebConfiguration;
 import io.zerogone.user.model.CurrentUserInfo;
+import io.zerogone.user.model.UserDto;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.AnnotationConfigWebContextLoader;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+
+import java.util.ArrayList;
+import java.util.Collections;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {WebConfiguration.class, DatabaseConfiguration.class}, loader = AnnotationConfigWebContextLoader.class)
+@ContextConfiguration(classes = WebConfiguration.class, loader = AnnotationConfigWebContextLoader.class)
 @WebAppConfiguration
-public class UserApiControllerTest {
+public class BlogSearchControllerTest {
     @Autowired
     private WebApplicationContext webApplicationContext;
 
@@ -31,7 +38,7 @@ public class UserApiControllerTest {
     private CurrentUserInfo userInfo;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
         userInfo = new CurrentUserInfo();
         userInfo.setId(1);
@@ -42,22 +49,20 @@ public class UserApiControllerTest {
     }
 
     @Test
-    public void handleUserSearchApi() throws Exception {
-        mockMvc.perform(get("/api/user").sessionAttr("userInfo", userInfo).param("email", "ahtpgus@naver.com"))
+    public void handleBlogSearchApi() throws Exception {
+        mockMvc.perform(get("/api/blog").param("name", "studylog"))
                 .andExpect(status().isOk())
                 .andDo(print());
 
-        mockMvc.perform(get("/api/user").sessionAttr("userInfo", userInfo).param("email", "%"))
-                .andExpect(status().isNotFound())
+        mockMvc.perform(get("/api/blog").param("name", "test"))
+                .andExpect(status().isOk())
                 .andDo(print());
     }
 
     @Test
-    public void handleUserSearchApi_IncludeMemeberisSameSessionUser_ReturnBadRequest() throws Exception {
-        mockMvc.perform(get("/api/user")
-                .sessionAttr("userInfo", userInfo)
-                .param("email", "dudrhs571@gmail.com"))
-                .andExpect(status().isBadRequest())
+    public void handleBlogSearchApi_NotExistedName_ReturnNotFound() throws Exception {
+        mockMvc.perform(get("/api/blog").param("name", "jinmin is zzang"))
+                .andExpect(status().is4xxClientError())
                 .andDo(print());
     }
 }

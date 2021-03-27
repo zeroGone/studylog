@@ -53,12 +53,17 @@ public class BlogDaoTest {
     }
 
     @Test
+    public void findAllByUserId() {
+        Assert.assertNotNull(blogDao.findAllByUserId(1));
+    }
+
+    @Test
     public void findByName() {
         Assert.assertNotNull(blogDao.findByName("studylog"));
     }
 
     @Test
-    public void findByName_invalideName_ThrowNoResultException(){
+    public void findByName_invalideName_ThrowNoResultException() {
         expectedException.expect(NoResultException.class);
         Assert.assertNotNull(blogDao.findByName("zinmin is genius"));
     }

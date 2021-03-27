@@ -8,14 +8,14 @@
         </div>
         <span class="header-menu-text">menu</span>
     </div>
-    <h1 class="header-title">zeroGone's world</h1>
+    <h1 class="header-title">${blog.name}</h1>
     <div class="header-notice">
         <i class="far fa-bell header-notice-icon"></i>
         <span class="header-notice-alert active"></span>
     </div>
     <div class="user-info">
-        <span class="user-info-nickname">zlnmln</span>
-        <img src="/img/user-default/1.png" alt="current-user" class="user-info-image">
+        <span class="user-info-nickname">${userInfo.nickName}</span>
+        <img src=${userInfo.imgUrl} alt="current-user" class="user-info-image">
     </div>
 </header>
 <ul class="header-notice-list">
@@ -47,7 +47,7 @@
 </ul>
 <ul class="user-info-list">
     <li class="user-info-item">
-        <span class="user-info-item-email">yjm7485@naver.com</span>
+        <span class="user-info-item-email">${userInfo.email}</span>
     </li>
     <li class="user-info-item">
         <span class="user-info-item-name">내 정보 관리</span>
