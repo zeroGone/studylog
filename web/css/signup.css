@@ -1,0 +1,72 @@
+@import url(color.css);
+
+.main-container {
+    background-color: var(--gray-white);
+    height: 90vh;
+    color: var(--blue-black);
+}
+
+.welcome-container {
+    padding-top: 15vh;
+    text-align: center;
+}
+
+.welcome-text {
+    font-size: 2vw;
+}
+
+.welcome-user-name {
+    font-size: 3vw;
+    font-weight: bold;
+}
+
+.welcome-user-image {
+    margin-top: 5vh;
+    height: 20vh;
+    transition: all 0.3s;
+    cursor: pointer;
+}
+
+.input-image {
+    display: none;
+}
+
+.signup-input-container {
+    text-align: center;
+}
+
+.input-label {
+    display: block;
+    margin-top: 5vh;
+    font-size: 2vw;
+    font-weight: bolder;
+}
+
+.input-nick {
+    width: 35vw;
+    height: 7vh;
+    font-size: 2vw;
+    text-align: center;
+    margin-top: 2vh;
+}
+
+.input-warning {
+    color: var(--warning);
+    font-size: 1vw;
+    margin-top: 2vh;
+}
+
+.signup-button {
+    margin-top: 5vh;
+    padding: 1vh 1vw;
+    font-size: 2vw;
+    background-color: var(--light-sky);
+    border-radius: 5px;
+    cursor: pointer;
+    color: var(--light-blue-black);
+}
+
+.signup-button:active,
+.signup-button:hover {
+    color: var(--blue-black);
+}

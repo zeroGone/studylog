@@ -4,6 +4,8 @@
     <title>StudyLog</title>
     <link rel="icon" href="${pageContext.request.contextPath}/img/logo.ico" type="image/x-icon">
     <link rel="stylesheet" href="/css/index.css">
+    <script src="https://apis.google.com/js/api:client.js" defer></script>
+    <script src="/js/google_login.js" defer></script>
 </head>
 <body>
 <div class="container">

@@ -7,7 +7,6 @@ import org.springframework.web.context.support.GenericWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 
 import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
 
 public class ApplicationInitializer implements WebApplicationInitializer {
@@ -18,7 +17,7 @@ public class ApplicationInitializer implements WebApplicationInitializer {
     private static final String DISPATCHER_MAPPING_URL = "/";
 
     @Override
-    public void onStartup(ServletContext servletContext) throws ServletException {
+    public void onStartup(ServletContext servletContext) {
         AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
         context.scan(ROOT_PACKAGE);
 
