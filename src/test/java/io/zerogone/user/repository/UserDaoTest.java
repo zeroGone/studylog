@@ -3,7 +3,7 @@ package io.zerogone.user.repository;
 import io.zerogone.config.DatabaseConfiguration;
 import io.zerogone.config.WebConfiguration;
 import io.zerogone.user.model.User;
-import io.zerogone.user.model.UserDto;
+import io.zerogone.user.model.UserCreateDto;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -53,7 +53,7 @@ public class UserDaoTest {
     @Test
     @Transactional
     public void save() {
-        UserDto dto = new UserDto();
+        UserCreateDto dto = new UserCreateDto();
         dto.setName("test0325 1513");
         dto.setEmail("test0325 1509");
         dto.setNickName("test0325 1509");

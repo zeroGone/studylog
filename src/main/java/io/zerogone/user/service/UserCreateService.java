@@ -1,7 +1,7 @@
 package io.zerogone.user.service;
 
 import io.zerogone.user.model.User;
-import io.zerogone.user.model.UserDto;
+import io.zerogone.user.model.UserCreateDto;
 import io.zerogone.user.model.UserVo;
 import io.zerogone.user.repository.UserDao;
 import org.springframework.stereotype.Service;
@@ -17,8 +17,8 @@ public class UserCreateService {
     }
 
     @Transactional
-    public UserVo createUser(UserDto userDto) {
-        User user = new User(userDto);
+    public UserVo createUser(UserCreateDto userCreateDto) {
+        User user = new User(userCreateDto);
         userDao.save(user);
         return new UserVo(user);
     }

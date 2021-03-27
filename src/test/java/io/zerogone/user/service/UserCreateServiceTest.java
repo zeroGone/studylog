@@ -2,7 +2,7 @@ package io.zerogone.user.service;
 
 import io.zerogone.config.DatabaseConfiguration;
 import io.zerogone.config.WebConfiguration;
-import io.zerogone.user.model.UserDto;
+import io.zerogone.user.model.UserCreateDto;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -34,7 +34,7 @@ public class UserCreateServiceTest {
 
     @Test
     public void createUser() {
-        UserDto userDto = new UserDto();
+        UserCreateDto userDto = new UserCreateDto();
         userDto.setName("03/26 08:17");
         userDto.setEmail("03/26 08:17");
         userDto.setNickName("03/26 08:17");
@@ -49,7 +49,7 @@ public class UserCreateServiceTest {
     public void createUser_DuplicatedEmail_ThrowPersistenException() {
         expectedException.expect(PersistenceException.class);
 
-        UserDto userDto = new UserDto();
+        UserCreateDto userDto = new UserCreateDto();
         userDto.setName("test 0326");
         userDto.setEmail("dudrhs571@gmail.com");
         userDto.setNickName("03/26 08:17qwewqeqw");

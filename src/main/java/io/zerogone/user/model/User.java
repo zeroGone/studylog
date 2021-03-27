@@ -30,7 +30,7 @@ public class User {
 
     }
 
-    public User(UserDto userDto) {
+    public User(UserCreateDto userDto) {
         id = userDto.getId();
         name = userDto.getName();
         email = userDto.getEmail();
