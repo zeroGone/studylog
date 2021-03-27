@@ -22,8 +22,13 @@
 
 .welcome-user-image {
     margin-top: 5vh;
-    width: 10vw;
+    height: 20vh;
+    transition: all 0.3s;
+    cursor: pointer;
+}
 
+.input-image {
+    display: none;
 }
 
 .signup-input-container {

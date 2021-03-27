@@ -13,8 +13,9 @@
     <h1 class="header-title">WELCOME</h1>
 </header>
 <div class="main-container">
-    <section class="welcome-container">
+    <section class="welcome-container" data-email="${visitor.email}">
         <div class="welcome-text">안녕하세요 <span class="welcome-user-name">${visitor.name}</span> 님!</div>
+        <input type="file" class="input-image" accept="image/*" />
         <img class="welcome-user-image" src="${visitor.imgUrl}" alt="user image"/>
     </section>
     <section class="signup-input-container">
