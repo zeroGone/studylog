@@ -14,7 +14,7 @@ public class FileUploadService {
 
     private static final String TEMPORARY_FILE_UPLOAD_PATH = "/img/tmp";
 
-    public String uploadFile(String savingPath, MultipartFile multipartFile) {
+    public String uploadFile(String savingPath, MultipartFile multipartFile) throws IOException {
         logger.info("-----file upload start-----");
         if (multipartFile == null) {
             logger.debug("file is not existed. it returns null");
@@ -29,7 +29,7 @@ public class FileUploadService {
             logger.info("-----file upload end-----");
         } catch (IOException ioException) {
             logger.error("uploading file is failed!");
-            ioException.printStackTrace();
+            throw ioException;
         }
         return TEMPORARY_FILE_UPLOAD_PATH + "/" + multipartFile.getOriginalFilename();
     }
