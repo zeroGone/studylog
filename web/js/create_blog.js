@@ -64,10 +64,11 @@ function postBlogInfo() {
 
     const formData = new FormData();
     const name = document.querySelector('#blog-create-name').value;
+    const replacedName = name.replace(/ /gi, '_');
     const introduce = document.querySelector('#blog-create-introduce').value;
     const image = document.querySelector('#image-input').files[0];
 
-    formData.append('name', name);
+    formData.append('name', replacedName);
     formData.append('introduce', introduce);
     formData.append('image', image);
 
@@ -86,7 +87,7 @@ function postBlogInfo() {
         .then(response => response)
         .then(data => {
             if (data.status === 201) {
-                window.location = `/${name}`;
+                window.location = `/${replacedName}`;
             } else {
                 activeAlertContainer();
                 document.querySelector('.alert-message').innerHTML = `서버 오류 (status: ${data.status})`;
