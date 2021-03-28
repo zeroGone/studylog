@@ -20,7 +20,6 @@ function checkRegularExpression() {
         return true;
     }
 }
-
 function checkForDuplicateName() {
     if (!informBlogNameUndefined(blogNameInput)) return false;
     if (!checkRegularExpression()) return activeAlertContainer('nameRegExp');
@@ -61,19 +60,33 @@ function doseNotExistBlogName(blogNameInput) {
 function postBlogInfo() {
     if (!informBlogNameUndefined(blogNameInput)) return false;
     if (blogNameInput.getAttribute('data_result') === 'fail') return activeAlertContainer('blogNameCheck');
-    const blogInfo = getValues();
 
-    fetch("api/blog", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(blogInfo),
+    const formData = new FormData();
+    const name = document.querySelector('#blog-create-name').value;
+    const replacedName = name.replace(/ /gi, '_');
+    const introduce = document.querySelector('#blog-create-introduce').value;
+    const image = document.querySelector('#image-input').files[0];
+
+    formData.append('name', replacedName);
+    formData.append('introduce', introduce);
+    formData.append('image', image);
+
+    const members = getMembers();
+    for (let index = 0; index < members.length; index += 1) {
+        formData.append('members[' + index + '].id', members[index].id);
+        formData.append('members[' + index + '].name', members[index].name);
+        formData.append('members[' + index + '].email', members[index].email);
+        formData.append('members[' + index + '].nickname', members[index].nickName);
+    }
+
+    fetch('api/blog', {
+        method: 'POST',
+        body: formData,
     })
-        .then((response) => response)
-        .then((data) => {
+        .then(response => response)
+        .then(data => {
             if (data.status === 201) {
-                window.location = `/${blogInfo.name}`;
+                window.location = `/${replacedName}`;
             } else {
                 activeAlertContainer();
                 document.querySelector('.alert-message').innerHTML = `서버 오류 (status: ${data.status})`;
@@ -81,18 +94,8 @@ function postBlogInfo() {
         }).catch((error) => console.error(error));
 }
 
-function getValues() {
-    const blogName = document.querySelector('#blog-create-name').value;
-    const replacedBlogName = blogName.replace(/ /gi, '_');
-    const blogIntroduce = document.querySelector('#blog-create-introduce').value;
-    const blogImage = document.querySelector('.blog-create-image').getAttribute('data');
-    const blogMembers = getMembers();
-
-    return new Blog(replacedBlogName, blogIntroduce, blogImage, blogMembers);
-}
-
 function getMembers() {
-    const blogUserArray = [];
+    const userArray = [];
     const blogUsers = document.querySelectorAll('.blog-create-member-item');
 
     blogUsers.forEach((element) => {
@@ -103,10 +106,10 @@ function getMembers() {
 
         const memberInfo = new User(userId, userName, userEmail, userNickname);
 
-        blogUserArray.push(memberInfo);
+        userArray.push(memberInfo);
     }, 0);
 
-    return blogUserArray;
+    return userArray;
 }
 
 function informBlogNameUndefined(blogNameInput) {

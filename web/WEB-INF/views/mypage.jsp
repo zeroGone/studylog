@@ -86,9 +86,9 @@
 </div>
 <section class="blog-create-container hide">
     <article class="blog-create-box">
-        <form class="blog-create-form">
+        <form class="blog-create-form" enctype="multipart/form-data">
             <div class="blog-create-image-container">
-                <input type="file" id="image-input" class="image-input" name="files1" accept="image/*"/>
+                <input type="file" id="image-input" class="image-input" name="image" accept="image/*"/>
                 <div id="preview" class="preview">
                     <img src="/img/user-default/5.png" class="blog-create-image" alt="blog-default-image">
                 </div>
@@ -103,7 +103,7 @@
                         <label for="blog-create-name" class="blog-create-label">name</label>
                         <div class="blog-create-member-invite-inputs">
                             <input id="blog-create-name" type="text" class="blog-create-input" maxlength="40"
-                                   placeholder="블로그 이름을 설정해주세요." value="" data_result="fail" />
+                                   placeholder="블로그 이름을 설정해주세요." value="" data_result="fail" name="name"/>
                             <button type="button" class="blog-create-name-check">중복확인</button>
                         </div>
                         <span class="blog-create-input-description">문자 사이에 띄어쓰기는 "_ (Underscore)" 처리됩니다.</span>
@@ -111,7 +111,7 @@
                     <div class="blog-create-sub">
                         <label for="blog-create-introduce" class="blog-create-label">introduce</label>
                         <textarea id="blog-create-introduce" class="blog-create-input blog-create-input-introduce"
-                                  maxlength="120" placeholder="블로그를 소개해보세요."></textarea>
+                                  maxlength="120" placeholder="블로그를 소개해보세요." name="introduce"></textarea>
                     </div>
                 </div>
 
