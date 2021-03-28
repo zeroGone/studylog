@@ -177,7 +177,6 @@ input {
 .header-notice {
     position: absolute;
     top: 50%;
-    right: 13%;
     transform: translateY(-50%);
     cursor: pointer;
 }
@@ -207,7 +206,6 @@ input {
     display: none;
     z-index: 100;
     top: 8vh;
-    right: 12vw;
     width: 15vw;
     height: auto;
     max-height: 30vh;
@@ -313,14 +311,12 @@ input {
     border-radius: 0 5px 5px 0;
 }
 
-
 .user-info-list {
     display: none;
     position: fixed;
     z-index: 100;
     top: 8vh;
     right: 2vw;
-    width: 10vw;
     height: auto;
     border: 1px solid var(--gray);
     border-radius: 5px;
@@ -342,6 +338,8 @@ input {
     display: block;
     padding: 1vh;
     background-color: var(--white);
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 .user-info-item-email {

@@ -20,7 +20,6 @@ function checkRegularExpression() {
         return true;
     }
 }
-
 function checkForDuplicateName() {
     if (!informBlogNameUndefined(blogNameInput)) return false;
     if (!checkRegularExpression()) return activeAlertContainer('nameRegExp');

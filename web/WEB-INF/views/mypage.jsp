@@ -10,7 +10,7 @@
     <script src="/js/sidebar.js" defer></script>
     <script src="/js/member_invite.js" defer></script>
     <script src="/js/create_blog.js" defer></script>
-    <script src="/js/image-upload.js" defer></script>
+    <script src="/js/image_upload.js" defer></script>
     <script src="https://kit.fontawesome.com/b63e743ce0.js" crossorigin="anonymous"></script>
 </head>
 <body>

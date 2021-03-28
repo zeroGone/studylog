@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 
 @RestController
 public class BlogCreateController {
@@ -30,7 +31,7 @@ public class BlogCreateController {
     @PostMapping("api/blog")
     public ResponseEntity<BlogVo> handleBlogCreateApi(@SessionAttribute(name = "userInfo") CurrentUserInfo userInfo,
                                                       @ModelAttribute BlogDto blog,
-                                                      HttpServletRequest httpServletRequest) {
+                                                      HttpServletRequest httpServletRequest) throws IOException {
         logger.info("-----create blog start-----");
         logger.debug(String.format("received blog data { name : %s , introduce : %s, image : %s }"
                 , blog.getName(), blog.getIntroduce(), blog.getName()));
