@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import javax.persistence.NoResultException;
 
 @RestController
-public class UserApiController {
+public class UserSearchController {
     private final UserSearchService userSearchService;
 
-    public UserApiController(UserSearchService userSearchService) {
+    public UserSearchController(UserSearchService userSearchService) {
         this.userSearchService = userSearchService;
     }
 
