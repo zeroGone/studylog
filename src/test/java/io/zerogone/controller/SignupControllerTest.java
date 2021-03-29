@@ -17,7 +17,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = WebConfiguration.class, loader = AnnotationConfigWebContextLoader.class)
@@ -34,34 +34,42 @@ public class SignupControllerTest {
     }
 
     @Test
-    public void handleSignupApi() throws Exception {
-        UserDto userDto = new UserDto();
-        userDto.setName("test 03/26");
-        userDto.setNickName("test 03/26");
-        userDto.setEmail("test 03/26");
+    public void getSignupViewName() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders
+                .get("/signup")
+                .sessionAttr("visitor", new UserDto()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("signup"));
+    }
 
+    @Test
+    public void getSignupViewName_GivenNullSession_ReturnRedirectIndex() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders
+                .get("/signup"))
+                .andDo(print())
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/"));
+    }
+
+    @Test
+    public void signUp() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
                 .post("/signup")
-                .contentType("application/json")
-                .characterEncoding("utf-8")
-                .content(new ObjectMapper().writeValueAsString(userDto)))
+                .param("name", "test 03/29 20:17")
+                .param("email", "test 03/29 20:17")
+                .param("nickName", "test 03/29 20:17"))
                 .andDo(print())
                 .andExpect(status().isCreated());
     }
 
     @Test
-    public void handleSignupApi_DuplicatedNickName_ReturnBadRequest() throws Exception {
-        UserDto userDto = new UserDto();
-        userDto.setName("test 03/26");
-        userDto.setNickName("test 03/26");
-        userDto.setEmail("test 03/26213131");
-
+    public void signUp_DuplicatedNickName_ReturnOk() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
                 .post("/signup")
-                .contentType("application/json")
-                .characterEncoding("utf-8")
-                .content(new ObjectMapper().writeValueAsString(userDto)))
+                .param("name", "test 03/29 20:03")
+                .param("email", "test 03/29 20:03")
+                .param("nickName", "zeroGone"))
                 .andDo(print())
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isOk());
     }
 }
