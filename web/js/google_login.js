@@ -41,12 +41,19 @@ function submit(userProfile) {
             "imgUrl": userProfile.getImageUrl()
         })
     }).then(response => {
-        if (response.status === 200) {
+        if (isLoginSuccess(response)) {
             window.location.pathname = "mypage";
-        } else if (response.status === 400) {
+        } else {
             window.location.pathname = "signup";
         }
     }).catch(error => console.log(error));
+}
+
+function isLoginSuccess(response) {
+    if (response.status !== 200) {
+        return false;
+    }
+    return response.json().id;
 }
 
 window.onload = loadGoogleApi;
