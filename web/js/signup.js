@@ -3,7 +3,7 @@ const imagePreviewComponent = document.querySelector(".welcome-user-image");
 const warningText = document.querySelector(".input-warning");
 
 function isImageFile(file) {
-    return /\.(gif|jpg|jpeg|png)$/i.test(file.name);
+    return /\.(jpg|jpeg|png)$/i.test(file.name);
 }
 
 function showImagePreview(image) {
@@ -11,20 +11,23 @@ function showImagePreview(image) {
     imagePreviewComponent.onload = () => URL.revokeObjectURL(imagePreviewComponent.src);
 }
 
-function submitSignupData() {
-    const userFormData = new FormData();
-    userFormData.append("email", document.querySelector(".welcome-container").dataset.email);
-    userFormData.append("name", document.querySelector(".welcome-user-name").innerText);
-    userFormData.append("nickName", document.querySelector(".input-nick").value);
+function makeFormData() {
+    const formData = new FormData();
+    formData.append("email", document.querySelector(".welcome-container").dataset.email);
+    formData.append("name", document.querySelector(".welcome-user-name").innerText);
+    formData.append("nickName", document.querySelector(".input-nick").value);
     if (imageInputComponent.files[0]) {
-        userFormData.append("image", imageInputComponent.files[0]);
+        formData.append("image", imageInputComponent.files[0]);
     } else {
-        userFormData.append("imgUrl", imagePreviewComponent.src);
+        formData.append("imgUrl", imagePreviewComponent.src);
     }
+    return formData;
+}
 
+function submitSignupData() {
     fetch("signup", {
         method: "POST",
-        body: userFormData
+        body: makeFormData()
     }).then(response => {
         if (response.status === 201) {
             window.location.pathname = "mypage";
