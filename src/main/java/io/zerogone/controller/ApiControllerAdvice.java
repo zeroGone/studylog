@@ -1,7 +1,7 @@
 package io.zerogone.controller;
 
 import ch.qos.logback.classic.Logger;
-import io.zerogone.blogmember.exception.BlogMembersStateException;
+import io.zerogone.exception.BlogMembersStateException;
 import io.zerogone.exception.UniquePropertyException;
 import io.zerogone.model.ErrorResponse;
 import org.slf4j.LoggerFactory;

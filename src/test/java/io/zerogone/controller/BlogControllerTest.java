@@ -1,7 +1,6 @@
-package io.zerogone.filter;
+package io.zerogone.controller;
 
 import io.zerogone.config.WebConfiguration;
-import io.zerogone.model.entity.User;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,13 +14,14 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = WebConfiguration.class, loader = AnnotationConfigWebContextLoader.class)
 @WebAppConfiguration
-public class LoginCheckFilterTest {
+public class BlogControllerTest {
     @Autowired
     private WebApplicationContext webApplicationContext;
 
@@ -29,14 +29,22 @@ public class LoginCheckFilterTest {
 
     @Before
     public void setUp() {
-        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).addFilter(new LoginCheckFilter()).build();
+        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
     }
 
     @Test
-    public void testFilterIsWorking() throws Exception {
-        mockMvc.perform(get("/")).andExpect(status().isOk()).andExpect(view().name("index"));
-        mockMvc.perform(get("/mypage")).andExpect(status().is3xxRedirection());
-        mockMvc.perform(get("/mypage").sessionAttr("userInfo", new User())).andExpect(status().isOk()).andExpect(view().name("mypage"));
-        mockMvc.perform(get("/issue/1")).andExpect(status().is3xxRedirection());
+    public void handleBlogMainPage() throws Exception {
+        mockMvc.perform(get("/studylog"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("main"))
+                .andDo(print());
+
+        mockMvc.perform(get("/test"))
+                .andExpect(status().isNotFound())
+                .andDo(print());
+
+        mockMvc.perform(get("/test123213212312312321123"))
+                .andExpect(status().isNotFound())
+                .andDo(print());
     }
 }

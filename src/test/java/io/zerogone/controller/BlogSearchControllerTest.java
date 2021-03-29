@@ -1,8 +1,7 @@
 package io.zerogone.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.zerogone.config.WebConfiguration;
-import io.zerogone.model.UserDto;
+import io.zerogone.model.CurrentUserInfo;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,54 +11,50 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.AnnotationConfigWebContextLoader;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = WebConfiguration.class, loader = AnnotationConfigWebContextLoader.class)
 @WebAppConfiguration
-public class LoginControllerTest {
+public class BlogSearchControllerTest {
     @Autowired
     private WebApplicationContext webApplicationContext;
 
     private MockMvc mockMvc;
 
+    private CurrentUserInfo userInfo;
+
     @Before
     public void setUp() {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+        userInfo = new CurrentUserInfo();
+        userInfo.setId(1);
+        userInfo.setEmail("dudrhs571@gmail.com");
+        userInfo.setName("김영곤");
+        userInfo.setNickName("zeroGone");
+        userInfo.setImgUrl("/img/user-default/1.png");
     }
 
     @Test
-    public void doLogin() throws Exception {
-        UserDto userDto = new UserDto();
-        userDto.setName("김영곤");
-        userDto.setEmail("dudrhs571@gmail.com");
+    public void handleBlogSearchApi() throws Exception {
+        mockMvc.perform(get("/api/blog").param("name", "studylog"))
+                .andExpect(status().isOk())
+                .andDo(print());
 
-        mockMvc.perform(MockMvcRequestBuilders
-                .post("/login")
-                .contentType("application/json")
-                .characterEncoding("utf-8")
-                .content(new ObjectMapper().writeValueAsString(userDto)))
-                .andDo(print())
-                .andExpect(status().isOk());
+        mockMvc.perform(get("/api/blog").param("name", "test"))
+                .andExpect(status().isOk())
+                .andDo(print());
     }
 
     @Test
-    public void doLogin_NotExistedUser_ReturnBadRequest() throws Exception {
-        UserDto userDto = new UserDto();
-        userDto.setName("이게누구여");
-        userDto.setEmail("모르는사람이여");
-
-        mockMvc.perform(MockMvcRequestBuilders
-                .post("/login")
-                .contentType("application/json")
-                .characterEncoding("utf-8")
-                .content(new ObjectMapper().writeValueAsString(userDto)))
-                .andDo(print())
-                .andExpect(status().isBadRequest());
+    public void handleBlogSearchApi_NotExistedName_ReturnNotFound() throws Exception {
+        mockMvc.perform(get("/api/blog").param("name", "jinmin is zzang"))
+                .andExpect(status().is4xxClientError())
+                .andDo(print());
     }
 }

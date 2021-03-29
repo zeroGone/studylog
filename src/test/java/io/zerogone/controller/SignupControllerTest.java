@@ -2,7 +2,7 @@ package io.zerogone.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.zerogone.config.WebConfiguration;
-import io.zerogone.user.model.UserDto;
+import io.zerogone.model.UserDto;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

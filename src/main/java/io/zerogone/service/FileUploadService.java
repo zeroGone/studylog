@@ -1,7 +1,7 @@
 package io.zerogone.service;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import ch.qos.logback.classic.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -10,7 +10,7 @@ import java.io.IOException;
 
 @Service
 public class FileUploadService {
-    private final Log logger = LogFactory.getLog(this.getClass());
+    private final Logger logger = (Logger) LoggerFactory.getLogger(this.getClass());
 
     private static final String TEMPORARY_FILE_UPLOAD_PATH = "/img/tmp";
 

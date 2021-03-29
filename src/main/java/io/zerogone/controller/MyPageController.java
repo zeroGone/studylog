@@ -1,7 +1,7 @@
 package io.zerogone.controller;
 
-import io.zerogone.blog.service.BlogSearchService;
-import io.zerogone.user.model.CurrentUserInfo;
+import io.zerogone.service.BlogSearchService;
+import io.zerogone.model.CurrentUserInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
