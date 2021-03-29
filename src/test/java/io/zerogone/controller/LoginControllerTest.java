@@ -60,6 +60,6 @@ public class LoginControllerTest {
                 .characterEncoding("utf-8")
                 .content(new ObjectMapper().writeValueAsString(userDto)))
                 .andDo(print())
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isOk());
     }
 }

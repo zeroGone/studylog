@@ -21,9 +21,9 @@ public class LoginController {
     }
 
     @PostMapping("login")
-    public ResponseEntity<Object> doLogin(@RequestBody UserDto userDto, HttpSession httpSession) {
+    public ResponseEntity<UserVo> doLogin(@RequestBody UserDto userDto, HttpSession httpSession) {
         try {
-            UserVo userVo = userSearchService.getUserHasEmail(userDto.getEmail());
+            UserVo userVo = userSearchService.getUserByEmail(userDto.getEmail());
             httpSession.setAttribute("userInfo", new CurrentUserInfo(userVo));
             return ResponseEntity.ok(userVo);
         } catch (NoResultException noResultException) {

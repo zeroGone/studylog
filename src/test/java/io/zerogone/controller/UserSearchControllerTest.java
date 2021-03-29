@@ -48,16 +48,16 @@ public class UserSearchControllerTest {
                 .andDo(print());
 
         mockMvc.perform(get("/api/user").sessionAttr("userInfo", userInfo).param("email", "%"))
-                .andExpect(status().isNotFound())
+                .andExpect(status().isOk())
                 .andDo(print());
     }
 
     @Test
-    public void handleUserSearchApi_IncludeMemeberisSameSessionUser_ReturnBadRequest() throws Exception {
+    public void handleUserSearchApi_ParamIsEmptystring_ReturnNotFound() throws Exception {
         mockMvc.perform(get("/api/user")
                 .sessionAttr("userInfo", userInfo)
-                .param("email", "dudrhs571@gmail.com"))
-                .andExpect(status().isBadRequest())
+                .param("email", ""))
+                .andExpect(status().isOk())
                 .andDo(print());
     }
 }

@@ -16,7 +16,13 @@ import javax.persistence.NoResultException;
 public class ApiControllerAdvice {
     private final Logger logger = (Logger) LoggerFactory.getLogger(this.getClass());
 
-    @ExceptionHandler(value = {BlogMembersStateException.class, UniquePropertyException.class, NoResultException.class})
+    @ExceptionHandler(NoResultException.class)
+    public ResponseEntity<ErrorResponse> handleNoResultException() {
+        logger.debug("Searching entity is failed!");
+        return new ResponseEntity<>(new ErrorResponse("검색 결과 없음"), HttpStatus.OK);
+    }
+
+    @ExceptionHandler(value = {BlogMembersStateException.class, UniquePropertyException.class})
     public ResponseEntity<ErrorResponse> handleBlogCreateException(Exception exception) {
         logger.debug("catch exception : " + exception.getMessage());
         return new ResponseEntity<>(new ErrorResponse(exception.getMessage()), HttpStatus.BAD_REQUEST);

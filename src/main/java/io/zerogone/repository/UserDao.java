@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -23,7 +22,8 @@ public class UserDao {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public User findUserByEmail(String email) throws NoResultException {
+    public User findUserByEmail(String email) {
+        logger.info("-----find user by email : " + email + "-----");
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
 

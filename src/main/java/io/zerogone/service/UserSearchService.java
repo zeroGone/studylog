@@ -4,7 +4,6 @@ import io.zerogone.model.UserVo;
 import io.zerogone.repository.UserDao;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.NoResultException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,7 +15,7 @@ public class UserSearchService {
         this.userDao = userDao;
     }
 
-    public UserVo getUserHasEmail(String email) throws NoResultException {
+    public UserVo getUserByEmail(String email) {
         return new UserVo(userDao.findUserByEmail(email));
     }
 
