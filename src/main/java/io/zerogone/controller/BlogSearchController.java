@@ -21,7 +21,7 @@ public class BlogSearchController {
     @GetMapping("api/blog")
     public ResponseEntity<Object> handleBlogSearchApi(@RequestParam String name) {
         try {
-            return new ResponseEntity<>(blogSearchService.getBlog(name), HttpStatus.OK);
+            return new ResponseEntity<>(blogSearchService.getBlogByName(name), HttpStatus.OK);
         } catch (NoResultException noResultException) {
             return new ResponseEntity<>(new ErrorResponse("검색 결과 없음"), HttpStatus.NOT_FOUND);
         }

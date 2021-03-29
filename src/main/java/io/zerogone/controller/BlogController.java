@@ -25,7 +25,7 @@ public class BlogController {
     public ModelAndView handleBlogMainPage(@PathVariable String name) {
         ModelAndView modelAndView = new ModelAndView();
         try {
-            BlogVo blog = blogSearchService.getBlog(name);
+            BlogVo blog = blogSearchService.getBlogByName(name);
             modelAndView.addObject("blog", blog);
             modelAndView.addObject("members", userSearchService.getUsersByBlogId(blog.getId()));
             modelAndView.setViewName("main");

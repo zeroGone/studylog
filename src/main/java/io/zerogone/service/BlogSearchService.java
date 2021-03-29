@@ -1,8 +1,8 @@
 package io.zerogone.service;
 
 import io.zerogone.model.BlogVo;
-import io.zerogone.repository.BlogDao;
 import io.zerogone.model.CurrentUserInfo;
+import io.zerogone.repository.BlogDao;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,7 +20,7 @@ public class BlogSearchService {
         return blogDao.findAllByUserId(userInfo.getId()).stream().map(BlogVo::new).collect(Collectors.toList());
     }
 
-    public BlogVo getBlog(String name) {
+    public BlogVo getBlogByName(String name) {
         return new BlogVo(blogDao.findByName(name));
     }
 }

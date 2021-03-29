@@ -2,7 +2,6 @@ package io.zerogone.service;
 
 import io.zerogone.config.DatabaseConfiguration;
 import io.zerogone.config.WebConfiguration;
-import io.zerogone.service.BlogSearchService;
 import io.zerogone.model.CurrentUserInfo;
 import org.junit.Assert;
 import org.junit.Before;
@@ -41,9 +40,9 @@ public class BlogSearchServiceTest {
     }
 
     @Test
-    public void getBlog() {
-        Assert.assertNotNull(blogSearchService.getBlog("studylog"));
-        Assert.assertEquals(blogSearchService.getBlog("studylog").getName(), "studylog");
+    public void getBlogByName() {
+        Assert.assertNotNull(blogSearchService.getBlogByName("studylog"));
+        Assert.assertEquals(blogSearchService.getBlogByName("studylog").getName(), "studylog");
     }
 
     @Rule
@@ -52,6 +51,6 @@ public class BlogSearchServiceTest {
     @Test
     public void getBlog_NotExistedName_ThrowNoResultException() {
         expectedException.expect(NoResultException.class);
-        Assert.assertNotNull(blogSearchService.getBlog("jinmin is genius"));
+        Assert.assertNotNull(blogSearchService.getBlogByName("jinmin is genius"));
     }
 }
