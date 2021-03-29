@@ -45,16 +45,12 @@ public class BlogSearchControllerTest {
         mockMvc.perform(get("/api/blog").param("name", "studylog"))
                 .andExpect(status().isOk())
                 .andDo(print());
-
-        mockMvc.perform(get("/api/blog").param("name", "test"))
-                .andExpect(status().isOk())
-                .andDo(print());
     }
 
     @Test
-    public void handleBlogSearchApi_NotExistedName_ReturnNotFound() throws Exception {
+    public void handleBlogSearchApi_NotExistedName_ReturnOkWithErrorMessage() throws Exception {
         mockMvc.perform(get("/api/blog").param("name", "jinmin is zzang"))
-                .andExpect(status().is4xxClientError())
+                .andExpect(status().isOk())
                 .andDo(print());
     }
 }
