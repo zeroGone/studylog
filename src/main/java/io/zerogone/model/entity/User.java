@@ -1,6 +1,5 @@
 package io.zerogone.model.entity;
 
-import io.zerogone.model.CurrentUserInfo;
 import io.zerogone.model.UserCreateDto;
 
 import javax.persistence.*;
@@ -37,14 +36,6 @@ public class User {
         email = userDto.getEmail();
         nickName = userDto.getNickName();
         imgUrl = userDto.getImgUrl();
-    }
-
-    public User(CurrentUserInfo userInfo) {
-        id = userInfo.getId();
-        name = userInfo.getName();
-        email = userInfo.getEmail();
-        nickName = userInfo.getNickName();
-        imgUrl = userInfo.getImgUrl();
     }
 
     public int getId() {
