@@ -2,8 +2,9 @@ package io.zerogone.service;
 
 import io.zerogone.config.DatabaseConfiguration;
 import io.zerogone.config.WebConfiguration;
+import io.zerogone.exception.NotNullPropertyException;
+import io.zerogone.exception.UniquePropertyException;
 import io.zerogone.model.UserCreateDto;
-import io.zerogone.service.UserCreateService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -16,8 +17,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.AnnotationConfigWebContextLoader;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.web.context.WebApplicationContext;
-
-import javax.persistence.PersistenceException;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {WebConfiguration.class, DatabaseConfiguration.class}, loader = AnnotationConfigWebContextLoader.class)
@@ -47,12 +46,23 @@ public class UserCreateServiceTest {
     public ExpectedException expectedException = ExpectedException.none();
 
     @Test
-    public void createUser_DuplicatedEmail_ThrowPersistenException() {
-        expectedException.expect(PersistenceException.class);
+    public void createUser_DuplicatedEmail_ThrowUniquePropertyException() {
+        expectedException.expect(UniquePropertyException.class);
 
         UserCreateDto userDto = new UserCreateDto();
         userDto.setName("test 0326");
-        userDto.setEmail("dudrhs571@gmail.com");
+        userDto.setEmail("dundung@gmail.com");
+        userDto.setNickName("03/26 08:17qwewqeqw");
+
+        Assert.assertNotNull(userCreateService.createUser(userDto));
+    }
+
+    @Test
+    public void createUser_NameIsNull_ThrowNotNullPropertyException() {
+        expectedException.expect(NotNullPropertyException.class);
+
+        UserCreateDto userDto = new UserCreateDto();
+        userDto.setEmail("test@gmail.com");
         userDto.setNickName("03/26 08:17qwewqeqw");
 
         Assert.assertNotNull(userCreateService.createUser(userDto));
