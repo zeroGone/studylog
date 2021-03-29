@@ -18,6 +18,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.web.context.WebApplicationContext;
 
 import javax.persistence.NoResultException;
+import javax.persistence.PersistenceException;
 import javax.transaction.Transactional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -51,7 +52,7 @@ public class UserDaoTest {
     }
 
     @Test
-    public void findUserByEmail_GivenEmptyString_ThrowNoResultException(){
+    public void findUserByEmail_GivenEmptyString_ThrowNoResultException() {
         expectedException.expect(NoResultException.class);
         Assert.assertNotEquals(0, userDao.findUserByEmail("").getId());
     }
@@ -71,6 +72,31 @@ public class UserDaoTest {
         dto.setNickName("test0325 1509");
         User user = new User(dto);
 
+        userDao.save(user);
+        Assert.assertNotEquals(0, user.getId());
+    }
+
+    @Test
+    @Transactional
+    public void save_PropertiesIsNull_throwPersistenceException() {
+        expectedException.expect(PersistenceException.class);
+
+        User user = new User();
+        userDao.save(user);
+        Assert.assertNotEquals(0, user.getId());
+    }
+
+    @Test
+    @Transactional
+    public void save_DuplicatedProperties_throwPersistenceException() {
+        expectedException.expect(PersistenceException.class);
+
+        UserCreateDto dto = new UserCreateDto();
+        dto.setName("test 03/29");
+        dto.setNickName("test 03/29");
+        dto.setEmail("dundung@gmail.com");
+
+        User user = new User(dto);
         userDao.save(user);
         Assert.assertNotEquals(0, user.getId());
     }
