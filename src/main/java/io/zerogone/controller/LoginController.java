@@ -1,9 +1,9 @@
 package io.zerogone.controller;
 
-import io.zerogone.user.model.CurrentUserInfo;
-import io.zerogone.user.model.UserDto;
-import io.zerogone.user.model.UserVo;
-import io.zerogone.user.service.UserSearchService;
+import io.zerogone.model.CurrentUserInfo;
+import io.zerogone.model.UserDto;
+import io.zerogone.model.UserVo;
+import io.zerogone.service.UserSearchService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,9 +21,9 @@ public class LoginController {
     }
 
     @PostMapping("login")
-    public ResponseEntity<Object> doLogin(@RequestBody UserDto userDto, HttpSession httpSession) {
+    public ResponseEntity<UserVo> doLogin(@RequestBody UserDto userDto, HttpSession httpSession) {
         try {
-            UserVo userVo = userSearchService.getUserHasEmail(userDto.getEmail());
+            UserVo userVo = userSearchService.getUserByEmail(userDto.getEmail());
             httpSession.setAttribute("userInfo", new CurrentUserInfo(userVo));
             return ResponseEntity.ok(userVo);
         } catch (NoResultException noResultException) {

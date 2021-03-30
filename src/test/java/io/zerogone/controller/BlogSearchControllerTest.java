@@ -1,7 +1,7 @@
-package io.zerogone.filter;
+package io.zerogone.controller;
 
 import io.zerogone.config.WebConfiguration;
-import io.zerogone.model.entity.User;
+import io.zerogone.model.CurrentUserInfo;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,28 +15,42 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = WebConfiguration.class, loader = AnnotationConfigWebContextLoader.class)
 @WebAppConfiguration
-public class LoginCheckFilterTest {
+public class BlogSearchControllerTest {
     @Autowired
     private WebApplicationContext webApplicationContext;
 
     private MockMvc mockMvc;
 
+    private CurrentUserInfo userInfo;
+
     @Before
     public void setUp() {
-        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).addFilter(new LoginCheckFilter()).build();
+        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+        userInfo = new CurrentUserInfo();
+        userInfo.setId(1);
+        userInfo.setEmail("dudrhs571@gmail.com");
+        userInfo.setName("김영곤");
+        userInfo.setNickName("zeroGone");
+        userInfo.setImgUrl("/img/user-default/1.png");
     }
 
     @Test
-    public void testFilterIsWorking() throws Exception {
-        mockMvc.perform(get("/")).andExpect(status().isOk()).andExpect(view().name("index"));
-        mockMvc.perform(get("/mypage")).andExpect(status().is3xxRedirection());
-        mockMvc.perform(get("/mypage").sessionAttr("userInfo", new User())).andExpect(status().isOk()).andExpect(view().name("mypage"));
-        mockMvc.perform(get("/issue/1")).andExpect(status().is3xxRedirection());
+    public void handleBlogSearchApi() throws Exception {
+        mockMvc.perform(get("/api/blog").param("name", "studylog"))
+                .andExpect(status().isOk())
+                .andDo(print());
+    }
+
+    @Test
+    public void handleBlogSearchApi_NotExistedName_ReturnOkWithErrorMessage() throws Exception {
+        mockMvc.perform(get("/api/blog").param("name", "jinmin is zzang"))
+                .andExpect(status().isOk())
+                .andDo(print());
     }
 }
