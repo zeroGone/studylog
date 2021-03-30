@@ -1,11 +1,10 @@
 package io.zerogone.service;
 
-import io.zerogone.model.BlogDto;
-import io.zerogone.exception.BlogMembersStateException;
 import io.zerogone.config.DatabaseConfiguration;
 import io.zerogone.config.WebConfiguration;
+import io.zerogone.exception.BlogMembersStateException;
 import io.zerogone.exception.UniquePropertyException;
-import io.zerogone.service.BlogCreateService;
+import io.zerogone.model.BlogCreateDto;
 import io.zerogone.model.CurrentUserInfo;
 import io.zerogone.model.UserDto;
 import org.junit.Assert;
@@ -47,10 +46,10 @@ public class BlogCreateServiceTest {
     public void createBlog() {
         CurrentUserInfo creator = new CurrentUserInfo();
         creator.setId(1);
-        BlogDto blogDto = new BlogDto();
-        blogDto.setName("test");
+        BlogCreateDto blogCreateDto = new BlogCreateDto();
+        blogCreateDto.setName("test");
 
-        Assert.assertNotNull(blogCreateService.createBlog(creator, blogDto, null));
+        Assert.assertNotNull(blogCreateService.createBlog(creator, blogCreateDto));
     }
 
     @Test
@@ -59,9 +58,9 @@ public class BlogCreateServiceTest {
         expectedException.expect(UniquePropertyException.class);
         CurrentUserInfo creator = new CurrentUserInfo();
         creator.setId(1);
-        BlogDto blogDto = new BlogDto();
-        blogDto.setName("test dto");
-        Assert.assertNotNull(blogCreateService.createBlog(creator, blogDto, null));
+        BlogCreateDto blogCreateDto = new BlogCreateDto();
+        blogCreateDto.setName("test dto");
+        Assert.assertNotNull(blogCreateService.createBlog(creator, blogCreateDto));
     }
 
     @Test
@@ -74,10 +73,10 @@ public class BlogCreateServiceTest {
         UserDto member = new UserDto();
         member.setId(-1);
 
-        BlogDto blogDto = new BlogDto();
-        blogDto.setName("test");
-        blogDto.setMembers(new ArrayList<>(Collections.singletonList(member)));
+        BlogCreateDto blogCreateDto = new BlogCreateDto();
+        blogCreateDto.setName("test");
+        blogCreateDto.setMembers(new ArrayList<>(Collections.singletonList(member)));
 
-        Assert.assertNotNull(blogCreateService.createBlog(creator, blogDto, null));
+        Assert.assertNotNull(blogCreateService.createBlog(creator, blogCreateDto));
     }
 }

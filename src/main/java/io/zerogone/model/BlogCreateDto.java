@@ -4,7 +4,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-public class BlogDto {
+public class BlogCreateDto {
     private String name;
     private String introduce;
     private MultipartFile image;

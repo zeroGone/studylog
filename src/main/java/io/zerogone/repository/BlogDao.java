@@ -1,16 +1,14 @@
 package io.zerogone.repository;
 
+import ch.qos.logback.classic.Logger;
 import io.zerogone.model.entity.Blog;
 import io.zerogone.model.entity.BlogMember;
 import io.zerogone.model.entity.MemberRole;
-import io.zerogone.exception.UniquePropertyException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -20,7 +18,7 @@ import java.util.List;
 
 @Repository
 public class BlogDao {
-    private final Log logger = LogFactory.getLog(this.getClass());
+    private final Logger logger = (Logger) LoggerFactory.getLogger(this.getClass());
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -28,11 +26,7 @@ public class BlogDao {
     public void save(Blog blog) {
         logger.debug("-----save blog start-----");
 
-        try {
-            entityManager.persist(blog);
-        } catch (PersistenceException persistenceException) {
-            throw new UniquePropertyException("Blog Name is null or duplicated");
-        }
+        entityManager.persist(blog);
         entityManager.flush();
 
         logger.debug("blog id: " + blog.getId());

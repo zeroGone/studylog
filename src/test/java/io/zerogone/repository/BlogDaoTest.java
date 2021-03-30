@@ -1,8 +1,8 @@
 package io.zerogone.repository;
 
-import io.zerogone.model.entity.Blog;
 import io.zerogone.config.DatabaseConfiguration;
 import io.zerogone.config.WebConfiguration;
+import io.zerogone.model.entity.Blog;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -17,6 +17,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.web.context.WebApplicationContext;
 
 import javax.persistence.NoResultException;
+import javax.persistence.PersistenceException;
 import javax.transaction.Transactional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -46,8 +47,18 @@ public class BlogDaoTest {
 
     @Test
     @Transactional
-    public void save_BlogNameIsNull_ThrowException() {
+    public void save_BlogNameIsNull_ThrowPersistenceException() {
+        expectedException.expect(PersistenceException.class);
         Blog blog = new Blog(null, null, null);
+        blogDao.save(blog);
+        Assert.assertNotEquals(0, blog.getId());
+    }
+
+    @Test
+    @Transactional
+    public void save_BlogNameIsDuplicated_ThrowPersistenceException() {
+        expectedException.expect(PersistenceException.class);
+        Blog blog = new Blog("studylog", null, null);
         blogDao.save(blog);
         Assert.assertNotEquals(0, blog.getId());
     }
