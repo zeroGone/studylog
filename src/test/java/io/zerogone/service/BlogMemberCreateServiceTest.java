@@ -1,9 +1,8 @@
 package io.zerogone.service;
 
-import io.zerogone.exception.BlogMembersStateException;
 import io.zerogone.config.DatabaseConfiguration;
 import io.zerogone.config.WebConfiguration;
-import io.zerogone.service.BlogMemberCreateService;
+import io.zerogone.exception.BlogMembersStateException;
 import io.zerogone.model.CurrentUserInfo;
 import io.zerogone.model.UserDto;
 import org.junit.Assert;
@@ -51,7 +50,12 @@ public class BlogMemberCreateServiceTest {
 
     @Test
     public void createBlogMembers() {
-        blogMemberCreateService.createBlogMembers(2, currentUserInfo, new ArrayList<>());
+        blogMemberCreateService.createBlogMembers(1, currentUserInfo, new ArrayList<>());
+        List<UserDto> members = new ArrayList<>();
+        UserDto userDto = new UserDto();
+        userDto.setId(2);
+        members.add(userDto);
+        blogMemberCreateService.createBlogMembers(1, currentUserInfo, members);
     }
 
     @Rule
@@ -64,12 +68,6 @@ public class BlogMemberCreateServiceTest {
 
         List<UserDto> members = new ArrayList<>();
         UserDto userDto = new UserDto();
-        userDto.setId(1);
-        members.add(userDto);
-        blogMemberCreateService.createBlogMembers(1, currentUserInfo, members);
-
-        members.clear();
-        userDto = new UserDto();
         userDto.setId(2);
         members.add(userDto);
         userDto = new UserDto();

@@ -1,19 +1,17 @@
 package io.zerogone.repository;
 
-import io.zerogone.exception.BlogMembersStateException;
+import ch.qos.logback.classic.Logger;
 import io.zerogone.model.entity.BlogMember;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceException;
 import java.util.List;
 
 @Repository
 public class BlogMemberDao {
-    private final Log logger = LogFactory.getLog(this.getClass());
+    private final Logger logger = (Logger) LoggerFactory.getLogger(this.getClass());
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -22,13 +20,8 @@ public class BlogMemberDao {
         logger.debug("-----save blogmember start-----");
 
         for (BlogMember blogMember : blogMembers) {
-            try {
-                entityManager.persist(blogMember);
-            } catch (PersistenceException persistenceException) {
-                throw new BlogMembersStateException("It isn't allowed blog members to include invalid blog id or user id");
-            }
+            entityManager.persist(blogMember);
         }
-
         entityManager.flush();
 
         logger.debug("-----save blogmember end-----");

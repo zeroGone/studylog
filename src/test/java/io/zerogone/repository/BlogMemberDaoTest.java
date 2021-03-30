@@ -1,11 +1,10 @@
 package io.zerogone.repository;
 
+import io.zerogone.config.DatabaseConfiguration;
+import io.zerogone.config.WebConfiguration;
 import io.zerogone.exception.BlogMembersStateException;
 import io.zerogone.model.entity.BlogMember;
 import io.zerogone.model.entity.MemberRole;
-import io.zerogone.config.DatabaseConfiguration;
-import io.zerogone.config.WebConfiguration;
-import io.zerogone.repository.BlogMemberDao;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -19,6 +18,7 @@ import org.springframework.test.context.web.AnnotationConfigWebContextLoader;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.web.context.WebApplicationContext;
 
+import javax.persistence.PersistenceException;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
@@ -67,8 +67,8 @@ public class BlogMemberDaoTest {
 
     @Test
     @Transactional
-    public void save_GivenInvalidUserId_ThrowBlogMembersStateException() {
-        expectedException.expect(BlogMembersStateException.class);
+    public void save_GivenInvalidUserId_ThrowPersistenceException() {
+        expectedException.expect(PersistenceException.class);
         List<BlogMember> blogMembers = new ArrayList<>();
         blogMembers.add(new BlogMember(Integer.MAX_VALUE, 1, MemberRole.ADMIN));
         blogMemberDao.save(blogMembers);
@@ -80,8 +80,21 @@ public class BlogMemberDaoTest {
 
     @Test
     @Transactional
-    public void save_GivenInvalidBlogId_ThrowBlogMembersStateException() {
-        expectedException.expect(BlogMembersStateException.class);
+    public void save_UserIdIsZero_ThrowPersistenceException() {
+        expectedException.expect(PersistenceException.class);
+        List<BlogMember> blogMembers = new ArrayList<>();
+        blogMembers.add(new BlogMember(0, 1, MemberRole.ADMIN));
+        blogMemberDao.save(blogMembers);
+
+        for (BlogMember blogMember : blogMembers) {
+            Assert.assertNotEquals(0, blogMember.getId());
+        }
+    }
+
+    @Test
+    @Transactional
+    public void save_GivenInvalidBlogId_ThrowPersistenceException() {
+        expectedException.expect(PersistenceException.class);
         List<BlogMember> blogMembers = new ArrayList<>();
         blogMembers.add(new BlogMember(1, Integer.MAX_VALUE, MemberRole.ADMIN));
         blogMemberDao.save(blogMembers);
