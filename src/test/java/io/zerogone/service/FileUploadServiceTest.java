@@ -33,11 +33,11 @@ public class FileUploadServiceTest {
     @Test
     public void uploadFile() throws IOException {
         MockMultipartFile firstFile = new MockMultipartFile("data", "filename.txt", "text/plain", "some xml".getBytes());
-        Assert.assertNotNull(fileUploadService.uploadFile("C://tmp", firstFile));
+        Assert.assertEquals("C:\\tmp\\filename.txt", fileUploadService.uploadFile(firstFile));
     }
 
     @Test
     public void uploadFile_FileIsNull_ReturnNull() throws IOException {
-        Assert.assertNull(fileUploadService.uploadFile("C://tmp", null));
+        Assert.assertNull(fileUploadService.uploadFile(null));
     }
 }

@@ -12,16 +12,16 @@ import java.io.IOException;
 public class FileUploadService {
     private final Logger logger = (Logger) LoggerFactory.getLogger(this.getClass());
 
-    private static final String TEMPORARY_FILE_UPLOAD_PATH = "/img/tmp";
+    private static final String TEMPORARY_FILE_UPLOAD_PATH = "C://tmp";
 
-    public String uploadFile(String savingPath, MultipartFile multipartFile) throws IOException {
+    public String uploadFile(MultipartFile multipartFile) throws IOException {
         logger.info("-----file upload start-----");
         if (multipartFile == null) {
             logger.debug("file is not existed. it returns null");
             return null;
         }
 
-        File file = new File(savingPath + TEMPORARY_FILE_UPLOAD_PATH, multipartFile.getOriginalFilename());
+        File file = new File(TEMPORARY_FILE_UPLOAD_PATH, multipartFile.getOriginalFilename());
         logger.debug("create uploaded file : " + file);
 
         try {
@@ -31,6 +31,6 @@ public class FileUploadService {
             logger.error("uploading file is failed!");
             throw ioException;
         }
-        return TEMPORARY_FILE_UPLOAD_PATH + "/" + multipartFile.getOriginalFilename();
+        return file.getAbsolutePath();
     }
 }
