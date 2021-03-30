@@ -1,7 +1,7 @@
-const browseBtn = document.querySelector('.blog-create-images-edit-container');
 const imageInput = document.querySelector('#image-input');
+const imageEditButton = document.querySelector('.blog-images-edit-button');
 
-browseBtn.addEventListener('click', () => {
+imageEditButton.addEventListener('click', function () {
     imageInput.click();
 });
 
@@ -22,7 +22,7 @@ function previewImage(event) {
 
         const reader = new FileReader();
         reader.onload = function (progressEvent) {
-            document.getElementById('preview').innerHTML = '<img src="' + progressEvent.target.result + '" class="blog-create-image" style="object-fit: cover">';
+            document.getElementById('preview').innerHTML = `<img src="${progressEvent.target.result}" class="blog-create-image" alt="${progressEvent.target.result}">`;
         }
 
         reader.readAsDataURL(file[0]);
