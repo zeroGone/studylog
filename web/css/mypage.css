@@ -221,7 +221,7 @@ body {
 }
 
 
-.blog-create-image-container {
+.blog-image-container {
     position: relative;
     background-color: rgba(var(--light-sky-rgb), 0.5);
 }
@@ -247,9 +247,10 @@ body {
     width: 100%;
     height: 100%;
     border-radius: 50%;
+    object-fit: cover;
 }
 
-.blog-create-images-edit-container {
+.blog-images-edit-button {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -264,7 +265,7 @@ body {
     cursor: pointer;
 }
 
-.blog-create-images-edit-button {
+.blog-images-edit-icon {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -275,27 +276,27 @@ body {
     transition: all 0.5s;
 }
 
-.blog-create-image-container:hover .blog-create-images-edit-container {
+.blog-images-edit-button:hover {
     background-color: rgba(var(--blue-black-rgb), 0.5);
 }
 
-.blog-create-image-container:hover .blog-create-images-edit-button {
+.blog-images-edit-button:hover .blog-images-edit-icon {
     opacity: 1;
 }
 
-.blog-create-info {
+.blog-info {
     padding: 1vw;
 }
 
-.blog-create-name {
+.blog-name-container {
     margin-bottom: 2vh;
 }
 
-.blog-create-label {
+.blog-input-label {
     display: block;
     margin-bottom: 1vh;
 }
-.blog-create-member-invite-inputs{
+.blog-name-input-container{
     position: relative;
 }
 .blog-create-input {
@@ -309,7 +310,7 @@ body {
     width: 100%;
     padding: 1vh 0.5vw;
 }
-.blog-create-name-check{
+.blog-name-overlap-check{
     position: absolute;
     right: 0;
     width: 5vw;
@@ -324,7 +325,7 @@ body {
     cursor: pointer;
 }
 
-.blog-create-input-description{
+.blog-name-input-description{
     display: block;
     margin: 1vh 0 0 1vh;
     font-size: small;
@@ -335,15 +336,15 @@ body {
     height: 5vh;
 }
 
-.blog-create-member-invite {
+.blog-member-container {
     position: relative;
 }
 
-.blog-create-member-invite-inputs {
+.blog-member-input-container {
     position: relative;
 }
 
-.blog-create-member-invite-search {
+.blog-member-search {
     position: absolute;
     right: 0;
     width: 5vw;
@@ -363,51 +364,51 @@ body {
     border-bottom: 1px solid white;
 }
 
-.blog-create-member-list {
+.blog-member-list {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 1vw;
     margin: 2vh auto;
 }
 
-.blog-create-member-item {
+.blog-member-item {
     display: grid;
     font-size: medium;
     grid-template-columns: 1fr 5fr;
 }
 
-.blog-create-member-img {
+.blog-member-item-img {
     border-radius: 50%;
     width: 2vw;
     margin: 0 auto;
 }
 
-.blog-create-member-texts {
+.blog-member-item-info {
     line-height: 1.4;
     text-indent: 0.5vw;
     overflow: hidden;
 }
 
-.blog-create-member-id {
+.blog-member-item-id {
     display: none;
 }
 
-.blog-create-member-name {
+.blog-member-item-name {
     display: block;
 }
 
-.blog-create-member-email {
+.blog-member-item-email {
     display: block;
     text-overflow: ellipsis;
     overflow: hidden;
     font-size: small;
 }
 
-.blog-create-member-nickName {
+.blog-member-item-nickName {
     display: none;
 }
 
-.blog-create-save-button {
+.blog-save {
     float: right;
     width: 5vw;
     line-height: 2vw;
