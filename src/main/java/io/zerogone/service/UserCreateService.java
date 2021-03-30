@@ -17,15 +17,19 @@ import javax.transaction.Transactional;
 public class UserCreateService {
     private final Logger logger = (Logger) LoggerFactory.getLogger(this.getClass());
 
+    private final FileUploadService fileUploadService;
     private final UserDao userDao;
 
-    public UserCreateService(UserDao userDao) {
+    public UserCreateService(FileUploadService fileUploadService, UserDao userDao) {
+        this.fileUploadService = fileUploadService;
         this.userDao = userDao;
     }
 
     @Transactional
     public UserVo createUser(UserCreateDto userCreateDto) {
         validate(userCreateDto);
+
+        uploadUserProfileImage(userCreateDto);
 
         User user = new User(userCreateDto);
 
@@ -51,5 +55,14 @@ public class UserCreateService {
             throw new NotNullPropertyException(User.class, "nickname");
         }
         logger.info("-----validated dto!-----");
+    }
+
+    private void uploadUserProfileImage(UserCreateDto userCreateDto) {
+        if (userCreateDto.getImage() == null) {
+            return;
+        }
+        String uploadedImgUrl = fileUploadService.uploadFile(userCreateDto.getImage());
+        userCreateDto.setImgUrl(uploadedImgUrl);
+        logger.debug("user's image url : " + userCreateDto.getImgUrl());
     }
 }
