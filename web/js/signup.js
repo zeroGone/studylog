@@ -31,7 +31,7 @@ function submitSignupData() {
     }).then(response => {
         if (response.status === 201) {
             window.location.pathname = "mypage";
-        } else if (response.status === 200) {
+        } else if (response.status === 400) {
             warningText.innerText = "닉네임이 중복됩니다";
         }
     }).catch(error => alert("회원가입 실패! " + error));
