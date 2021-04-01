@@ -1,30 +1,21 @@
-const blogNameInput = document.querySelector('#blog-create-name');
-blogNameInput.addEventListener('keyup', checkRegularExpression);
+const blogNameInput = document.querySelector('#blog-name-input');
 blogNameInput.setAttribute('onkeypress', 'if( event.keyCode == 13 ){checkForDuplicateName();}');
+blogNameInput.addEventListener('keyup', setAttributeOverlapToFalse);
 
-const blogNameCheckButton = document.querySelector('.blog-create-name-check');
+const blogNameCheckButton = document.querySelector('.blog-name-overlap-check');
 blogNameCheckButton.addEventListener('click', checkForDuplicateName);
 
-const blogCreateButton = document.querySelector('.blog-create-save-button');
+const blogCreateButton = document.querySelector('.blog-save');
 blogCreateButton.addEventListener('click', postBlogInfo);
 
-function checkRegularExpression() {
-    blogNameInput.setAttribute('data_result', 'fail');
-    const expression = RegExp(/^[a-zA-Z0-9\s]+$/);
-    const blogNameDescription = document.querySelector('.blog-create-input-description');
-    if (!expression.test(blogNameInput.value)) {
-        blogNameDescription.innerHTML = "블로그 이름에는 영문과 숫자만 입력할 수 있습니다.";
-        return false;
-    } else {
-        blogNameDescription.innerHTML = '문자 사이에 띄어쓰기는 "_ (Underscore)" 처리됩니다.';
-        return true;
-    }
+function setAttributeOverlapToFalse() {
+    return blogNameInput.setAttribute('isCheckOverlap', 'false');
 }
-function checkForDuplicateName() {
-    if (!informBlogNameUndefined(blogNameInput)) return false;
-    if (!checkRegularExpression()) return activeAlertContainer('nameRegExp');
 
-    fetch(`api/blog?name=${blogNameInput.value}`, {
+function checkForDuplicateName() {
+    if (!informBlogNameUndefined(blogNameInput)) return activeAlertContainer('blogNameNotValue');
+    const replacedName = blogNameInput.value.replace(/ /gi, '_');
+    fetch(`api/blog?name=${replacedName}`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -38,38 +29,40 @@ function checkForDuplicateName() {
         })
         .then((data) => {
             if (data === 200) {
-                return existSameBlogName(blogNameInput);
+                return existSameBlogName();
             } else if (data === 404) {
-                return doseNotExistBlogName(blogNameInput);
+                return doseNotExistBlogName();
             }
         }).catch((error) => console.error(error));
 }
 
-function existSameBlogName(blogNameInput) {
+function existSameBlogName() {
     activeAlertContainer('blogNameExist');
-    blogNameInput.setAttribute('data_result', 'fail');
+    blogNameInput.setAttribute('isCheckOverlap', 'false');
     return false;
 }
 
-function doseNotExistBlogName(blogNameInput) {
+function doseNotExistBlogName() {
     activeAlertContainer('blogNameNotExist');
-    blogNameInput.setAttribute('data_result', 'success');
+    blogNameInput.setAttribute('isCheckOverlap', 'true');
     return true;
 }
 
 function postBlogInfo() {
-    if (!informBlogNameUndefined(blogNameInput)) return false;
-    if (blogNameInput.getAttribute('data_result') === 'fail') return activeAlertContainer('blogNameCheck');
+    if (!informBlogNameUndefined(blogNameInput)) return activeAlertContainer('blogNameNotValue');
+    if (blogNameInput.getAttribute('isCheckOverlap') === 'false') return activeAlertContainer('blogNameCheck');
 
     const formData = new FormData();
-    const name = document.querySelector('#blog-create-name').value;
+    const name = document.querySelector('#blog-name-input').value;
     const replacedName = name.replace(/ /gi, '_');
-    const introduce = document.querySelector('#blog-create-introduce').value;
+    const introduce = document.querySelector('#blog-introduce-input').value;
     const image = document.querySelector('#image-input').files[0];
 
     formData.append('name', replacedName);
     formData.append('introduce', introduce);
-    formData.append('image', image);
+    if (image) {
+        formData.append('image', image);
+    }
 
     const members = getMembers();
     for (let index = 0; index < members.length; index += 1) {
@@ -96,9 +89,8 @@ function postBlogInfo() {
 
 function getMembers() {
     const userArray = [];
-    const blogUsers = document.querySelectorAll('.blog-create-member-item');
-
-    blogUsers.forEach((element) => {
+    const blogUsers = document.querySelectorAll('.blog-member-item');
+    [...blogUsers].forEach(element => {
         const userId = element.children.item(1).children.item(0).innerHTML;
         const userName = element.children.item(1).children.item(1).innerHTML;
         const userEmail = element.children.item(1).children.item(2).innerHTML;
@@ -113,10 +105,5 @@ function getMembers() {
 }
 
 function informBlogNameUndefined(blogNameInput) {
-    if (blogNameInput.value === '') {
-        activeAlertContainer('blogNameNotValue');
-        return false;
-    }
-
-    return true;
+    return blogNameInput.value !== '';
 }
