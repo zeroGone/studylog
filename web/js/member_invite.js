@@ -120,9 +120,9 @@ function getUserInfo() {
         }
     }).then(response => response.json())
         .then(data => {
-            if (data.errorMessage === "검색 결과 없음") {
+            if (data.statusCode === 404) {
                 activeAlertContainer('userNotExist');
-            } else {
+            } else if (data.id && data.id !== 0) {
                 userInfoData = data;
                 confirmUserList(userInfoData);
             }
