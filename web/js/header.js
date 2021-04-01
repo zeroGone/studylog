@@ -38,3 +38,17 @@ function headerResize() {
     const noticeIconFrame = noticeIcon.getBoundingClientRect();
     noticeList.style.left = (noticeIconFrame.right - noticeList.offsetWidth) + 'px';
 }
+
+document.querySelector(".user-info-item-logout").addEventListener("click", logout);
+
+function logout() {
+    fetch("api/logout", {
+        method: "POST"
+    }).then(response => {
+        if (response.status === 200) {
+            window.location.pathname = "/";
+        } else {
+            alert("로그아웃 실패! " + response.body);
+        }
+    }).catch(error => alert("로그아웃 실패! " + error));
+}
