@@ -1,9 +1,7 @@
 package io.zerogone.controller;
 
 import ch.qos.logback.classic.Logger;
-import io.zerogone.exception.UniquePropertyException;
 import io.zerogone.model.CurrentUserInfo;
-import io.zerogone.model.ErrorResponse;
 import io.zerogone.model.UserCreateDto;
 import io.zerogone.model.UserVo;
 import io.zerogone.service.UserCreateService;
@@ -38,19 +36,15 @@ public class SignupController {
     }
 
     @PostMapping("signup")
-    public ResponseEntity<Object> signUp(@ModelAttribute UserCreateDto userCreateDto,
+    public ResponseEntity<UserVo> signUp(@ModelAttribute UserCreateDto userCreateDto,
                                          HttpSession httpSession) {
         logger.info("-----create user start-----");
         logger.debug(String.format("received user data { name : %s, email : %s, nickName : %s }"
                 , userCreateDto.getName(), userCreateDto.getEmail(), userCreateDto.getNickName()));
 
-        try {
-            UserVo userVo = userCreateService.createUser(userCreateDto);
-            httpSession.setAttribute("userInfo", new CurrentUserInfo(userVo));
-            httpSession.removeAttribute("visitor");
-            return new ResponseEntity<>(userVo, HttpStatus.CREATED);
-        } catch (UniquePropertyException uniquePropertyException) {
-            return ResponseEntity.ok(new ErrorResponse(uniquePropertyException.getMessage()));
-        }
+        UserVo userVo = userCreateService.createUser(userCreateDto);
+        httpSession.setAttribute("userInfo", new CurrentUserInfo(userVo));
+        httpSession.removeAttribute("visitor");
+        return new ResponseEntity<>(userVo, HttpStatus.CREATED);
     }
 }

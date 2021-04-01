@@ -2,6 +2,7 @@ package io.zerogone.repository;
 
 import io.zerogone.config.DatabaseConfiguration;
 import io.zerogone.config.WebConfiguration;
+import io.zerogone.exception.NotExistedDataException;
 import io.zerogone.model.entity.Blog;
 import org.junit.Assert;
 import org.junit.Before;
@@ -74,8 +75,8 @@ public class BlogDaoTest {
     }
 
     @Test
-    public void findByName_invalideName_ThrowNoResultException() {
-        expectedException.expect(NoResultException.class);
+    public void findByName_invalideName_ThrowNotExistedDataException() {
+        expectedException.expect(NotExistedDataException.class);
         Assert.assertNotNull(blogDao.findByName("zinmin is genius"));
     }
 }

@@ -2,6 +2,7 @@ package io.zerogone.service;
 
 import io.zerogone.config.DatabaseConfiguration;
 import io.zerogone.config.WebConfiguration;
+import io.zerogone.exception.NotExistedDataException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -14,8 +15,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.AnnotationConfigWebContextLoader;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.web.context.WebApplicationContext;
-
-import javax.persistence.NoResultException;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {WebConfiguration.class, DatabaseConfiguration.class}, loader = AnnotationConfigWebContextLoader.class)
@@ -36,20 +35,20 @@ public class UserSearchServiceTest {
 
     @Test
     public void getUserByEmail() {
-        expectedException.expect(NoResultException.class);
+        expectedException.expect(NotExistedDataException.class);
         Assert.assertNull(userSearchService.getUserByEmail("dudrhs571"));
         Assert.assertNotEquals(0, userSearchService.getUserByEmail("dudrhs571@gmail.com").getId());
     }
 
     @Test
-    public void fidnUserByEmail_GivenNull_ThrowNoResultException() {
-        expectedException.expect(NoResultException.class);
+    public void fidnUserByEmail_GivenNull_ThrowNotExistedDataException() {
+        expectedException.expect(NotExistedDataException.class);
         Assert.assertNotEquals(0, userSearchService.getUserByEmail(null).getId());
     }
 
     @Test
-    public void getUserByEmail_GivenEmptyString_ThrowNoResultException() {
-        expectedException.expect(NoResultException.class);
+    public void getUserByEmail_GivenEmptyString_ThrowNotExistedDataException() {
+        expectedException.expect(NotExistedDataException.class);
         Assert.assertNotEquals(0, userSearchService.getUserByEmail("").getId());
     }
 }

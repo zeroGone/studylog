@@ -1,6 +1,7 @@
 package io.zerogone.repository;
 
 import ch.qos.logback.classic.Logger;
+import io.zerogone.exception.NotExistedDataException;
 import io.zerogone.model.entity.Blog;
 import io.zerogone.model.entity.BlogMember;
 import io.zerogone.model.entity.MemberRole;
@@ -8,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -60,6 +62,10 @@ public class BlogDao {
         criteriaQuery.where(criteriaBuilder.equal(root.get("name"), name));
 
         TypedQuery<Blog> blogTypedQuery = entityManager.createQuery(criteriaQuery);
-        return blogTypedQuery.getSingleResult();
+        try {
+            return blogTypedQuery.getSingleResult();
+        }catch (NoResultException noResultException){
+            throw new NotExistedDataException(Blog.class, "블로그 이름으로 블로그 검색", name);
+        }
     }
 }

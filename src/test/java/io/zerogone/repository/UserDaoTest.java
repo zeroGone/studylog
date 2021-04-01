@@ -2,6 +2,7 @@ package io.zerogone.repository;
 
 import io.zerogone.config.DatabaseConfiguration;
 import io.zerogone.config.WebConfiguration;
+import io.zerogone.exception.NotExistedDataException;
 import io.zerogone.model.UserCreateDto;
 import io.zerogone.model.entity.User;
 import org.junit.Assert;
@@ -17,7 +18,6 @@ import org.springframework.test.context.web.AnnotationConfigWebContextLoader;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.web.context.WebApplicationContext;
 
-import javax.persistence.NoResultException;
 import javax.persistence.PersistenceException;
 import javax.transaction.Transactional;
 
@@ -40,20 +40,20 @@ public class UserDaoTest {
 
     @Test
     public void findUserByEmail() {
-        expectedException.expect(NoResultException.class);
+        expectedException.expect(NotExistedDataException.class);
         Assert.assertNull(userDao.findUserByEmail("dudrhs571"));
         Assert.assertNotEquals(0, userDao.findUserByEmail("dudrhs571@gmail.com").getId());
     }
 
     @Test
-    public void fidnUserByEmail_GivenNull_ThrowNoResultException() {
-        expectedException.expect(NoResultException.class);
+    public void fidnUserByEmail_GivenNull_ThrowNotExistedDataException() {
+        expectedException.expect(NotExistedDataException.class);
         Assert.assertNotEquals(0, userDao.findUserByEmail(null).getId());
     }
 
     @Test
-    public void findUserByEmail_GivenEmptyString_ThrowNoResultException() {
-        expectedException.expect(NoResultException.class);
+    public void findUserByEmail_GivenEmptyString_ThrowNotExistedDataException() {
+        expectedException.expect(NotExistedDataException.class);
         Assert.assertNotEquals(0, userDao.findUserByEmail("").getId());
     }
 
