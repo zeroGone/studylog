@@ -63,13 +63,13 @@ public class SignupControllerTest {
     }
 
     @Test
-    public void signUp_DuplicatedNickName_ReturnOk() throws Exception {
+    public void signUp_DuplicatedNickName_ReturnBadRequest() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
                 .post("/signup")
                 .param("name", "test 03/29 20:03")
                 .param("email", "test 03/29 20:03")
                 .param("nickName", "zeroGone"))
                 .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isBadRequest());
     }
 }

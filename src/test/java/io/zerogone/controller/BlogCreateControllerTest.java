@@ -49,13 +49,10 @@ public class BlogCreateControllerTest {
 
     @Test
     public void handleBlogCreateApi_InValidBlogMemeber_ReturnBadRequest() throws Exception {
-        UserDto member = new UserDto();
-        member.setId(Integer.MAX_VALUE);
-
         mockMvc.perform(MockMvcRequestBuilders
                 .post("/api/blog").sessionAttr("userInfo", userInfo)
                 .param("name", "test dto")
-                .param("members", new ObjectMapper().writeValueAsString(new ArrayList<>(Collections.singletonList(member)))))
+                .param("members[0].id", Integer.toString(Integer.MAX_VALUE)))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
     }
@@ -66,7 +63,7 @@ public class BlogCreateControllerTest {
                 .post("/api/blog").sessionAttr("userInfo", userInfo)
                 .param("name", "studylog"))
                 .andDo(print())
-                .andExpect(status().is4xxClientError());
+                .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -82,10 +79,9 @@ public class BlogCreateControllerTest {
     public void handleBlogCreateApi_IncludeInvalidBlogMember_ReturnBadRequest() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
                 .post("/api/blog").sessionAttr("userInfo", userInfo)
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .param("name", "test create blog : 2021-03-22 16:52")
                 .param("members[0].id", Integer.toString(Integer.MAX_VALUE)))
                 .andDo(print())
-                .andExpect(status().is4xxClientError());
+                .andExpect(status().isBadRequest());
     }
 }
