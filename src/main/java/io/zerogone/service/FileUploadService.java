@@ -36,7 +36,7 @@ public class FileUploadService {
             amazonS3.putObject(new PutObjectRequest(bucketName, filePath, multipartFile.getInputStream(), null));
         } catch (IOException ioException) {
             logger.error("Uploading file is failed!");
-            throw new FileUploadException("파일 업로드에 실패하였습니다! 원인 : [" + ioException.getMessage() + "]");
+            throw new FileUploadException(MultipartFile.class, multipartFile.getName());
         }
 
         logger.info("-----file upload end-----");

@@ -1,10 +1,7 @@
 package io.zerogone.controller;
 
 import ch.qos.logback.classic.Logger;
-import io.zerogone.exception.BlogMembersStateException;
-import io.zerogone.exception.FileUploadException;
-import io.zerogone.exception.NotNullPropertyException;
-import io.zerogone.exception.UniquePropertyException;
+import io.zerogone.exception.*;
 import io.zerogone.model.ErrorResponse;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -12,26 +9,46 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import javax.persistence.NoResultException;
-
 @RestControllerAdvice
 public class ApiControllerAdvice {
     private final Logger logger = (Logger) LoggerFactory.getLogger(this.getClass());
 
-    @ExceptionHandler(NoResultException.class)
-    public ResponseEntity<ErrorResponse> handleNoResultException() {
-        logger.debug("Searching entity is failed!");
-        return new ResponseEntity<>(new ErrorResponse("검색 결과 없음"), HttpStatus.OK);
+    @ExceptionHandler(NotExistedDataException.class)
+    public ResponseEntity<ErrorResponse> handleNotExsitedDataException(NotExistedDataException notExistedDataException) {
+        logger.info("Searching entity is failed!");
+        return new ResponseEntity<>(
+                new ErrorResponse.Builder()
+                        .exception(NotExistedDataException.class)
+                        .cause("검색 조건에 부합한 데이터가 존재하지 않음")
+                        .statusCode(HttpStatus.NOT_FOUND)
+                        .detail(notExistedDataException.getMessage())
+                        .build()
+                , HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(FileUploadException.class)
+    public ResponseEntity<ErrorResponse> handleFileUploadException(FileUploadException fileUploadException) {
+        return new ResponseEntity<>(
+                new ErrorResponse.Builder()
+                        .exception(FileUploadException.class)
+                        .cause("파일 업로드시 예상치 못한 에러발생")
+                        .statusCode(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .detail(fileUploadException.getMessage())
+                        .build(),
+                HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(value = {BlogMembersStateException.class, UniquePropertyException.class, NotNullPropertyException.class})
     public ResponseEntity<ErrorResponse> handleBlogCreateException(Exception exception) {
         logger.debug("catch exception : " + exception.getMessage());
-        return new ResponseEntity<>(new ErrorResponse(exception.getMessage()), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(
+                new ErrorResponse.Builder()
+                        .exception(FileUploadException.class)
+                        .cause("데이터베이스 관련 조건에서 벗어남")
+                        .statusCode(HttpStatus.BAD_REQUEST)
+                        .detail(exception.getMessage())
+                        .build(),
+                HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(FileUploadException.class)
-    public ResponseEntity<ErrorResponse> handleFileUploadException(FileUploadException fileUploadException) {
-        return new ResponseEntity<>(new ErrorResponse(fileUploadException.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
-    }
 }

@@ -1,5 +1,6 @@
 package io.zerogone.controller;
 
+import io.zerogone.exception.NotExistedDataException;
 import io.zerogone.model.CurrentUserInfo;
 import io.zerogone.model.UserDto;
 import io.zerogone.model.UserVo;
@@ -9,7 +10,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.persistence.NoResultException;
 import javax.servlet.http.HttpSession;
 
 @RestController
@@ -26,9 +26,9 @@ public class LoginController {
             UserVo userVo = userSearchService.getUserByEmail(userDto.getEmail());
             httpSession.setAttribute("userInfo", new CurrentUserInfo(userVo));
             return ResponseEntity.ok(userVo);
-        } catch (NoResultException noResultException) {
+        } catch (NotExistedDataException notExistedDataException) {
             httpSession.setAttribute("visitor", userDto);
-            throw noResultException;
+            throw notExistedDataException;
         }
     }
 }

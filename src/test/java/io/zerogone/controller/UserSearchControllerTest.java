@@ -48,7 +48,7 @@ public class UserSearchControllerTest {
                 .andDo(print());
 
         mockMvc.perform(get("/api/user").sessionAttr("userInfo", userInfo).param("email", "%"))
-                .andExpect(status().isOk())
+                .andExpect(status().isNotFound())
                 .andDo(print());
     }
 
@@ -57,7 +57,7 @@ public class UserSearchControllerTest {
         mockMvc.perform(get("/api/user")
                 .sessionAttr("userInfo", userInfo)
                 .param("email", ""))
-                .andExpect(status().isOk())
+                .andExpect(status().isNotFound())
                 .andDo(print());
     }
 }

@@ -48,9 +48,9 @@ public class BlogSearchControllerTest {
     }
 
     @Test
-    public void handleBlogSearchApi_NotExistedName_ReturnOkWithErrorMessage() throws Exception {
+    public void handleBlogSearchApi_NotExistedName_ReturnNotFoundWithErrorMessage() throws Exception {
         mockMvc.perform(get("/api/blog").param("name", "jinmin is zzang"))
-                .andExpect(status().isOk())
+                .andExpect(status().isNotFound())
                 .andDo(print());
     }
 }

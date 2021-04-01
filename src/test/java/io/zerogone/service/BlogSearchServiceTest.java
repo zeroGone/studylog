@@ -2,6 +2,7 @@ package io.zerogone.service;
 
 import io.zerogone.config.DatabaseConfiguration;
 import io.zerogone.config.WebConfiguration;
+import io.zerogone.exception.NotExistedDataException;
 import io.zerogone.model.CurrentUserInfo;
 import org.junit.Assert;
 import org.junit.Before;
@@ -49,8 +50,8 @@ public class BlogSearchServiceTest {
     public ExpectedException expectedException = ExpectedException.none();
 
     @Test
-    public void getBlog_NotExistedName_ThrowNoResultException() {
-        expectedException.expect(NoResultException.class);
+    public void getBlog_NotExistedName_ThrowNotExistedDataException() {
+        expectedException.expect(NotExistedDataException.class);
         Assert.assertNotNull(blogSearchService.getBlogByName("jinmin is genius"));
     }
 }

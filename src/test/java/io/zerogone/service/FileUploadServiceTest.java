@@ -44,11 +44,4 @@ public class FileUploadServiceTest {
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
-
-    @Test
-    public void uploadFile_InvalidFile_ThrowFileUploadException() {
-        expectedException.expect(FileUploadException.class);
-        MockMultipartFile file = new MockMultipartFile("data", "", "?", "some xml".getBytes());
-        Assert.assertNotNull(fileUploadService.uploadFile("img/user/", file));
-    }
 }

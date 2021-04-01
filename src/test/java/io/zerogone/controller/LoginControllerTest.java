@@ -49,7 +49,7 @@ public class LoginControllerTest {
     }
 
     @Test
-    public void doLogin_NotExistedUser_ReturnBadRequest() throws Exception {
+    public void doLogin_NotExistedUser_ReturnNotFound() throws Exception {
         UserDto userDto = new UserDto();
         userDto.setName("이게누구여");
         userDto.setEmail("모르는사람이여");
@@ -60,6 +60,6 @@ public class LoginControllerTest {
                 .characterEncoding("utf-8")
                 .content(new ObjectMapper().writeValueAsString(userDto)))
                 .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isNotFound());
     }
 }
