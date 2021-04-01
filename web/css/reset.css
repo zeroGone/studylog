@@ -348,7 +348,9 @@ input {
 }
 
 .user-info-item-name {
+    text-decoration: none;
     cursor: pointer;
+    color: black;
 }
 
 .user-info-item-logout {

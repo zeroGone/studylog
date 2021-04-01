@@ -50,7 +50,7 @@
         <span class="user-info-item-email">${userInfo.email}</span>
     </li>
     <li class="user-info-item">
-        <span class="user-info-item-name">내 정보 관리</span>
+        <a class="user-info-item-name" href="/mypage">내 정보 관리</a>
     </li>
     <li class="user-info-item">
         <span class="user-info-item-logout">로그아웃</span>
