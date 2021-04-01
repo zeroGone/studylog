@@ -34,21 +34,21 @@ public class FileUploadServiceTest {
     @Test
     public void uploadFile() {
         MockMultipartFile firstFile = new MockMultipartFile("data", "filename.txt", "text/plain", "some xml".getBytes());
-        Assert.assertEquals("C:\\tmp\\filename.txt", fileUploadService.uploadFile(firstFile));
+        Assert.assertNotNull(fileUploadService.uploadFile("img/user", firstFile));
     }
 
     @Test
     public void uploadFile_FileIsNull_ReturnNull() {
-        Assert.assertNull(fileUploadService.uploadFile(null));
+        Assert.assertNull(fileUploadService.uploadFile("img/user", null));
     }
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 
     @Test
-    public void uploadFile_InvalidFile_ThrowFileUploadException(){
+    public void uploadFile_InvalidFile_ThrowFileUploadException() {
         expectedException.expect(FileUploadException.class);
         MockMultipartFile file = new MockMultipartFile("data", "", "?", "some xml".getBytes());
-        Assert.assertNotNull(fileUploadService.uploadFile(file));
+        Assert.assertNotNull(fileUploadService.uploadFile("img/user/", file));
     }
 }

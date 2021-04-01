@@ -15,8 +15,9 @@ import javax.transaction.Transactional;
 
 @Service
 public class UserCreateService {
-    private final Logger logger = (Logger) LoggerFactory.getLogger(this.getClass());
+    private static final String imageFilePath = "img/user";
 
+    private final Logger logger = (Logger) LoggerFactory.getLogger(this.getClass());
     private final FileUploadService fileUploadService;
     private final UserDao userDao;
 
@@ -61,7 +62,7 @@ public class UserCreateService {
         if (userCreateDto.getImage() == null) {
             return;
         }
-        String uploadedImgUrl = fileUploadService.uploadFile(userCreateDto.getImage());
+        String uploadedImgUrl = fileUploadService.uploadFile(imageFilePath, userCreateDto.getImage());
         userCreateDto.setImgUrl(uploadedImgUrl);
         logger.debug("user's image url : " + userCreateDto.getImgUrl());
     }

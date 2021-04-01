@@ -16,8 +16,9 @@ import javax.transaction.Transactional;
 
 @Service
 public class BlogCreateService {
-    private final Logger logger = (Logger) LoggerFactory.getLogger(this.getClass());
+    private static final String imageFilePath = "img/blog";
 
+    private final Logger logger = (Logger) LoggerFactory.getLogger(this.getClass());
     private final FileUploadService fileUploadService;
     private final BlogDao blogDao;
     private final BlogMemberCreateService blogMemberCreateService;
@@ -32,7 +33,7 @@ public class BlogCreateService {
     public BlogVo createBlog(CurrentUserInfo creator, BlogCreateDto blogCreateDto) {
         validate(blogCreateDto);
 
-        String uploadedImgUrl = fileUploadService.uploadFile(blogCreateDto.getImage());
+        String uploadedImgUrl = fileUploadService.uploadFile(imageFilePath, blogCreateDto.getImage());
 
         Blog blog = new Blog(blogCreateDto.getName(), blogCreateDto.getIntroduce(), uploadedImgUrl);
 
