@@ -12,25 +12,27 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Arrays;
 
-//@WebFilter(description = "Check Login Information In Session",
-//        filterName = "Login Checker", urlPatterns = "*")
-//@Order(2)
+@WebFilter(description = "Check Login Information In Session",
+        filterName = "Login Checker", urlPatterns = "*")
+@Order(2)
 public class LoginCheckFilter extends OncePerRequestFilter {
     private static final String LOGIN_PROPERTY_IN_SESSION = "userInfo";
-    private static final String INDEX_URL = "/";
-    private static final String SWAGGER_URL = "/swagger-ui.html";
+    private static final String[] UNKNOWN_ACCESSIBLE_URLS = new String[]{
+            "/", "/login", "/signup"
+    };
 
     private static final Log logger = LogFactory.getLog(LoginCheckFilter.class);
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
         if (hasUserInfoInSession(httpServletRequest.getSession())
-                || isPossibleAccessForUnknown(httpServletRequest.getRequestURI())) {
+                || isUnknownAccessible(httpServletRequest.getRequestURI())) {
             filterChain.doFilter(httpServletRequest, httpServletResponse);
         } else {
             logger.info("Unknown access");
-            httpServletResponse.sendRedirect(INDEX_URL);
+            httpServletResponse.sendRedirect("/");
         }
     }
 
@@ -38,12 +40,12 @@ public class LoginCheckFilter extends OncePerRequestFilter {
         return httpSession.getAttribute(LOGIN_PROPERTY_IN_SESSION) != null;
     }
 
-    private boolean isPossibleAccessForUnknown(String requestUri) {
-        return INDEX_URL.equals(requestUri);
+    private boolean isUnknownAccessible(String requestUri) {
+        return Arrays.asList(UNKNOWN_ACCESSIBLE_URLS).contains(requestUri);
     }
 
     @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+    protected boolean shouldNotFilter(HttpServletRequest request) {
         return isWebResources(request.getRequestURI());
     }
 

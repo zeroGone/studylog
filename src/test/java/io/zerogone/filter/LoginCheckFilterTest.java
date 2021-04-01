@@ -1,7 +1,7 @@
 package io.zerogone.filter;
 
 import io.zerogone.config.WebConfiguration;
-import io.zerogone.model.entity.User;
+import io.zerogone.model.CurrentUserInfo;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,8 +27,15 @@ public class LoginCheckFilterTest {
 
     private MockMvc mockMvc;
 
+    private CurrentUserInfo userInfo;
+
     @Before
     public void setUp() {
+        userInfo = new CurrentUserInfo();
+        userInfo.setId(1);
+        userInfo.setName("김영곤");
+        userInfo.setNickName("zeroGone");
+        userInfo.setEmail("dudrhs571@gmail.com");
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).addFilter(new LoginCheckFilter()).build();
     }
 
@@ -36,7 +43,7 @@ public class LoginCheckFilterTest {
     public void testFilterIsWorking() throws Exception {
         mockMvc.perform(get("/")).andExpect(status().isOk()).andExpect(view().name("index"));
         mockMvc.perform(get("/mypage")).andExpect(status().is3xxRedirection());
-        mockMvc.perform(get("/mypage").sessionAttr("userInfo", new User())).andExpect(status().isOk()).andExpect(view().name("mypage"));
+        mockMvc.perform(get("/mypage").sessionAttr("userInfo", userInfo)).andExpect(status().isOk()).andExpect(view().name("mypage"));
         mockMvc.perform(get("/issue/1")).andExpect(status().is3xxRedirection());
     }
 }
