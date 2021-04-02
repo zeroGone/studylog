@@ -4,12 +4,12 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-public class InviteKeyGeneratorTest {
-    private InviteKeyGenerator generator;
+public class InvitationKeyGeneratorTest {
+    private InvitationKeyGenerator generator;
 
     @Before
     public void setUp() {
-        generator = new InviteKeyGenerator();
+        generator = new InvitationKeyGenerator();
     }
 
     @Test

@@ -1,6 +1,6 @@
 package io.zerogone.service;
 
-public class InviteKeyGenerator {
+public class InvitationKeyGenerator {
     private static final int ASCII_START_CODE = 33;
     private static final int RANDOM_VALUE = 94;
 
