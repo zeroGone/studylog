@@ -44,7 +44,7 @@ public class BlogDao {
 
         criteriaQuery.select(root);
         criteriaQuery.where(criteriaBuilder.and(
-                criteriaBuilder.equal(join.get("userId"), userId),
+                criteriaBuilder.equal(join.get("user").get("id"), userId),
                 criteriaBuilder.or(
                         criteriaBuilder.equal(join.get("role"), MemberRole.MEMBER),
                         criteriaBuilder.equal(join.get("role"), MemberRole.ADMIN))));

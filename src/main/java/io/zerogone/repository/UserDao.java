@@ -49,7 +49,7 @@ public class UserDao {
         Join<User, BlogMember> join = root.join("blogs");
 
         criteriaQuery.select(root);
-        criteriaQuery.where(criteriaBuilder.equal(join.get("blogId"), blogId));
+        criteriaQuery.where(criteriaBuilder.equal(join.get("blog").get("id"), blogId));
 
         TypedQuery<User> typedQuery = entityManager.createQuery(criteriaQuery);
         return typedQuery.getResultList();

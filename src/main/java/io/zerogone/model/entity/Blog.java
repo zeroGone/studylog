@@ -18,11 +18,15 @@ public class Blog {
     @Column(name = "img_url")
     private String imgUrl;
 
-    @OneToMany(mappedBy = "blogId")
+    @OneToMany(mappedBy = "blog")
     private List<BlogMember> members;
 
     public Blog() {
 
+    }
+
+    public Blog(int id){
+        this.id = id;
     }
 
     public Blog(String name, String introduce, String imgUrl) {

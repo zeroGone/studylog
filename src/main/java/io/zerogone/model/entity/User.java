@@ -24,11 +24,15 @@ public class User {
     @Column(name = "img_url")
     private String imgUrl;
 
-    @OneToMany(mappedBy = "userId")
+    @OneToMany(mappedBy = "user")
     private List<BlogMember> blogs;
 
     public User() {
 
+    }
+
+    public User(int id){
+        this.id = id;
     }
 
     public User(UserCreateDto userDto) {

@@ -2,7 +2,6 @@ package io.zerogone.repository;
 
 import io.zerogone.config.DatabaseConfiguration;
 import io.zerogone.config.WebConfiguration;
-import io.zerogone.exception.BlogMembersStateException;
 import io.zerogone.model.entity.BlogMember;
 import io.zerogone.model.entity.MemberRole;
 import org.junit.Assert;
