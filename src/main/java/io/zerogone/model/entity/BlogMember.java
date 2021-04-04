@@ -11,19 +11,21 @@ public class BlogMember {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "user_id", nullable = false)
-    private int userId;
+    @ManyToOne(targetEntity = User.class)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
-    @Column(name = "blog_id", nullable = false)
-    private int blogId;
+    @ManyToOne(targetEntity = Blog.class)
+    @JoinColumn(name = "blog_id", nullable = false)
+    private Blog blog;
 
     @Column(name = "role_id")
     @Convert(converter = MemberRoleConverter.class)
     private MemberRole role;
 
-    public BlogMember(int userId, int blogId, MemberRole role) {
-        this.userId = userId;
-        this.blogId = blogId;
+    public BlogMember(User user, Blog blog, MemberRole role) {
+        this.user = user;
+        this.blog = blog;
         this.role = role;
     }
 
@@ -35,15 +37,19 @@ public class BlogMember {
         return id;
     }
 
-    public int getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public int getBlogId() {
-        return blogId;
+    public Blog getBlog() {
+        return blog;
     }
 
     public MemberRole getRole() {
         return role;
+    }
+
+    public void acceptBlogMember() {
+        role = MemberRole.MEMBER;
     }
 }

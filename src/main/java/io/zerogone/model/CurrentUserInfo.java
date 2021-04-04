@@ -2,13 +2,7 @@ package io.zerogone.model;
 
 import java.util.List;
 
-//TODO NotNull 속성 적용
-public class CurrentUserInfo {
-    private int id;
-    private String name;
-    private String nickName;
-    private String email;
-    private String imgUrl;
+public class CurrentUserInfo extends UserDto {
     private List<CurrentUserBlog> blogs;
 
     public CurrentUserInfo() {
@@ -20,46 +14,6 @@ public class CurrentUserInfo {
         this.nickName = userVo.getNickName();
         this.imgUrl = userVo.getImgUrl();
         this.email = userVo.getEmail();
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getNickName() {
-        return nickName;
-    }
-
-    public void setNickName(String nickName) {
-        this.nickName = nickName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getImgUrl() {
-        return imgUrl;
-    }
-
-    public void setImgUrl(String imgUrl) {
-        this.imgUrl = imgUrl;
     }
 
     public List<CurrentUserBlog> getBlogs() {

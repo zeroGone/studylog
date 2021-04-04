@@ -1,6 +1,6 @@
 package io.zerogone.model.entity;
 
-import io.zerogone.model.UserCreateDto;
+import io.zerogone.model.UserDto;
 
 import javax.persistence.*;
 import java.util.List;
@@ -24,14 +24,18 @@ public class User {
     @Column(name = "img_url")
     private String imgUrl;
 
-    @OneToMany(mappedBy = "userId")
+    @OneToMany(mappedBy = "user")
     private List<BlogMember> blogs;
 
     public User() {
 
     }
 
-    public User(UserCreateDto userDto) {
+    public User(int id) {
+        this.id = id;
+    }
+
+    public User(UserDto userDto) {
         id = userDto.getId();
         name = userDto.getName();
         email = userDto.getEmail();

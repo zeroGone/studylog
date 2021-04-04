@@ -3,6 +3,7 @@ package io.zerogone.repository;
 import ch.qos.logback.classic.Logger;
 import io.zerogone.exception.NotExistedDataException;
 import io.zerogone.model.entity.BlogMember;
+import io.zerogone.model.entity.MemberRole;
 import io.zerogone.model.entity.User;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -34,9 +35,9 @@ public class UserDao {
         criteriaQuery.where(criteriaBuilder.equal(root.get("email"), email));
 
         TypedQuery<User> query = entityManager.createQuery(criteriaQuery);
-        try{
+        try {
             return query.getSingleResult();
-        }catch (NoResultException noResultException){
+        } catch (NoResultException noResultException) {
             throw new NotExistedDataException(User.class, "이메일로 유저 검색", email);
         }
     }
@@ -49,7 +50,11 @@ public class UserDao {
         Join<User, BlogMember> join = root.join("blogs");
 
         criteriaQuery.select(root);
-        criteriaQuery.where(criteriaBuilder.equal(join.get("blogId"), blogId));
+        criteriaQuery.where(criteriaBuilder.and(
+                        criteriaBuilder.equal(join.get("blog").get("id"), blogId),
+                        criteriaBuilder.or(
+                                criteriaBuilder.equal(join.get("role"), MemberRole.MEMBER),
+                                criteriaBuilder.equal(join.get("role"), MemberRole.ADMIN))));
 
         TypedQuery<User> typedQuery = entityManager.createQuery(criteriaQuery);
         return typedQuery.getResultList();
