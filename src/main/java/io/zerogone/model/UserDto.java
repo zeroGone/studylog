@@ -1,11 +1,11 @@
 package io.zerogone.model;
 
 public class UserDto {
-    private int id;
-    private String name;
-    private String nickName;
-    private String email;
-    private String imgUrl;
+    protected int id;
+    protected String name;
+    protected String nickName;
+    protected String email;
+    protected String imgUrl;
 
     public int getId() {
         return id;
