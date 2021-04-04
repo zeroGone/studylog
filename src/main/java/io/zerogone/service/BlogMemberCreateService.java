@@ -23,9 +23,11 @@ import java.util.stream.Collectors;
 public class BlogMemberCreateService {
     private final Logger logger = (Logger) LoggerFactory.getLogger(this.getClass());
     private final BlogMemberDao blogMemberDao;
+    private final BlogMemberInviteService blogMemberInviteService;
 
-    public BlogMemberCreateService(BlogMemberDao blogMemberDao) {
+    public BlogMemberCreateService(BlogMemberDao blogMemberDao, BlogMemberInviteService blogMemberInviteService) {
         this.blogMemberDao = blogMemberDao;
+        this.blogMemberInviteService = blogMemberInviteService;
     }
 
     @Transactional
@@ -47,6 +49,8 @@ public class BlogMemberCreateService {
             throw new BlogMembersStateException("유효하지 않은 블로그 id나 유저 id가 포함되어 있습니다");
         }
         logger.debug("-----create blog member entities end-----");
+
+        blogMemberInviteService.createBlogMemberInvitationKey(blogMembers);
     }
 
     private void validateMembers(int adminUserId, List<UserDto> members) {

@@ -1,15 +1,11 @@
 package io.zerogone.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.zerogone.config.WebConfiguration;
-import io.zerogone.model.BlogCreateDto;
 import io.zerogone.model.CurrentUserInfo;
-import io.zerogone.model.UserDto;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.AnnotationConfigWebContextLoader;
@@ -18,9 +14,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-
-import java.util.ArrayList;
-import java.util.Collections;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -45,6 +38,19 @@ public class BlogCreateControllerTest {
         userInfo.setName("김영곤");
         userInfo.setNickName("zeroGone");
         userInfo.setImgUrl("/img/user-default/1.png");
+    }
+
+    @Test
+    public void handleBlogCreateApi() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders
+                .post("/api/blog").sessionAttr("userInfo", userInfo)
+                .param("name", "4월 4일 테스트 18:35")
+                .param("members[0].id", "4")
+                .param("members[0].name", "김영곤")
+                .param("members[0].email", "dudrhs571@naver.com")
+                .param("members[0].nickName", "zeroGone7247"))
+                .andDo(print())
+                .andExpect(status().isCreated());
     }
 
     @Test

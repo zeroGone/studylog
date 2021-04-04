@@ -24,10 +24,10 @@ public class BlogMemberInvitationKey {
 
     }
 
-    public BlogMemberInvitationKey(String value, LocalDateTime createDateTime, BlogMember owner) {
+    public BlogMemberInvitationKey(String value, BlogMember owner) {
         this.value = value;
-        this.createDateTime = createDateTime;
         this.owner = owner;
+        createDateTime = LocalDateTime.now();
     }
 
     public int getId() {
