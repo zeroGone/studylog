@@ -1,7 +1,7 @@
 const noticeIcon = document.querySelector('.header-notice');
 const noticeList = document.querySelector('.header-notice-list');
 
-noticeIcon.addEventListener('click', function (event) {
+noticeIcon.addEventListener('click', function () {
     if (!noticeList.classList.contains('active')) {
         noticeList.classList.add('active');
         headerResize();
@@ -12,9 +12,8 @@ noticeIcon.addEventListener('click', function (event) {
 
 const userInfo = document.querySelector('.user-info');
 const userInfoList = document.querySelector('.user-info-list');
-userInfoList.style.width = userInfo.offsetWidth;
 
-userInfo.addEventListener('click', function (event) {
+userInfo.addEventListener('click', function () {
     if (!userInfoList.classList.contains('active')) {
         userInfoList.classList.add('active');
     } else {
@@ -22,22 +21,26 @@ userInfo.addEventListener('click', function (event) {
     }
 });
 
-const userInfoFrame = userInfo.getBoundingClientRect();
-noticeIcon.style.left = (userInfoFrame.left - 70) + 'px';
-
-const noticeIconFrame = noticeIcon.getBoundingClientRect();
-noticeList.style.left = (noticeIconFrame.right - noticeList.offsetWidth) + 'px';
-
-window.addEventListener('resize', headerResize);
-
 function headerResize() {
     const userInfoFrame = userInfo.getBoundingClientRect();
-    noticeIcon.style.left = (userInfoFrame.left - 70) + 'px';
+    userInfoList.style.width = userInfoFrame.width;
 
-    const noticeList = document.querySelector('.header-notice-list');
     const noticeIconFrame = noticeIcon.getBoundingClientRect();
-    noticeList.style.left = (noticeIconFrame.right - noticeList.offsetWidth) + 'px';
+    const noticeListFrame = noticeList.getBoundingClientRect();
+    noticeList.style.left = (noticeIconFrame.left - noticeListFrame.width) + noticeIconFrame.width;
 }
+
+window.addEventListener("load", function () {
+    headerResize();
+});
+
+let resizeTimer = null;
+window.addEventListener("resize", function () {
+    clearTimeout(null);
+    resizeTimer = setTimeout(function () {
+        headerResize();
+    }, 300);
+});
 
 document.querySelector(".user-info-item-logout").addEventListener("click", logout);
 

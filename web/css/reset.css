@@ -174,16 +174,27 @@ input {
     transform: translate(-50%, -50%);
 }
 
-.header-notice {
-    position: absolute;
+.header-information {
+    position: relative;
     top: 50%;
+    width: auto;
+    height: 65%;
+    float: right;
     transform: translateY(-50%);
+    margin-right: 1vw;
+}
+
+.header-notice {
+    position: relative;
+    height: 100%;
     cursor: pointer;
+    float: right;
+    margin-right: 1vw;
 }
 
 .header-notice-icon {
-    font-size: xx-large;
-    color: var(--white);
+    height: 70%;
+    padding: 15%;
 }
 
 .header-notice-alert {
@@ -284,15 +295,13 @@ input {
 }
 
 .user-info {
-    position: absolute;
-    top: 50%;
-    right: 2%;
-    transform: translateY(-50%);
-    height: 65%;
+    display: inline-block;
+    height: 100%;
     background-color: var(--light-blue-black);
     box-sizing: border-box;
     border-radius: 5px;
     cursor: pointer;
+    float: right;
 }
 
 .user-info-nickname {
@@ -316,7 +325,7 @@ input {
     position: fixed;
     z-index: 100;
     top: 8vh;
-    right: 2vw;
+    right: 1vw;
     height: auto;
     border: 1px solid var(--gray);
     border-radius: 5px;
