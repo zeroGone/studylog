@@ -3,10 +3,7 @@ package io.zerogone.service;
 import io.zerogone.config.DatabaseConfiguration;
 import io.zerogone.config.WebConfiguration;
 import io.zerogone.model.UserDto;
-import io.zerogone.model.entity.Blog;
-import io.zerogone.model.entity.BlogMember;
-import io.zerogone.model.entity.MemberRole;
-import io.zerogone.model.entity.User;
+import io.zerogone.model.entity.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,6 +26,7 @@ public class EmailServiceTest {
     private WebApplicationContext webApplicationContext;
 
     private EmailService emailService;
+    private InvitationKeyGenerator generator = new InvitationKeyGenerator();
 
     @Before
     public void setUp() throws Exception {
@@ -37,10 +35,12 @@ public class EmailServiceTest {
 
     @Test
     public void sendInvitationEmail() throws MessagingException {
-        List<BlogMember> members = new ArrayList<>();
         UserDto dto = new UserDto();
         dto.setEmail("dudrhs571@gmail.com");
-        members.add(new BlogMember(new User(dto), new Blog("ㅎㅇ 테스트중", null, null), MemberRole.INVITING));
-        emailService.sendInvitationEmail(members);
+        BlogMember blogMember = new BlogMember(new User(dto), new Blog("ㅎㅇ 테스트중", null, null), MemberRole.INVITING);
+
+        List<BlogMemberInvitationKey> keys = new ArrayList<>();
+        keys.add(new BlogMemberInvitationKey(generator.generateKey(15), blogMember));
+        emailService.sendInvitationEmail(keys);
     }
 }

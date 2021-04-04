@@ -41,4 +41,12 @@ public class BlogMemberInvitationKey {
     public LocalDateTime getCreateDateTime() {
         return createDateTime;
     }
+
+    public String getUserEmail() {
+        return owner.getUser().getEmail();
+    }
+
+    public String getBlogName() {
+        return owner.getBlog().getName();
+    }
 }
