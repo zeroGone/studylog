@@ -20,7 +20,7 @@ import java.util.Arrays;
 public class LoginCheckFilter extends OncePerRequestFilter {
     private static final String LOGIN_PROPERTY_IN_SESSION = "userInfo";
     private static final String[] UNKNOWN_ACCESSIBLE_URLS = new String[]{
-            "/", "/login", "/signup"
+            "/", "/login", "/signup", "/blog/accept"
     };
 
     private static final Log logger = LogFactory.getLog(LoginCheckFilter.class);

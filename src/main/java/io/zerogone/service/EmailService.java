@@ -36,6 +36,6 @@ public class EmailService {
                 "<div> 아래 링크를 클릭하시면 " +
                 blogName + " 의 확정 멤버가 됩니다~! </div>" +
                 "<div> 열심히 활동 해주세요 ! </div>" +
-                "<a href='http://localhost:8080/accept-blog?key=" + key + "'> 초대 수락하기 </a>";
+                "<a href='http://localhost:8080/blog/accept?key=" + key + "'> 초대 수락하기 </a>";
     }
 }

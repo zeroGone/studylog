@@ -26,4 +26,10 @@ public class BlogMemberDao {
 
         logger.debug("-----save blogmember end-----");
     }
+
+    public void update(BlogMember blogMember) {
+        logger.info("-----Updating blog member's role Inviting -> Member start-----");
+        entityManager.merge(blogMember);
+        logger.info("-----Updating blog member's role Inviting -> Member is ended-----");
+    }
 }

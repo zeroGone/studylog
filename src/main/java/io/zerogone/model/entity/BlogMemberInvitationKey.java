@@ -42,6 +42,10 @@ public class BlogMemberInvitationKey {
         return createDateTime;
     }
 
+    public BlogMember getOwner() {
+        return owner;
+    }
+
     public String getUserEmail() {
         return owner.getUser().getEmail();
     }

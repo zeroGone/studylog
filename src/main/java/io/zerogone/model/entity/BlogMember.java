@@ -48,4 +48,8 @@ public class BlogMember {
     public MemberRole getRole() {
         return role;
     }
+
+    public void acceptBlogMember() {
+        role = MemberRole.MEMBER;
+    }
 }

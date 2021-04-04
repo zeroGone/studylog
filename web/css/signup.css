@@ -70,3 +70,7 @@
 .signup-button:hover {
     color: var(--blue-black);
 }
+
+.welcome-blog-text {
+    margin-top: 5vh;
+}
