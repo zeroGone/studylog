@@ -25,7 +25,7 @@ public class Blog {
 
     }
 
-    public Blog(int id){
+    public Blog(int id) {
         this.id = id;
     }
 

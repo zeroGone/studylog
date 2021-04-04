@@ -5,6 +5,7 @@ import io.zerogone.config.WebConfiguration;
 import io.zerogone.exception.BlogMembersStateException;
 import io.zerogone.model.CurrentUserInfo;
 import io.zerogone.model.UserDto;
+import io.zerogone.model.entity.Blog;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -50,12 +51,12 @@ public class BlogMemberCreateServiceTest {
 
     @Test
     public void createBlogMembers() {
-        blogMemberCreateService.createBlogMembers(1, currentUserInfo, new ArrayList<>());
+        blogMemberCreateService.createBlogMembers(new Blog(1), currentUserInfo, new ArrayList<>());
         List<UserDto> members = new ArrayList<>();
         UserDto userDto = new UserDto();
         userDto.setId(2);
         members.add(userDto);
-        blogMemberCreateService.createBlogMembers(1, currentUserInfo, members);
+        blogMemberCreateService.createBlogMembers(new Blog(1), currentUserInfo, members);
     }
 
     @Rule
@@ -73,6 +74,18 @@ public class BlogMemberCreateServiceTest {
         userDto = new UserDto();
         userDto.setId(2);
         members.add(userDto);
-        blogMemberCreateService.createBlogMembers(1, currentUserInfo, members);
+        blogMemberCreateService.createBlogMembers(new Blog(1), currentUserInfo, members);
+    }
+
+    @Test
+    @Transactional
+    public void createBlogMembers_BlogMemberIdIsZero_ThrowBlogMembersStateException() {
+        expectedException.expect(BlogMembersStateException.class);
+
+        List<UserDto> members = new ArrayList<>();
+        UserDto userDto = new UserDto();
+        userDto.setId(0);
+        members.add(userDto);
+        blogMemberCreateService.createBlogMembers(new Blog(1), currentUserInfo, members);
     }
 }

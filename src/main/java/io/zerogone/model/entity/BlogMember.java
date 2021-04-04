@@ -23,9 +23,9 @@ public class BlogMember {
     @Convert(converter = MemberRoleConverter.class)
     private MemberRole role;
 
-    public BlogMember(int userId, int blogId, MemberRole role) {
-        user = new User(userId);
-        blog = new Blog(blogId);
+    public BlogMember(User user, Blog blog, MemberRole role) {
+        this.user = user;
+        this.blog = blog;
         this.role = role;
     }
 

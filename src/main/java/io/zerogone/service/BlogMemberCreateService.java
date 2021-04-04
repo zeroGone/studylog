@@ -4,8 +4,10 @@ import ch.qos.logback.classic.Logger;
 import io.zerogone.exception.BlogMembersStateException;
 import io.zerogone.model.CurrentUserInfo;
 import io.zerogone.model.UserDto;
+import io.zerogone.model.entity.Blog;
 import io.zerogone.model.entity.BlogMember;
 import io.zerogone.model.entity.MemberRole;
+import io.zerogone.model.entity.User;
 import io.zerogone.repository.BlogMemberDao;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -27,18 +29,17 @@ public class BlogMemberCreateService {
     }
 
     @Transactional
-    public void createBlogMembers(int blogId, CurrentUserInfo creator, List<UserDto> members) {
+    public void createBlogMembers(Blog blog, CurrentUserInfo creator, List<UserDto> members) {
         if (members == null) {
             return;
         }
 
         logger.debug("-----create blog member start-----");
-
         validateMembers(creator.getId(), members);
 
         List<BlogMember> blogMembers = new ArrayList<>();
-        blogMembers.add(convertToAdminBlogMember(blogId, creator));
-        blogMembers.addAll(convertToBlogMembers(blogId, members));
+        blogMembers.add(convertToAdminBlogMember(blog, creator));
+        blogMembers.addAll(convertToBlogMembers(blog, members));
 
         try {
             blogMemberDao.save(blogMembers);
@@ -62,14 +63,14 @@ public class BlogMemberCreateService {
         logger.info("-----Blog Members are validated!-----");
     }
 
-    private BlogMember convertToAdminBlogMember(int blogId, CurrentUserInfo creator) {
-        return new BlogMember(creator.getId(), blogId, MemberRole.ADMIN);
+    private BlogMember convertToAdminBlogMember(Blog blog, CurrentUserInfo creator) {
+        return new BlogMember(new User(creator), blog, MemberRole.ADMIN);
     }
 
-    private List<BlogMember> convertToBlogMembers(int blogId, List<UserDto> members) {
+    private List<BlogMember> convertToBlogMembers(Blog blog, List<UserDto> members) {
         return members
                 .stream()
-                .map(member -> new BlogMember(member.getId(), blogId, MemberRole.INVITING))
+                .map(member -> new BlogMember(new User(member), blog, MemberRole.INVITING))
                 .collect(Collectors.toList());
     }
 }

@@ -1,6 +1,6 @@
 package io.zerogone.model.entity;
 
-import io.zerogone.model.UserCreateDto;
+import io.zerogone.model.UserDto;
 
 import javax.persistence.*;
 import java.util.List;
@@ -31,11 +31,11 @@ public class User {
 
     }
 
-    public User(int id){
+    public User(int id) {
         this.id = id;
     }
 
-    public User(UserCreateDto userDto) {
+    public User(UserDto userDto) {
         id = userDto.getId();
         name = userDto.getName();
         email = userDto.getEmail();

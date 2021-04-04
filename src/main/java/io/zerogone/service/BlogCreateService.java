@@ -44,7 +44,7 @@ public class BlogCreateService {
             throw new UniquePropertyException("블로그 이름이 중복되었습니다");
         }
 
-        blogMemberCreateService.createBlogMembers(blog.getId(), creator, blogCreateDto.getMembers());
+        blogMemberCreateService.createBlogMembers(blog, creator, blogCreateDto.getMembers());
         return new BlogVo(blog);
     }
 
