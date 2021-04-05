@@ -33,7 +33,7 @@
     </div>
     <div class="mypage">
         <section class="profile">
-            <img class="profile-img" src="/img/user-default/1.png" alt="user profile img">
+            <img class="profile-img" src="${userInfo.imgUrl}" alt="user profile img">
             <div class="profile-info">
                 <article class="profile-name">
                     <div class="profile-header1">name</div>

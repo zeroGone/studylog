@@ -8,14 +8,12 @@ import io.zerogone.model.entity.User;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
+import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Root;
+import javax.transaction.TransactionManager;
 import java.util.List;
 
 @Repository
@@ -68,5 +66,12 @@ public class UserDao {
 
         logger.debug("created user id : " + user.getId());
         logger.info("-----save blog end-----");
+    }
+
+    public void update(User user){
+        logger.info("-----Updating user start-----");
+        entityManager.merge(user);
+        entityManager.flush();
+        logger.info("-----Updating user is ended-----");
     }
 }
