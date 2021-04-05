@@ -5,7 +5,10 @@
     <link rel="icon" href="${pageContext.request.contextPath}/img/logo.ico" type="image/x-icon">
     <link rel="stylesheet" href="/css/index.css">
     <script src="https://apis.google.com/js/api:client.js" defer></script>
+    <script src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js" defer></script>
+    <script src="http://code.jquery.com/jquery-1.11.3.min.js" defer></script>
     <script src="/js/google_login.js" defer></script>
+    <script src="/js/naver_login.js" defer></script>
 </head>
 <body>
 <div class="container">
@@ -34,7 +37,7 @@
                 <img src="/img/index/google_logo.png" alt="google" class="login-button-img">
             </div>
 
-            <div class="login-button naver-login-button">
+            <div class="login-button naver-login-button" id="naver_id_login">
                 <img src="/img/index/naver_small-logo.png" alt="naver-small" class="login-button-small">
                 <span class="naver-login-text login-button-text">Login with</span>
                 <img src="/img/index/naver_logo.png" alt="naver" class="login-button-img">
