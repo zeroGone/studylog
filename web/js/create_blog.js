@@ -56,7 +56,7 @@ function postBlogInfo() {
     const name = document.querySelector('#blog-name-input').value;
     const replacedName = name.replace(/ /gi, '_');
     const introduce = document.querySelector('#blog-introduce-input').value;
-    const image = document.querySelector('#image-input').files[0];
+    const image = document.querySelector('#blog-image-input').files[0];
 
     formData.append('name', replacedName);
     formData.append('introduce', introduce);
