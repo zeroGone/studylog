@@ -1,4 +1,13 @@
-var naver_id_login = new naver_id_login("naver-api-key", "http://localhost:8080");
+const NAVER_LOGIN_INFO = {
+    API_URL: "login",
+    INIT_OPTIONS: {
+        client_id: 'Client ID',
+        client_secret: 'Client Secret',
+        callback_url: "http://localhost:8080"
+    },
+}
+
+var naver_id_login = new naver_id_login("Client ID", "http://localhost:8080");
 var state = naver_id_login.getUniqState();
 
 naver_id_login.setButton("white", 2,40);
