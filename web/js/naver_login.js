@@ -3,11 +3,12 @@ const NAVER_LOGIN_INFO = {
     INIT_OPTIONS: {
         client_id: 'Client ID',
         client_secret: 'Client Secret',
-        callback_url: "http://localhost:8080"
+        callback_url: "http://localhost:8080",
+        service_url: "http://localhost:8080"
     },
 }
 
-var naver_id_login = new naver_id_login("Client ID", "http://localhost:8080");
+var naver_id_login = new naver_id_login(NAVER_LOGIN_INFO.INIT_OPTIONS.client_id, NAVER_LOGIN_INFO.INIT_OPTIONS.service_url);
 var state = naver_id_login.getUniqState();
 
 naver_id_login.setButton("white", 2,40);
