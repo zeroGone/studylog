@@ -33,7 +33,15 @@
     </div>
     <div class="mypage">
         <section class="profile">
-            <img class="profile-img" src="${userInfo.imgUrl}" alt="user profile img">
+            <div class="profile-image-container">
+                <input type="file" id="user-image-input" class="user-image-input" name="user-image" accept="image/*"/>
+                <div id="user-image-preview" class="user-image-preview">
+                    <img class="profile-img" src="${userInfo.imgUrl}" alt="user profile img">
+                </div>
+                <button type="button" class="user-image-edit-button">
+                    <i class="fas fa-plus user-image-edit-icon"></i>
+                </button>
+            </div>
             <div class="profile-info">
                 <article class="profile-name">
                     <div class="profile-header1">name</div>
@@ -88,8 +96,8 @@
     <article class="blog-create-box">
         <form class="blog-create-form" enctype="multipart/form-data">
             <div class="blog-image-container">
-                <input type="file" id="image-input" class="image-input" name="image" accept="image/*"/>
-                <div id="preview" class="preview">
+                <input type="file" id="blog-image-input" class="blog-image-input" name="image" accept="image/*"/>
+                <div id="blog-image-preview" class="blog-image-preview">
 
                 </div>
                 <button type="button" class="blog-images-edit-button">
