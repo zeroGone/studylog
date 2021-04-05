@@ -4,6 +4,7 @@ import io.zerogone.config.DatabaseConfiguration;
 import io.zerogone.config.WebConfiguration;
 import io.zerogone.exception.NotExistedDataException;
 import io.zerogone.model.UserCreateDto;
+import io.zerogone.model.UserDto;
 import io.zerogone.model.entity.User;
 import org.junit.Assert;
 import org.junit.Before;
@@ -99,5 +100,18 @@ public class UserDaoTest {
         User user = new User(dto);
         userDao.save(user);
         Assert.assertNotEquals(0, user.getId());
+    }
+
+    @Test
+    @Transactional
+    public void update(){
+        UserDto userDto = new UserDto();
+        userDto.setId(1);
+        userDto.setEmail("dudrhs571@gmail.com");
+        userDto.setName("김영곤");
+        userDto.setNickName("zeroGone724");
+        User user = new User(userDto);
+        userDao.update(user);
+        Assert.assertEquals("zeroGone724", user.getNickName());
     }
 }

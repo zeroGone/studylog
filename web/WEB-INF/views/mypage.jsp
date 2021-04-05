@@ -36,7 +36,7 @@
             <div class="profile-image-container">
                 <input type="file" id="user-image-input" class="user-image-input" name="user-image" accept="image/*"/>
                 <div id="user-image-preview" class="user-image-preview">
-                    <img class="profile-image" src="/img/user-default/1.png" alt="user-profile-image">
+                    <img class="profile-img" src="${userInfo.imgUrl}" alt="user profile img">
                 </div>
                 <button type="button" class="user-image-edit-button">
                     <i class="fas fa-plus user-image-edit-icon"></i>
