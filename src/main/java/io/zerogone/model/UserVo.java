@@ -1,5 +1,6 @@
 package io.zerogone.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.zerogone.model.entity.User;
 
 import java.time.LocalDateTime;
@@ -10,7 +11,9 @@ public class UserVo {
     private final String email;
     private final String nickName;
     private final String imageUrl;
+    @JsonFormat(pattern = "yyyy-MM-dd kk:mm:ss")
     private final LocalDateTime createDateTime;
+    @JsonFormat(pattern = "yyyy-MM-dd kk:mm:ss")
     private final LocalDateTime updateDateTime;
 
     public UserVo(User user) {
