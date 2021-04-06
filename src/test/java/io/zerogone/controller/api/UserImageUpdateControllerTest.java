@@ -1,8 +1,10 @@
-package io.zerogone.controller;
+package io.zerogone.controller.api;
 
 import io.zerogone.config.DatabaseConfiguration;
 import io.zerogone.config.WebConfiguration;
-import io.zerogone.model.CurrentUserInfo;
+import io.zerogone.model.UserDto;
+import io.zerogone.model.UserVo;
+import io.zerogone.model.entity.User;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,7 +15,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.AnnotationConfigWebContextLoader;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMultipartHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -26,33 +27,31 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {WebConfiguration.class, DatabaseConfiguration.class}, loader = AnnotationConfigWebContextLoader.class)
 @WebAppConfiguration
-public class UserUpdateControllerTest {
+public class UserImageUpdateControllerTest {
     @Autowired
     private WebApplicationContext webApplicationContext;
 
     private MockMvc mockMvc;
 
-    private CurrentUserInfo userInfo;
-
     @Before
     public void setUp() throws Exception {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-        userInfo = new CurrentUserInfo();
-        userInfo.setId(1);
-        userInfo.setEmail("dudrhs571@gmail.com");
-        userInfo.setName("김영곤");
-        userInfo.setNickName("zeroGone");
-        userInfo.setImgUrl("/img/user-default/1.png");
     }
 
     @Test
     @Transactional
     public void handleUpdatingUserImage() throws Exception {
+        UserDto userDto = new UserDto();
+        userDto.setId(1);
+        userDto.setName("김영곤");
+        userDto.setNickName("zeroGone");
+        userDto.setEmail("dudrhs571@gmail.com");
         MockMultipartFile image = new MockMultipartFile("data", "test0405.txt", "text/plain", "some xml".getBytes());
 
         mockMvc.perform(MockMvcRequestBuilders
-                .fileUpload("/api/user")
-                .file("image", image.getBytes()).sessionAttr("userInfo", userInfo))
+                .fileUpload("/api/user/1")
+                .file("image", image.getBytes())
+                .sessionAttr("userInfo", new UserVo(new User(userDto))))
                 .andDo(print())
                 .andExpect(status().isOk());
     }

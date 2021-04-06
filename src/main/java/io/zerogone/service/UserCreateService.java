@@ -1,14 +1,14 @@
 package io.zerogone.service;
 
 import ch.qos.logback.classic.Logger;
-import io.zerogone.exception.NotNullPropertyException;
 import io.zerogone.exception.UniquePropertyException;
-import io.zerogone.model.UserCreateDto;
+import io.zerogone.model.UserDto;
 import io.zerogone.model.UserVo;
 import io.zerogone.model.entity.User;
 import io.zerogone.repository.UserDao;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.PersistenceException;
 import javax.transaction.Transactional;
@@ -27,12 +27,13 @@ public class UserCreateService {
     }
 
     @Transactional
-    public UserVo createUser(UserCreateDto userCreateDto) {
-        validate(userCreateDto);
+    public UserVo createUser(UserDto userDto, MultipartFile imageFile) {
+        if (imageFile != null) {
+            String uploadedImgUrl = fileUploadService.uploadFile(imageFilePath, imageFile);
+            userDto.setImageUrl(uploadedImgUrl);
+        }
 
-        uploadUserProfileImage(userCreateDto);
-
-        User user = new User(userCreateDto);
+        User user = new User(userDto);
 
         try {
             userDao.save(user);
@@ -42,28 +43,5 @@ public class UserCreateService {
         }
 
         return new UserVo(user);
-    }
-
-    private void validate(UserCreateDto createDto) {
-        logger.info("-----validate created dto-----");
-        if (createDto.getName() == null) {
-            throw new NotNullPropertyException(User.class, "name");
-        }
-        if (createDto.getEmail() == null) {
-            throw new NotNullPropertyException(User.class, "email");
-        }
-        if (createDto.getNickName() == null) {
-            throw new NotNullPropertyException(User.class, "nickname");
-        }
-        logger.info("-----validated dto!-----");
-    }
-
-    private void uploadUserProfileImage(UserCreateDto userCreateDto) {
-        if (userCreateDto.getImage() == null) {
-            return;
-        }
-        String uploadedImgUrl = fileUploadService.uploadFile(imageFilePath, userCreateDto.getImage());
-        userCreateDto.setImgUrl(uploadedImgUrl);
-        logger.debug("user's image url : " + userCreateDto.getImgUrl());
     }
 }
