@@ -1,7 +1,6 @@
-package io.zerogone.controller;
+package io.zerogone.controller.api;
 
 import io.zerogone.exception.NotExistedDataException;
-import io.zerogone.model.CurrentUserInfo;
 import io.zerogone.model.UserDto;
 import io.zerogone.model.UserVo;
 import io.zerogone.service.UserSearchService;
@@ -24,7 +23,7 @@ public class LoginController {
     public ResponseEntity<UserVo> doLogin(@RequestBody UserDto userDto, HttpSession httpSession) {
         try {
             UserVo userVo = userSearchService.getUserByEmail(userDto.getEmail());
-            httpSession.setAttribute("userInfo", new CurrentUserInfo(userVo));
+            httpSession.setAttribute("userInfo", userVo);
             return ResponseEntity.ok(userVo);
         } catch (NotExistedDataException notExistedDataException) {
             httpSession.setAttribute("visitor", userDto);

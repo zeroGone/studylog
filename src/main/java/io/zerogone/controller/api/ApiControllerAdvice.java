@@ -1,4 +1,4 @@
-package io.zerogone.controller;
+package io.zerogone.controller.api;
 
 import ch.qos.logback.classic.Logger;
 import io.zerogone.exception.*;
