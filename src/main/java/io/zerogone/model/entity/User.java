@@ -4,25 +4,33 @@ import io.zerogone.exception.NotNullPropertyException;
 import io.zerogone.model.UserDto;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "user")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(updatable = false, insertable = false)
     private int id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false)
     private String name;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, updatable = false)
     private String email;
 
-    @Column(name = "nick_name", nullable = false, unique = true)
+    @Column(name = "nick_name", nullable = false, unique = true, updatable = false)
     private String nickName;
 
-    @Column(name = "img_url")
-    private String imgUrl;
+    @Column(name = "image_url")
+    private String imageUrl;
+
+    @Column(name = "create_date_time", insertable = false, updatable = false)
+    private LocalDateTime createDateTime;
+
+    @Column(name = "update_date_time", insertable = false, updatable = false)
+    private LocalDateTime updateDateTime;
 
     User() {
 
@@ -34,7 +42,7 @@ public class User {
         name = userDto.getName();
         email = userDto.getEmail();
         nickName = userDto.getNickName();
-        imgUrl = userDto.getImgUrl();
+        imageUrl = userDto.getImageUrl();
     }
 
     public int getId() {
@@ -53,8 +61,16 @@ public class User {
         return nickName;
     }
 
-    public String getImgUrl() {
-        return imgUrl;
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public LocalDateTime getCreateDateTime() {
+        return createDateTime;
+    }
+
+    public LocalDateTime getUpdateDateTime() {
+        return updateDateTime;
     }
 
     private void validate(UserDto userDto) {

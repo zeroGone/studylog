@@ -1,11 +1,11 @@
 package io.zerogone.model;
 
 public class UserDto {
-    protected int id;
-    protected String name;
-    protected String nickName;
-    protected String email;
-    protected String imgUrl;
+    private int id;
+    private String name;
+    private String nickName;
+    private String email;
+    private String imageUrl;
 
     public int getId() {
         return id;
@@ -39,11 +39,11 @@ public class UserDto {
         this.email = email;
     }
 
-    public String getImgUrl() {
-        return imgUrl;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setImgUrl(String imgUrl) {
-        this.imgUrl = imgUrl;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

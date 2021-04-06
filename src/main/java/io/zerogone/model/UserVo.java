@@ -2,19 +2,25 @@ package io.zerogone.model;
 
 import io.zerogone.model.entity.User;
 
+import java.time.LocalDateTime;
+
 public class UserVo {
     private final int id;
     private final String name;
     private final String email;
     private final String nickName;
-    private final String imgUrl;
+    private final String imageUrl;
+    private final LocalDateTime createDateTime;
+    private final LocalDateTime updateDateTime;
 
     public UserVo(User user) {
         id = user.getId();
         name = user.getName();
         email = user.getEmail();
         nickName = user.getNickName();
-        imgUrl = user.getImgUrl();
+        imageUrl = user.getImageUrl();
+        createDateTime = user.getCreateDateTime();
+        updateDateTime = user.getUpdateDateTime();
     }
 
     public int getId() {
@@ -33,7 +39,15 @@ public class UserVo {
         return nickName;
     }
 
-    public String getImgUrl() {
-        return imgUrl;
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public LocalDateTime getCreateDateTime() {
+        return createDateTime;
+    }
+
+    public LocalDateTime getUpdateDateTime() {
+        return updateDateTime;
     }
 }
