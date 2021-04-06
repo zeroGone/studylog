@@ -3,7 +3,6 @@ package io.zerogone.model.entity;
 import io.zerogone.model.UserDto;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Table(name = "user")
@@ -24,15 +23,8 @@ public class User {
     @Column(name = "img_url")
     private String imgUrl;
 
-    @OneToMany(mappedBy = "user")
-    private List<BlogMember> blogs;
+    User() {
 
-    public User() {
-
-    }
-
-    public User(int id) {
-        this.id = id;
     }
 
     public User(UserDto userDto) {
