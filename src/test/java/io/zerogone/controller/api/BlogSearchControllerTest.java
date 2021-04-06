@@ -1,7 +1,6 @@
-package io.zerogone.controller;
+package io.zerogone.controller.api;
 
 import io.zerogone.config.WebConfiguration;
-import io.zerogone.model.CurrentUserInfo;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,17 +26,9 @@ public class BlogSearchControllerTest {
 
     private MockMvc mockMvc;
 
-    private CurrentUserInfo userInfo;
-
     @Before
     public void setUp() {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-        userInfo = new CurrentUserInfo();
-        userInfo.setId(1);
-        userInfo.setEmail("dudrhs571@gmail.com");
-        userInfo.setName("김영곤");
-        userInfo.setNickName("zeroGone");
-        userInfo.setImgUrl("/img/user-default/1.png");
     }
 
     @Test

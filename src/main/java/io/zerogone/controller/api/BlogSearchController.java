@@ -1,4 +1,4 @@
-package io.zerogone.controller;
+package io.zerogone.controller.api;
 
 import io.zerogone.service.BlogSearchService;
 import org.springframework.http.HttpStatus;
