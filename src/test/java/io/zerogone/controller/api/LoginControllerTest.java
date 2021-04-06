@@ -1,4 +1,4 @@
-package io.zerogone.controller;
+package io.zerogone.controller.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.zerogone.config.WebConfiguration;

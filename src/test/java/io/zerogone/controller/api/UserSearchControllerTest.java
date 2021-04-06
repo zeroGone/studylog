@@ -1,8 +1,7 @@
-package io.zerogone.controller;
+package io.zerogone.controller.api;
 
 import io.zerogone.config.DatabaseConfiguration;
 import io.zerogone.config.WebConfiguration;
-import io.zerogone.model.CurrentUserInfo;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,26 +27,18 @@ public class UserSearchControllerTest {
 
     private MockMvc mockMvc;
 
-    private CurrentUserInfo userInfo;
-
     @Before
     public void setUp() throws Exception {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-        userInfo = new CurrentUserInfo();
-        userInfo.setId(1);
-        userInfo.setEmail("dudrhs571@gmail.com");
-        userInfo.setName("김영곤");
-        userInfo.setNickName("zeroGone");
-        userInfo.setImgUrl("/img/user-default/1.png");
     }
 
     @Test
     public void handleUserSearchApi() throws Exception {
-        mockMvc.perform(get("/api/user").sessionAttr("userInfo", userInfo).param("email", "ahtpgus@naver.com"))
+        mockMvc.perform(get("/api/user").param("email", "ahtpgus@naver.com"))
                 .andExpect(status().isOk())
                 .andDo(print());
 
-        mockMvc.perform(get("/api/user").sessionAttr("userInfo", userInfo).param("email", "%"))
+        mockMvc.perform(get("/api/user").param("email", "%"))
                 .andExpect(status().isNotFound())
                 .andDo(print());
     }
@@ -55,7 +46,6 @@ public class UserSearchControllerTest {
     @Test
     public void handleUserSearchApi_ParamIsEmptystring_ReturnNotFound() throws Exception {
         mockMvc.perform(get("/api/user")
-                .sessionAttr("userInfo", userInfo)
                 .param("email", ""))
                 .andExpect(status().isNotFound())
                 .andDo(print());
