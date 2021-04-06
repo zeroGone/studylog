@@ -1,38 +1,45 @@
 package io.zerogone.model.entity;
 
+import io.zerogone.exception.NotNullPropertyException;
+import io.zerogone.model.BlogDto;
+
 import javax.persistence.*;
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "blog")
 public class Blog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(insertable = false, updatable = false)
     private int id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, updatable = false)
     private String name;
 
+    @Column(updatable = false)
     private String introduce;
 
-    @Column(name = "img_url")
-    private String imgUrl;
+    @Column(name = "image_url")
+    private String imageUrl;
 
-    @OneToMany(mappedBy = "blog")
-    private List<BlogMember> members;
+    @Column(name = "create_date_time", insertable = false, updatable = false)
+    private LocalDateTime createDateTime;
 
-    public Blog() {
+    @Column(name = "update_date_time", insertable = false, updatable = false)
+    private LocalDateTime updateDateTime;
+
+    Blog() {
 
     }
 
-    public Blog(int id) {
-        this.id = id;
-    }
-
-    public Blog(String name, String introduce, String imgUrl) {
-        this.name = name;
-        this.introduce = introduce;
-        this.imgUrl = imgUrl;
+    public Blog(BlogDto blogDto) {
+        if (blogDto.getName() == null) {
+            throw new NotNullPropertyException(Blog.class, "name");
+        }
+        this.name = blogDto.getName();
+        this.introduce = blogDto.getIntroduce();
+        this.imageUrl = blogDto.getImageUrl();
     }
 
     public int getId() {
@@ -47,7 +54,15 @@ public class Blog {
         return introduce;
     }
 
-    public String getImgUrl() {
-        return imgUrl;
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public LocalDateTime getCreateDateTime() {
+        return createDateTime;
+    }
+
+    public LocalDateTime getUpdateDateTime() {
+        return updateDateTime;
     }
 }
