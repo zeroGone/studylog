@@ -3,7 +3,6 @@ package io.zerogone.repository;
 import io.zerogone.config.DatabaseConfiguration;
 import io.zerogone.config.WebConfiguration;
 import io.zerogone.exception.NotExistedDataException;
-import io.zerogone.model.UserCreateDto;
 import io.zerogone.model.UserDto;
 import io.zerogone.model.entity.User;
 import org.junit.Assert;
@@ -19,7 +18,6 @@ import org.springframework.test.context.web.AnnotationConfigWebContextLoader;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.web.context.WebApplicationContext;
 
-import javax.persistence.PersistenceException;
 import javax.transaction.Transactional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -41,33 +39,28 @@ public class UserDaoTest {
 
     @Test
     public void findUserByEmail() {
-        expectedException.expect(NotExistedDataException.class);
-        Assert.assertNull(userDao.findUserByEmail("dudrhs571"));
-        Assert.assertNotEquals(0, userDao.findUserByEmail("dudrhs571@gmail.com").getId());
+        User user = userDao.findByEmail("dudrhs571@gmail.com");
+        Assert.assertNotNull(user);
+        Assert.assertNotEquals(0, user.getId());
+        Assert.assertEquals("dudrhs571@gmail.com", user.getEmail());
     }
 
     @Test
     public void fidnUserByEmail_GivenNull_ThrowNotExistedDataException() {
         expectedException.expect(NotExistedDataException.class);
-        Assert.assertNotEquals(0, userDao.findUserByEmail(null).getId());
+        Assert.assertNotEquals(0, userDao.findByEmail(null).getId());
     }
 
     @Test
     public void findUserByEmail_GivenEmptyString_ThrowNotExistedDataException() {
         expectedException.expect(NotExistedDataException.class);
-        Assert.assertNotEquals(0, userDao.findUserByEmail("").getId());
-    }
-
-    @Test
-    public void findAllByBlogId() {
-        Assert.assertNotNull(userDao.findAllByBlogId(1));
-        Assert.assertEquals(0, userDao.findAllByBlogId(2).size());
+        Assert.assertNotEquals(0, userDao.findByEmail("").getId());
     }
 
     @Test
     @Transactional
     public void save() {
-        UserCreateDto dto = new UserCreateDto();
+        UserDto dto = new UserDto();
         dto.setName("test0325 1513");
         dto.setEmail("test0325 1509");
         dto.setNickName("test0325 1509");
@@ -79,39 +72,19 @@ public class UserDaoTest {
 
     @Test
     @Transactional
-    public void save_PropertiesIsNull_throwPersistenceException() {
-        expectedException.expect(PersistenceException.class);
-
-        User user = new User();
-        userDao.save(user);
-        Assert.assertNotEquals(0, user.getId());
-    }
-
-    @Test
-    @Transactional
-    public void save_DuplicatedProperties_throwPersistenceException() {
-        expectedException.expect(PersistenceException.class);
-
-        UserCreateDto dto = new UserCreateDto();
-        dto.setName("test 03/29");
-        dto.setNickName("test 03/29");
-        dto.setEmail("dundung@gmail.com");
-
-        User user = new User(dto);
-        userDao.save(user);
-        Assert.assertNotEquals(0, user.getId());
-    }
-
-    @Test
-    @Transactional
-    public void update(){
+    public void update() {
         UserDto userDto = new UserDto();
         userDto.setId(1);
         userDto.setEmail("dudrhs571@gmail.com");
         userDto.setName("김영곤");
-        userDto.setNickName("zeroGone724");
+        userDto.setNickName("zeroGone7247");
         User user = new User(userDto);
-        userDao.update(user);
-        Assert.assertEquals("zeroGone724", user.getNickName());
+        userDao.updateImageUrl(user);
+        Assert.assertNull(user.getImageUrl());
+
+        userDto.setImageUrl("url");
+        user = new User(userDto);
+        userDao.updateImageUrl(user);
+        Assert.assertEquals("url", user.getImageUrl());
     }
 }
