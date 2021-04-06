@@ -3,6 +3,8 @@ package io.zerogone.repository;
 import io.zerogone.config.DatabaseConfiguration;
 import io.zerogone.config.WebConfiguration;
 import io.zerogone.exception.NotExistedDataException;
+import io.zerogone.exception.NotNullPropertyException;
+import io.zerogone.model.BlogDto;
 import io.zerogone.model.entity.Blog;
 import org.junit.Assert;
 import org.junit.Before;
@@ -17,7 +19,6 @@ import org.springframework.test.context.web.AnnotationConfigWebContextLoader;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.web.context.WebApplicationContext;
 
-import javax.persistence.NoResultException;
 import javax.persistence.PersistenceException;
 import javax.transaction.Transactional;
 
@@ -41,16 +42,19 @@ public class BlogDaoTest {
     @Test
     @Transactional
     public void save() {
-        Blog blog = new Blog("testBlog", "This is temporary instance fot testing", null);
+        BlogDto blogDto = new BlogDto();
+        blogDto.setName("testBlog");
+        blogDto.setIntroduce("This is temporary instance fot testing");
+        Blog blog = new Blog(blogDto);
         blogDao.save(blog);
         Assert.assertNotEquals(0, blog.getId());
     }
 
     @Test
     @Transactional
-    public void save_BlogNameIsNull_ThrowPersistenceException() {
-        expectedException.expect(PersistenceException.class);
-        Blog blog = new Blog(null, null, null);
+    public void save_BlogNameIsNull_ThrowNotPropertyException() {
+        expectedException.expect(NotNullPropertyException.class);
+        Blog blog = new Blog(new BlogDto());
         blogDao.save(blog);
         Assert.assertNotEquals(0, blog.getId());
     }
@@ -59,14 +63,11 @@ public class BlogDaoTest {
     @Transactional
     public void save_BlogNameIsDuplicated_ThrowPersistenceException() {
         expectedException.expect(PersistenceException.class);
-        Blog blog = new Blog("studylog", null, null);
+        BlogDto blogDto = new BlogDto();
+        blogDto.setName("studylog");
+        Blog blog = new Blog(blogDto);
         blogDao.save(blog);
         Assert.assertNotEquals(0, blog.getId());
-    }
-
-    @Test
-    public void findAllByUserId() {
-        Assert.assertNotNull(blogDao.findAllByUserId(1));
     }
 
     @Test

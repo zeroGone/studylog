@@ -3,8 +3,6 @@ package io.zerogone.repository;
 import ch.qos.logback.classic.Logger;
 import io.zerogone.exception.NotExistedDataException;
 import io.zerogone.model.entity.Blog;
-import io.zerogone.model.entity.BlogMember;
-import io.zerogone.model.entity.MemberRole;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
@@ -14,9 +12,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Root;
-import java.util.List;
 
 @Repository
 public class BlogDao {
@@ -35,24 +31,6 @@ public class BlogDao {
         logger.debug("-----save blog end-----");
     }
 
-    public List<Blog> findAllByUserId(int userId) {
-        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Blog> criteriaQuery = criteriaBuilder.createQuery(Blog.class);
-
-        Root<Blog> root = criteriaQuery.from(Blog.class);
-        Join<Blog, BlogMember> join = root.join("members");
-
-        criteriaQuery.select(root);
-        criteriaQuery.where(criteriaBuilder.and(
-                criteriaBuilder.equal(join.get("user").get("id"), userId),
-                criteriaBuilder.or(
-                        criteriaBuilder.equal(join.get("role"), MemberRole.MEMBER),
-                        criteriaBuilder.equal(join.get("role"), MemberRole.ADMIN))));
-
-        TypedQuery<Blog> typedQuery = entityManager.createQuery(criteriaQuery);
-        return typedQuery.getResultList();
-    }
-
     public Blog findByName(String name) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Blog> criteriaQuery = criteriaBuilder.createQuery(Blog.class);
@@ -64,7 +42,7 @@ public class BlogDao {
         TypedQuery<Blog> blogTypedQuery = entityManager.createQuery(criteriaQuery);
         try {
             return blogTypedQuery.getSingleResult();
-        }catch (NoResultException noResultException){
+        } catch (NoResultException noResultException) {
             throw new NotExistedDataException(Blog.class, "블로그 이름으로 블로그 검색", name);
         }
     }
