@@ -1,5 +1,6 @@
 package io.zerogone.model.entity;
 
+import io.zerogone.exception.NotNullPropertyException;
 import io.zerogone.model.UserDto;
 
 import javax.persistence.*;
@@ -28,6 +29,7 @@ public class User {
     }
 
     public User(UserDto userDto) {
+        validate(userDto);
         id = userDto.getId();
         name = userDto.getName();
         email = userDto.getEmail();
@@ -53,5 +55,17 @@ public class User {
 
     public String getImgUrl() {
         return imgUrl;
+    }
+
+    private void validate(UserDto userDto) {
+        if (userDto.getName() == null) {
+            throw new NotNullPropertyException(User.class, "name");
+        }
+        if (userDto.getEmail() == null) {
+            throw new NotNullPropertyException(User.class, "email");
+        }
+        if (userDto.getNickName() == null) {
+            throw new NotNullPropertyException(User.class, "nickname");
+        }
     }
 }
