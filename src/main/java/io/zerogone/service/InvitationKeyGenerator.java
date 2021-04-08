@@ -2,7 +2,7 @@ package io.zerogone.service;
 
 public class InvitationKeyGenerator {
     private static final String VALUES =
-            "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890!@#$%^&*()-_=+/?!@";
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
 
     private final StringBuilder builder = new StringBuilder();
 
