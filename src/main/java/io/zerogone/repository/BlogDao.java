@@ -5,6 +5,7 @@ import io.zerogone.exception.NotExistedDataException;
 import io.zerogone.model.entity.Blog;
 import io.zerogone.model.entity.BlogMember;
 import io.zerogone.model.entity.MemberRole;
+import io.zerogone.model.entity.User;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
@@ -35,24 +36,6 @@ public class BlogDao {
         logger.debug("-----save blog end-----");
     }
 
-    public List<Blog> findAllByUserId(int userId) {
-        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Blog> criteriaQuery = criteriaBuilder.createQuery(Blog.class);
-
-        Root<Blog> root = criteriaQuery.from(Blog.class);
-        Join<Blog, BlogMember> join = root.join("members");
-
-        criteriaQuery.select(root);
-        criteriaQuery.where(criteriaBuilder.and(
-                criteriaBuilder.equal(join.get("user").get("id"), userId),
-                criteriaBuilder.or(
-                        criteriaBuilder.equal(join.get("role"), MemberRole.MEMBER),
-                        criteriaBuilder.equal(join.get("role"), MemberRole.ADMIN))));
-
-        TypedQuery<Blog> typedQuery = entityManager.createQuery(criteriaQuery);
-        return typedQuery.getResultList();
-    }
-
     public Blog findByName(String name) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Blog> criteriaQuery = criteriaBuilder.createQuery(Blog.class);
@@ -64,8 +47,25 @@ public class BlogDao {
         TypedQuery<Blog> blogTypedQuery = entityManager.createQuery(criteriaQuery);
         try {
             return blogTypedQuery.getSingleResult();
-        }catch (NoResultException noResultException){
+        } catch (NoResultException noResultException) {
             throw new NotExistedDataException(Blog.class, "블로그 이름으로 블로그 검색", name);
         }
+    }
+
+    public List<Blog> findAllByUserAndBlogMemberRoleIsAdminOrMember(User user) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Blog> criteriaQuery = criteriaBuilder.createQuery(Blog.class);
+
+        Root<Blog> root = criteriaQuery.from(Blog.class);
+        Join<Blog, BlogMember> join = root.join("members");
+
+        criteriaQuery.select(root);
+        criteriaQuery.where(criteriaBuilder.and(
+                criteriaBuilder.equal(join.get("user"), user),
+                criteriaBuilder.or(
+                        criteriaBuilder.equal(join.get("role"), MemberRole.ADMIN),
+                        criteriaBuilder.equal(join.get("role"), MemberRole.MEMBER))));
+
+        return entityManager.createQuery(criteriaQuery).getResultList();
     }
 }

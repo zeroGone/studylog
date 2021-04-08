@@ -2,8 +2,10 @@ package io.zerogone.service;
 
 import io.zerogone.config.DatabaseConfiguration;
 import io.zerogone.config.WebConfiguration;
-import io.zerogone.model.UserDto;
-import io.zerogone.model.entity.*;
+import io.zerogone.model.entity.Blog;
+import io.zerogone.model.entity.BlogMember;
+import io.zerogone.model.entity.MemberRole;
+import io.zerogone.model.entity.User;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,12 +37,14 @@ public class EmailServiceTest {
 
     @Test
     public void sendInvitationEmail() throws MessagingException {
-        UserDto dto = new UserDto();
-        dto.setEmail("dudrhs571@gmail.com");
-        BlogMember blogMember = new BlogMember(new User(dto), new Blog("ㅎㅇ 테스트중", null, null), MemberRole.INVITING);
+        BlogMember blogMember = new BlogMember(
+                new User(1, null, "dudrhs571@gmail.com", null, null),
+                new Blog(0, "ㅎㅇ 테스트중", null, null),
+                MemberRole.INVITING);
 
-        List<BlogMemberInvitationKey> keys = new ArrayList<>();
-        keys.add(new BlogMemberInvitationKey(generator.generateKey(15), blogMember));
-        emailService.sendInvitationEmail(keys);
+        List<BlogMember> members = new ArrayList<>();
+        members.add(blogMember);
+
+        emailService.sendInvitationEmail(members);
     }
 }

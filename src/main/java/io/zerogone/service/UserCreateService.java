@@ -1,21 +1,23 @@
 package io.zerogone.service;
 
 import ch.qos.logback.classic.Logger;
-import io.zerogone.exception.NotNullPropertyException;
 import io.zerogone.exception.UniquePropertyException;
-import io.zerogone.model.UserCreateDto;
+import io.zerogone.model.UserDto;
 import io.zerogone.model.UserVo;
 import io.zerogone.model.entity.User;
 import io.zerogone.repository.UserDao;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.PersistenceException;
 import javax.transaction.Transactional;
 
 @Service
 public class UserCreateService {
-    private static final String imageFilePath = "img/user";
+    private static final String USER_IMAGE_FILE_PATH = "img/user";
+    private static final String USER_DEFAULT_IMAGE_URL = "/img/user-default/";
+    private static final String USER_DEFAULT_IMAGE_TYPE = ".png";
 
     private final Logger logger = (Logger) LoggerFactory.getLogger(this.getClass());
     private final FileUploadService fileUploadService;
@@ -27,12 +29,14 @@ public class UserCreateService {
     }
 
     @Transactional
-    public UserVo createUser(UserCreateDto userCreateDto) {
-        validate(userCreateDto);
+    public UserVo createUser(UserDto userDto, MultipartFile imageFile) {
+        String userImageUrl = uploadUserImage(imageFile, userDto.getImageUrl());
 
-        uploadUserProfileImage(userCreateDto);
-
-        User user = new User(userCreateDto);
+        User user = new User(userDto.getId(),
+                userDto.getName(),
+                userDto.getEmail(),
+                userDto.getNickName(),
+                userImageUrl);
 
         try {
             userDao.save(user);
@@ -41,29 +45,27 @@ public class UserCreateService {
             throw new UniquePropertyException("유저의 이메일이나 닉네임이 중복되었습니다");
         }
 
-        return new UserVo(user);
+        return new UserVo(user.getId(),
+                user.getName(),
+                user.getEmail(),
+                user.getNickName(),
+                user.getImageUrl(),
+                user.getCreateDateTime(),
+                user.getUpdateDateTime());
     }
 
-    private void validate(UserCreateDto createDto) {
-        logger.info("-----validate created dto-----");
-        if (createDto.getName() == null) {
-            throw new NotNullPropertyException(User.class, "name");
+    private String uploadUserImage(MultipartFile imageFile, String snsImageUrl) {
+        if (snsImageUrl != null) {
+            return snsImageUrl;
         }
-        if (createDto.getEmail() == null) {
-            throw new NotNullPropertyException(User.class, "email");
-        }
-        if (createDto.getNickName() == null) {
-            throw new NotNullPropertyException(User.class, "nickname");
-        }
-        logger.info("-----validated dto!-----");
-    }
 
-    private void uploadUserProfileImage(UserCreateDto userCreateDto) {
-        if (userCreateDto.getImage() == null) {
-            return;
+        String uploadedImageUrl = fileUploadService.uploadFile(USER_IMAGE_FILE_PATH, imageFile);
+
+        if (uploadedImageUrl == null) {
+            int randomNumber = (int) (Math.random() * 10);
+            return USER_DEFAULT_IMAGE_URL + randomNumber + USER_DEFAULT_IMAGE_TYPE;
+        } else {
+            return uploadedImageUrl;
         }
-        String uploadedImgUrl = fileUploadService.uploadFile(imageFilePath, userCreateDto.getImage());
-        userCreateDto.setImgUrl(uploadedImgUrl);
-        logger.debug("user's image url : " + userCreateDto.getImgUrl());
     }
 }

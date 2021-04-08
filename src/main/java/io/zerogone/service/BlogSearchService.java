@@ -1,7 +1,9 @@
 package io.zerogone.service;
 
 import io.zerogone.model.BlogVo;
-import io.zerogone.model.CurrentUserInfo;
+import io.zerogone.model.UserVo;
+import io.zerogone.model.entity.Blog;
+import io.zerogone.model.entity.User;
 import io.zerogone.repository.BlogDao;
 import org.springframework.stereotype.Service;
 
@@ -16,11 +18,32 @@ public class BlogSearchService {
         this.blogDao = blogDao;
     }
 
-    public List<BlogVo> getBlogsThatUserBelongTo(CurrentUserInfo userInfo) {
-        return blogDao.findAllByUserId(userInfo.getId()).stream().map(BlogVo::new).collect(Collectors.toList());
+    public BlogVo getBlogVoByName(String name) {
+        Blog blog = blogDao.findByName(name);
+        return new BlogVo(blog.getId(),
+                blog.getName(),
+                blog.getIntroduce(),
+                blog.getImageUrl(),
+                blog.getCreateDateTime(),
+                blog.getUpdateDateTime());
     }
 
-    public BlogVo getBlogByName(String name) {
-        return new BlogVo(blogDao.findByName(name));
+    public List<BlogVo> getBlogVosByUserVo(UserVo userVo) {
+        User user = new User(userVo.getId(),
+                userVo.getName(),
+                userVo.getEmail(),
+                userVo.getNickName(),
+                userVo.getImageUrl());
+
+        List<Blog> blogs = blogDao.findAllByUserAndBlogMemberRoleIsAdminOrMember(user);
+
+        return blogs.stream().map(blog -> new BlogVo(
+                blog.getId(),
+                blog.getName(),
+                blog.getIntroduce(),
+                blog.getImageUrl(),
+                blog.getCreateDateTime(),
+                blog.getUpdateDateTime()))
+                .collect(Collectors.toList());
     }
 }

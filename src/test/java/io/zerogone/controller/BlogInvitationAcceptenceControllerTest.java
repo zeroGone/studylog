@@ -1,7 +1,6 @@
 package io.zerogone.controller;
 
 import io.zerogone.config.WebConfiguration;
-import io.zerogone.model.CurrentUserInfo;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,40 +16,27 @@ import org.springframework.web.context.WebApplicationContext;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = WebConfiguration.class, loader = AnnotationConfigWebContextLoader.class)
 @WebAppConfiguration
-public class BlogSearchControllerTest {
+public class BlogInvitationAcceptenceControllerTest {
     @Autowired
     private WebApplicationContext webApplicationContext;
 
     private MockMvc mockMvc;
 
-    private CurrentUserInfo userInfo;
-
     @Before
     public void setUp() {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-        userInfo = new CurrentUserInfo();
-        userInfo.setId(1);
-        userInfo.setEmail("dudrhs571@gmail.com");
-        userInfo.setName("김영곤");
-        userInfo.setNickName("zeroGone");
-        userInfo.setImgUrl("/img/user-default/1.png");
     }
 
     @Test
-    public void handleBlogSearchApi() throws Exception {
-        mockMvc.perform(get("/api/blog").param("name", "studylog"))
+    public void getBlogAcceptViewName() throws Exception {
+        mockMvc.perform(get("/blog/accept").param("key", "y/@P=_3to%er??2"))
                 .andExpect(status().isOk())
-                .andDo(print());
-    }
-
-    @Test
-    public void handleBlogSearchApi_NotExistedName_ReturnNotFoundWithErrorMessage() throws Exception {
-        mockMvc.perform(get("/api/blog").param("name", "jinmin is zzang"))
-                .andExpect(status().isNotFound())
+                .andExpect(view().name("blog_accept"))
                 .andDo(print());
     }
 }

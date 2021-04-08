@@ -42,6 +42,9 @@ window.addEventListener("resize", function () {
     }, 300);
 });
 
+const userInfoImageFrame = document.querySelector(".user-info-image").getBoundingClientRect();
+document.querySelector(".user-info-image").style.width = userInfoImageFrame.height;
+
 document.querySelector(".user-info-item-logout").addEventListener("click", logout);
 
 function logout() {

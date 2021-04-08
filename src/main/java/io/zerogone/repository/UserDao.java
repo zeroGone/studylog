@@ -2,18 +2,18 @@ package io.zerogone.repository;
 
 import ch.qos.logback.classic.Logger;
 import io.zerogone.exception.NotExistedDataException;
+import io.zerogone.model.entity.Blog;
 import io.zerogone.model.entity.BlogMember;
 import io.zerogone.model.entity.MemberRole;
 import io.zerogone.model.entity.User;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.*;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Join;
-import javax.persistence.criteria.Root;
-import javax.transaction.TransactionManager;
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.*;
 import java.util.List;
 
 @Repository
@@ -23,7 +23,30 @@ public class UserDao {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public User findUserByEmail(String email) {
+    public void save(User user) {
+        logger.info("-----save user start-----");
+
+        entityManager.persist(user);
+        entityManager.refresh(user);
+
+        logger.debug("created user id : " + user.getId());
+        logger.info("-----save blog end-----");
+    }
+
+    public void updateImageUrl(User user) {
+        logger.info("-----Updating user's image url start-----");
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaUpdate<User> criteriaUpdate = criteriaBuilder.createCriteriaUpdate(User.class);
+
+        Root<User> root = criteriaUpdate.from(User.class);
+        criteriaUpdate.set(root.get("imageUrl"), user.getImageUrl());
+        criteriaUpdate.where(criteriaBuilder.equal(root.get("id"), user.getId()));
+
+        entityManager.createQuery(criteriaUpdate).executeUpdate();
+        logger.info("-----Updating user's image url is ended-----");
+    }
+
+    public User findByEmail(String email) {
         logger.info("-----find user by email : " + email + "-----");
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
@@ -40,7 +63,7 @@ public class UserDao {
         }
     }
 
-    public List<User> findAllByBlogId(int blogId) {
+    public List<User> findAllByBlogAndBlogMemberRoleIsAdminOrMember(Blog blog) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
 
@@ -49,29 +72,12 @@ public class UserDao {
 
         criteriaQuery.select(root);
         criteriaQuery.where(criteriaBuilder.and(
-                        criteriaBuilder.equal(join.get("blog").get("id"), blogId),
-                        criteriaBuilder.or(
-                                criteriaBuilder.equal(join.get("role"), MemberRole.MEMBER),
-                                criteriaBuilder.equal(join.get("role"), MemberRole.ADMIN))));
+                criteriaBuilder.equal(join.get("blog"), blog),
+                criteriaBuilder.or(
+                        criteriaBuilder.equal(join.get("role"), MemberRole.ADMIN),
+                        criteriaBuilder.equal(join.get("role"), MemberRole.MEMBER))));
 
-        TypedQuery<User> typedQuery = entityManager.createQuery(criteriaQuery);
-        return typedQuery.getResultList();
-    }
 
-    public void save(User user) {
-        logger.info("-----save user start-----");
-
-        entityManager.persist(user);
-        entityManager.flush();
-
-        logger.debug("created user id : " + user.getId());
-        logger.info("-----save blog end-----");
-    }
-
-    public void update(User user){
-        logger.info("-----Updating user start-----");
-        entityManager.merge(user);
-        entityManager.flush();
-        logger.info("-----Updating user is ended-----");
+        return entityManager.createQuery(criteriaQuery).getResultList();
     }
 }

@@ -36,7 +36,7 @@
             <div class="profile-image-container">
                 <input type="file" id="user-image-input" class="user-image-input" name="user-image" accept="image/*"/>
                 <div id="user-image-preview" class="user-image-preview">
-                    <img class="profile-image" src="${userInfo.imgUrl}" alt="user profile img">
+                    <img class="profile-image" src="${userInfo.imageUrl}" alt="user profile img">
                 </div>
                 <button type="button" class="user-image-edit-button">
                     <i class="fas fa-plus user-image-edit-icon"></i>
@@ -76,8 +76,8 @@
             <c:forEach items="${blogs}" var="blog">
                 <article class="blog-item">
                     <c:choose>
-                        <c:when test="${blog.imgUrl ne null}">
-                            <img class="blog-icon" src="${blog.imgUrl}" alt="blog image"/>
+                        <c:when test="${blog.imageUrl ne null}">
+                            <img class="blog-icon" src="${blog.imageUrl}" alt="blog image"/>
                         </c:when>
                         <c:otherwise>
                             <div class="blog-icon"></div>

@@ -17,20 +17,20 @@ import org.springframework.web.context.WebApplicationContext;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {WebConfiguration.class, DatabaseConfiguration.class}, loader = AnnotationConfigWebContextLoader.class)
 @WebAppConfiguration
-public class BlogMemberAcceptServiceTest {
+public class BlogInivationAcceptenceServiceTest {
     @Autowired
     private WebApplicationContext webApplicationContext;
 
-    private BlogMemberAcceptService blogMemberAcceptService;
+    private BlogInvitationAcceptenceService blogInvitationAcceptenceService;
 
     @Before
     public void setUp() {
-        blogMemberAcceptService = webApplicationContext.getBean(BlogMemberAcceptService.class);
+        blogInvitationAcceptenceService = webApplicationContext.getBean(BlogInvitationAcceptenceService.class);
     }
 
     @Test
     public void acceptBlogInvitation() {
-        BlogVo blog = blogMemberAcceptService.acceptBlogInvitation("2Se{+>x1.{BWgjT");
+        BlogVo blog = blogInvitationAcceptenceService.acceptBlogInvitation("_%$zw22WQBHB#%Z");
         Assert.assertNotNull(blog);
     }
 }

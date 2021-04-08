@@ -19,7 +19,7 @@
             <ul class="member-list">
                 <c:forEach items="${members}" var="member">
                     <li class="member-list-item">
-                        <img src="${member.imgUrl}" alt="member img"
+                        <img src="${member.imageUrl}" alt="member img"
                              class="member-list-item-user"/>
                         <span class="member-list-item-nickname">${member.nickName}</span>
                     </li>

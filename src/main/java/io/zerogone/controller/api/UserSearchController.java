@@ -1,4 +1,4 @@
-package io.zerogone.controller;
+package io.zerogone.controller.api;
 
 import io.zerogone.model.UserVo;
 import io.zerogone.service.UserSearchService;
@@ -17,6 +17,6 @@ public class UserSearchController {
 
     @GetMapping("api/user")
     public ResponseEntity<UserVo> handleUserSearchApi(@RequestParam String email) {
-        return ResponseEntity.ok(userSearchService.getUserByEmail(email));
+        return ResponseEntity.ok(userSearchService.getUserVoByEmail(email));
     }
 }

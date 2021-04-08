@@ -1,7 +1,7 @@
 package io.zerogone.controller;
 
+import io.zerogone.model.UserVo;
 import io.zerogone.service.BlogSearchService;
-import io.zerogone.model.CurrentUserInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,8 +16,8 @@ public class MyPageController {
     }
 
     @GetMapping("mypage")
-    public String getMypageViewNameWithUserInfo(@SessionAttribute("userInfo") CurrentUserInfo userInfo, Model model) {
-        model.addAttribute("blogs", blogSearchService.getBlogsThatUserBelongTo(userInfo));
+    public String getMypageViewNameWithBlogVos(@SessionAttribute("userInfo") UserVo userInfo, Model model) {
+        model.addAttribute("blogs", blogSearchService.getBlogVosByUserVo(userInfo));
         return "mypage";
     }
 }

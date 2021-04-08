@@ -38,12 +38,14 @@ function previewImage(event) {
         }
     } else {
         let formData = new FormData();
-        formData.append('files', file);
+        formData.append('image', file[0]);
 
         const reader = new FileReader();
         if (targetId === 'user-image-input') {
             reader.onload = function (progressEvent) {
                 document.getElementById('user-image-preview').innerHTML = `<img src="${progressEvent.target.result}" class="profile-image" alt="${progressEvent.target.result}">`;
+                document.querySelector('.user-info-image').setAttribute('src', `${progressEvent.target.result}`);
+                postUserImage(formData);
             }
         } else if (targetId === 'blog-image-input') {
             reader.onload = function (progressEvent) {
@@ -53,4 +55,12 @@ function previewImage(event) {
 
         reader.readAsDataURL(file[0]);
     }
+}
+
+function postUserImage(formData) {
+    fetch('api/user', {
+        method: 'POST',
+        body: formData
+    })
+        .catch(error => console.error(error));
 }

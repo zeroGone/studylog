@@ -36,19 +36,19 @@ public class UserSearchServiceTest {
     @Test
     public void getUserByEmail() {
         expectedException.expect(NotExistedDataException.class);
-        Assert.assertNull(userSearchService.getUserByEmail("dudrhs571"));
-        Assert.assertNotEquals(0, userSearchService.getUserByEmail("dudrhs571@gmail.com").getId());
+        Assert.assertNull(userSearchService.getUserVoByEmail("dudrhs571"));
+        Assert.assertNotEquals(0, userSearchService.getUserVoByEmail("dudrhs571@gmail.com").getId());
     }
 
     @Test
     public void fidnUserByEmail_GivenNull_ThrowNotExistedDataException() {
         expectedException.expect(NotExistedDataException.class);
-        Assert.assertNotEquals(0, userSearchService.getUserByEmail(null).getId());
+        Assert.assertNotEquals(0, userSearchService.getUserVoByEmail(null).getId());
     }
 
     @Test
     public void getUserByEmail_GivenEmptyString_ThrowNotExistedDataException() {
         expectedException.expect(NotExistedDataException.class);
-        Assert.assertNotEquals(0, userSearchService.getUserByEmail("").getId());
+        Assert.assertNotEquals(0, userSearchService.getUserVoByEmail("").getId());
     }
 }

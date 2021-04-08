@@ -45,8 +45,14 @@ public class BlogMemberDaoTest {
     @Transactional
     public void save() {
         List<BlogMember> blogMembers = new ArrayList<>();
-        blogMembers.add(new BlogMember(new User(1), new Blog(1), MemberRole.ADMIN));
-        blogMembers.add(new BlogMember(new User(2), new Blog(1), MemberRole.INVITING));
+        blogMembers.add(new BlogMember(
+                new User(1, null, null, null, null),
+                new Blog(1, null, null, null),
+                MemberRole.ADMIN));
+        blogMembers.add(new BlogMember(
+                new User(2, null, null, null, null),
+                new Blog(1, null, null, null),
+                MemberRole.INVITING));
         blogMemberDao.save(blogMembers);
 
         for (BlogMember blogMember : blogMembers) {
@@ -58,7 +64,10 @@ public class BlogMemberDaoTest {
     @Transactional
     public void save_GivenOneEntity_Success() {
         List<BlogMember> blogMembers = new ArrayList<>();
-        blogMembers.add(new BlogMember(new User(1), new Blog(1), MemberRole.ADMIN));
+        blogMembers.add(new BlogMember(
+                new User(1, null, null, null, null),
+                new Blog(1, null, null, null),
+                MemberRole.ADMIN));
         blogMemberDao.save(blogMembers);
 
         for (BlogMember blogMember : blogMembers) {
@@ -71,7 +80,10 @@ public class BlogMemberDaoTest {
     public void save_GivenInvalidUserId_ThrowPersistenceException() {
         expectedException.expect(PersistenceException.class);
         List<BlogMember> blogMembers = new ArrayList<>();
-        blogMembers.add(new BlogMember(new User(Integer.MAX_VALUE), new Blog(1), MemberRole.ADMIN));
+        blogMembers.add(new BlogMember(
+                new User(Integer.MAX_VALUE, null, null, null, null),
+                new Blog(1, null, null, null),
+                MemberRole.ADMIN));
         blogMemberDao.save(blogMembers);
 
         for (BlogMember blogMember : blogMembers) {
@@ -84,7 +96,10 @@ public class BlogMemberDaoTest {
     public void save_UserIdIsZero_ThrowPersistenceException() {
         expectedException.expect(IllegalStateException.class);
         List<BlogMember> blogMembers = new ArrayList<>();
-        blogMembers.add(new BlogMember(new User(0), new Blog(1), MemberRole.ADMIN));
+        blogMembers.add(new BlogMember(
+                new User(0, null, null, null, null),
+                new Blog(1, null, null, null),
+                MemberRole.ADMIN));
         blogMemberDao.save(blogMembers);
 
         for (BlogMember blogMember : blogMembers) {
@@ -97,7 +112,10 @@ public class BlogMemberDaoTest {
     public void save_GivenInvalidBlogId_ThrowPersistenceException() {
         expectedException.expect(PersistenceException.class);
         List<BlogMember> blogMembers = new ArrayList<>();
-        blogMembers.add(new BlogMember(new User(1), new Blog(Integer.MAX_VALUE), MemberRole.ADMIN));
+        blogMembers.add(new BlogMember(
+                new User(1, null, null, null, null),
+                new Blog(Integer.MAX_VALUE, null, null, null),
+                MemberRole.ADMIN));
         blogMemberDao.save(blogMembers);
 
         for (BlogMember blogMember : blogMembers) {

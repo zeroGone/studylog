@@ -1,38 +1,44 @@
 package io.zerogone.model.entity;
 
 import javax.persistence.*;
-import java.util.List;
+import java.time.LocalDateTime;
 
+import java.util.List;
 @Entity
 @Table(name = "blog")
 public class Blog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(insertable = false, updatable = false)
     private int id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, updatable = false)
     private String name;
 
+    @Column(updatable = false)
     private String introduce;
 
-    @Column(name = "img_url")
-    private String imgUrl;
+    @Column(name = "image_url")
+    private String imageUrl;
 
-    @OneToMany(mappedBy = "blog")
+    @Column(name = "create_date_time", insertable = false, updatable = false)
+    private LocalDateTime createDateTime;
+
+    @Column(name = "update_date_time", insertable = false, updatable = false)
+    private LocalDateTime updateDateTime;
+
+    @OneToMany(mappedBy = "blog", fetch = FetchType.LAZY)
     private List<BlogMember> members;
 
-    public Blog() {
+    Blog() {
 
     }
 
-    public Blog(int id) {
+    public Blog(int id, String name, String introduce, String imageUrl) {
         this.id = id;
-    }
-
-    public Blog(String name, String introduce, String imgUrl) {
         this.name = name;
         this.introduce = introduce;
-        this.imgUrl = imgUrl;
+        this.imageUrl = imageUrl;
     }
 
     public int getId() {
@@ -47,7 +53,19 @@ public class Blog {
         return introduce;
     }
 
-    public String getImgUrl() {
-        return imgUrl;
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public LocalDateTime getCreateDateTime() {
+        return createDateTime;
+    }
+
+    public LocalDateTime getUpdateDateTime() {
+        return updateDateTime;
+    }
+
+    public List<BlogMember> getMembers() {
+        return members;
     }
 }

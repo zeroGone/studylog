@@ -1,6 +1,6 @@
 package io.zerogone.service;
 
-import io.zerogone.model.entity.BlogMemberInvitationKey;
+import io.zerogone.model.entity.BlogMember;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -19,14 +19,14 @@ public class EmailService {
         this.javaMailSender = javaMailSender;
     }
 
-    public void sendInvitationEmail(List<BlogMemberInvitationKey> invitationKeys) throws MessagingException {
-        for (BlogMemberInvitationKey invitationKey : invitationKeys) {
+    public void sendInvitationEmail(List<BlogMember> members) throws MessagingException {
+        for (BlogMember member : members) {
             MimeMessage message = javaMailSender.createMimeMessage();
             MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, MESSAGE_ENCODING);
 
-            messageHelper.setTo(invitationKey.getUserEmail());
-            message.setSubject("[StudyLog] " + invitationKey.getBlogName() + " 의 멤버로 초대합니다!");
-            messageHelper.setText(getInvitationContent(invitationKey.getBlogName(), invitationKey.getValue()), true);
+            messageHelper.setTo(member.getEmail());
+            message.setSubject("[StudyLog] " + member.getBlogName() + " 의 멤버로 초대합니다!");
+            messageHelper.setText(getInvitationContent(member.getBlogName(), member.getBlogInvitationKey()), true);
             javaMailSender.send(message);
         }
     }

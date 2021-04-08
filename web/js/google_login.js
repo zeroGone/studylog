@@ -1,7 +1,7 @@
 const GOOGLE_LOGIN_INFO = {
     API_URL: "login",
     INIT_OPTIONS: {
-        client_id: 'client-id',
+        client_id: 'client_id',
         cookiepolicy: 'single_host_origin',
         scope: 'profile'
     },
@@ -38,7 +38,7 @@ function submit(userProfile) {
         body: JSON.stringify({
             "name": userProfile.getName(),
             "email": userProfile.getEmail(),
-            "imgUrl": userProfile.getImageUrl()
+            "imageUrl": userProfile.getImageUrl()
         })
     }).then(response => {
         if (isLoginSuccess(response)) {

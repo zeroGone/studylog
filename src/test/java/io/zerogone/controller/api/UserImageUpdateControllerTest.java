@@ -1,12 +1,13 @@
-package io.zerogone.controller;
+package io.zerogone.controller.api;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import io.zerogone.config.DatabaseConfiguration;
 import io.zerogone.config.WebConfiguration;
-import io.zerogone.model.UserDto;
+import io.zerogone.model.UserVo;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.AnnotationConfigWebContextLoader;
@@ -16,50 +17,35 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import javax.transaction.Transactional;
+
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = WebConfiguration.class, loader = AnnotationConfigWebContextLoader.class)
+@ContextConfiguration(classes = {WebConfiguration.class, DatabaseConfiguration.class}, loader = AnnotationConfigWebContextLoader.class)
 @WebAppConfiguration
-public class LoginControllerTest {
+public class UserImageUpdateControllerTest {
     @Autowired
     private WebApplicationContext webApplicationContext;
 
     private MockMvc mockMvc;
 
     @Before
-    public void setUp() {
+    public void setUp() throws Exception {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
     }
 
     @Test
-    public void doLogin() throws Exception {
-        UserDto userDto = new UserDto();
-        userDto.setName("김영곤");
-        userDto.setEmail("dudrhs571@gmail.com");
+    @Transactional
+    public void handleUpdatingUserImage() throws Exception {
+        MockMultipartFile image = new MockMultipartFile("data", "test0405.txt", "text/plain", "some xml".getBytes());
 
         mockMvc.perform(MockMvcRequestBuilders
-                .post("/login")
-                .contentType("application/json")
-                .characterEncoding("utf-8")
-                .content(new ObjectMapper().writeValueAsString(userDto)))
+                .fileUpload("/api/user/1")
+                .file("image", image.getBytes())
+                .sessionAttr("userInfo", new UserVo(1, null, null, null, null, null, null)))
                 .andDo(print())
                 .andExpect(status().isOk());
-    }
-
-    @Test
-    public void doLogin_NotExistedUser_ReturnNotFound() throws Exception {
-        UserDto userDto = new UserDto();
-        userDto.setName("이게누구여");
-        userDto.setEmail("모르는사람이여");
-
-        mockMvc.perform(MockMvcRequestBuilders
-                .post("/login")
-                .contentType("application/json")
-                .characterEncoding("utf-8")
-                .content(new ObjectMapper().writeValueAsString(userDto)))
-                .andDo(print())
-                .andExpect(status().isNotFound());
     }
 }

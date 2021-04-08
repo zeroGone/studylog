@@ -1,8 +1,7 @@
 package io.zerogone.model.entity;
 
-import io.zerogone.model.UserDto;
-
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -10,37 +9,40 @@ import java.util.List;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(updatable = false, insertable = false)
     private int id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false)
     private String name;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, updatable = false)
     private String email;
 
-    @Column(name = "nick_name", nullable = false, unique = true)
+    @Column(name = "nick_name", nullable = false, unique = true, updatable = false)
     private String nickName;
 
-    @Column(name = "img_url")
-    private String imgUrl;
+    @Column(name = "image_url")
+    private String imageUrl;
 
-    @OneToMany(mappedBy = "user")
+    @Column(name = "create_date_time", insertable = false, updatable = false)
+    private LocalDateTime createDateTime;
+
+    @Column(name = "update_date_time", insertable = false, updatable = false)
+    private LocalDateTime updateDateTime;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<BlogMember> blogs;
 
-    public User() {
+    User() {
 
     }
 
-    public User(int id) {
+    public User(int id, String name, String email, String nickName, String imageUrl) {
         this.id = id;
-    }
-
-    public User(UserDto userDto) {
-        id = userDto.getId();
-        name = userDto.getName();
-        email = userDto.getEmail();
-        nickName = userDto.getNickName();
-        imgUrl = userDto.getImgUrl();
+        this.name = name;
+        this.email = email;
+        this.nickName = nickName;
+        this.imageUrl = imageUrl;
     }
 
     public int getId() {
@@ -59,7 +61,15 @@ public class User {
         return nickName;
     }
 
-    public String getImgUrl() {
-        return imgUrl;
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public LocalDateTime getCreateDateTime() {
+        return createDateTime;
+    }
+
+    public LocalDateTime getUpdateDateTime() {
+        return updateDateTime;
     }
 }

@@ -50,26 +50,4 @@ public class SignupControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/"));
     }
-
-    @Test
-    public void signUp() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders
-                .post("/signup")
-                .param("name", "test 03/29 20:17")
-                .param("email", "test 03/29 20:17")
-                .param("nickName", "test 03/29 20:17"))
-                .andDo(print())
-                .andExpect(status().isCreated());
-    }
-
-    @Test
-    public void signUp_DuplicatedNickName_ReturnBadRequest() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders
-                .post("/signup")
-                .param("name", "test 03/29 20:03")
-                .param("email", "test 03/29 20:03")
-                .param("nickName", "zeroGone"))
-                .andDo(print())
-                .andExpect(status().isBadRequest());
-    }
 }
