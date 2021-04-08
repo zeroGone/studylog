@@ -13,14 +13,7 @@
 </header>
 <div class="main-container">
     <section class="welcome-container">
-        <c:choose>
-            <c:when test="${blog.imgUrl} ne null">
-                <img class="welcome-user-image" src="${blog.imgUrl}" alt="blog image"/>
-            </c:when>
-            <c:otherwise>
-                <img class="welcome-user-image" src="/img/blog-defualt.png" alt="blog image"/>
-            </c:otherwise>
-        </c:choose>
+        <img class="welcome-user-image" src="${blog.imageUrl}" alt="blog image"/>
         <div class="welcome-text welcome-blog-text">${blog.name} <span class="welcome-user-name"></span> 에 일원이 되셨습니다!
         </div>
     </section>
