@@ -1,7 +1,7 @@
 package io.zerogone.filter;
 
 import io.zerogone.config.WebConfiguration;
-import io.zerogone.model.CurrentUserInfo;
+import io.zerogone.model.UserVo;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,15 +27,11 @@ public class LoginCheckFilterTest {
 
     private MockMvc mockMvc;
 
-    private CurrentUserInfo userInfo;
+    private UserVo userInfo;
 
     @Before
     public void setUp() {
-        userInfo = new CurrentUserInfo();
-        userInfo.setId(1);
-        userInfo.setName("김영곤");
-        userInfo.setNickName("zeroGone");
-        userInfo.setEmail("dudrhs571@gmail.com");
+        userInfo = new UserVo(1, null, null, null, null, null, null);
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).addFilter(new LoginCheckFilter()).build();
     }
 

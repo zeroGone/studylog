@@ -57,34 +57,34 @@ public class UserDaoTest {
         Assert.assertNotEquals(0, userDao.findByEmail("").getId());
     }
 
-    @Test
-    @Transactional
-    public void save() {
-        UserDto dto = new UserDto();
-        dto.setName("test0325 1513");
-        dto.setEmail("test0325 1509");
-        dto.setNickName("test0325 1509");
-        User user = new User(dto);
+//    @Test
+//    @Transactional
+//    public void save() {
+//        UserDto dto = new UserDto();
+//        dto.setName("test0325 1513");
+//        dto.setEmail("test0325 1509");
+//        dto.setNickName("test0325 1509");
+//        User user = new User(dto);
+//
+//        userDao.save(user);
+//        Assert.assertNotEquals(0, user.getId());
+//    }
 
-        userDao.save(user);
-        Assert.assertNotEquals(0, user.getId());
-    }
-
-    @Test
-    @Transactional
-    public void update() {
-        UserDto userDto = new UserDto();
-        userDto.setId(1);
-        userDto.setEmail("dudrhs571@gmail.com");
-        userDto.setName("김영곤");
-        userDto.setNickName("zeroGone7247");
-        User user = new User(userDto);
-        userDao.updateImageUrl(user);
-        Assert.assertNull(user.getImageUrl());
-
-        userDto.setImageUrl("url");
-        user = new User(userDto);
-        userDao.updateImageUrl(user);
-        Assert.assertEquals("url", user.getImageUrl());
-    }
+//    @Test
+//    @Transactional
+//    public void update() {
+//        UserDto userDto = new UserDto();
+//        userDto.setId(1);
+//        userDto.setEmail("dudrhs571@gmail.com");
+//        userDto.setName("김영곤");
+//        userDto.setNickName("zeroGone7247");
+//        User user = new User(userDto);
+//        userDao.updateImageUrl(user);
+//        Assert.assertNull(user.getImageUrl());
+//
+//        userDto.setImageUrl("url");
+//        user = new User(userDto);
+//        userDao.updateImageUrl(user);
+//        Assert.assertEquals("url", user.getImageUrl());
+//    }
 }

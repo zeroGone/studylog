@@ -1,7 +1,7 @@
 package io.zerogone.controller;
 
 import io.zerogone.config.WebConfiguration;
-import io.zerogone.model.CurrentUserInfo;
+import io.zerogone.model.UserVo;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,13 +27,12 @@ public class LogoutControllerTest {
 
     private MockMvc mockMvc;
 
-    private CurrentUserInfo userInfo;
+    private UserVo userInfo;
 
     @Before
     public void setUp() {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-        userInfo = new CurrentUserInfo();
-        userInfo.setId(1);
+        userInfo = new UserVo(1, null, null, null, null, null, null);
     }
 
     @Test
@@ -45,7 +44,7 @@ public class LogoutControllerTest {
     }
 
     @Test
-    public void doLogout_NotExistedUserInfoInSession_ReturnOk() throws Exception{
+    public void doLogout_NotExistedUserInfoInSession_ReturnOk() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
                 .post("/api/logout"))
                 .andDo(print())

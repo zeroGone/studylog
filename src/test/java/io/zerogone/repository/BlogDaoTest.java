@@ -3,9 +3,8 @@ package io.zerogone.repository;
 import io.zerogone.config.DatabaseConfiguration;
 import io.zerogone.config.WebConfiguration;
 import io.zerogone.exception.NotExistedDataException;
-import io.zerogone.exception.NotNullPropertyException;
-import io.zerogone.model.BlogDto;
 import io.zerogone.model.entity.Blog;
+import io.zerogone.model.entity.User;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -21,6 +20,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import javax.persistence.PersistenceException;
 import javax.transaction.Transactional;
+import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {WebConfiguration.class, DatabaseConfiguration.class}, loader = AnnotationConfigWebContextLoader.class)
@@ -42,10 +42,10 @@ public class BlogDaoTest {
     @Test
     @Transactional
     public void save() {
-        BlogDto blogDto = new BlogDto();
-        blogDto.setName("testBlog");
-        blogDto.setIntroduce("This is temporary instance fot testing");
-        Blog blog = new Blog(blogDto);
+        Blog blog = new Blog(0,
+                "testBlog",
+                "This is temporary instance fot testing",
+                null);
         blogDao.save(blog);
         Assert.assertNotEquals(0, blog.getId());
     }
@@ -53,8 +53,11 @@ public class BlogDaoTest {
     @Test
     @Transactional
     public void save_BlogNameIsNull_ThrowNotPropertyException() {
-        expectedException.expect(NotNullPropertyException.class);
-        Blog blog = new Blog(new BlogDto());
+        expectedException.expect(PersistenceException.class);
+        Blog blog = new Blog(0,
+                null,
+                null,
+                null);
         blogDao.save(blog);
         Assert.assertNotEquals(0, blog.getId());
     }
@@ -63,9 +66,10 @@ public class BlogDaoTest {
     @Transactional
     public void save_BlogNameIsDuplicated_ThrowPersistenceException() {
         expectedException.expect(PersistenceException.class);
-        BlogDto blogDto = new BlogDto();
-        blogDto.setName("studylog");
-        Blog blog = new Blog(blogDto);
+        Blog blog = new Blog(0,
+                "studylog",
+                null,
+                null);
         blogDao.save(blog);
         Assert.assertNotEquals(0, blog.getId());
     }
@@ -79,5 +83,12 @@ public class BlogDaoTest {
     public void findByName_invalideName_ThrowNotExistedDataException() {
         expectedException.expect(NotExistedDataException.class);
         Assert.assertNotNull(blogDao.findByName("zinmin is genius"));
+    }
+
+    @Test
+    public void findAllByUser() {
+        User user = new User(1, null, null, null, null);
+        List<Blog> blogs = blogDao.findAllByUser(user);
+        Assert.assertNotEquals(0, blogs.size());
     }
 }

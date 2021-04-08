@@ -4,9 +4,9 @@ import io.zerogone.config.DatabaseConfiguration;
 import io.zerogone.config.WebConfiguration;
 import io.zerogone.exception.BlogMembersStateException;
 import io.zerogone.exception.UniquePropertyException;
-import io.zerogone.model.BlogCreateDto;
-import io.zerogone.model.CurrentUserInfo;
+import io.zerogone.model.BlogDto;
 import io.zerogone.model.UserDto;
+import io.zerogone.model.UserVo;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -44,39 +44,37 @@ public class BlogCreateServiceTest {
     @Test
     @Transactional
     public void createBlog() {
-        CurrentUserInfo creator = new CurrentUserInfo();
-        creator.setId(1);
-        BlogCreateDto blogCreateDto = new BlogCreateDto();
-        blogCreateDto.setName("test");
+        UserVo creator = new UserVo(1, null, null, null, null, null, null);
+        BlogDto BlogDto = new BlogDto();
+        BlogDto.setName("test");
 
-        Assert.assertNotNull(blogCreateService.createBlog(creator, blogCreateDto));
+        Assert.assertNotNull(blogCreateService.createBlog(creator, BlogDto, null));
     }
 
     @Test
     @Transactional
     public void createBlog_SameBlogName_ThrowDuplicatedPropertyException() {
         expectedException.expect(UniquePropertyException.class);
-        CurrentUserInfo creator = new CurrentUserInfo();
-        creator.setId(1);
-        BlogCreateDto blogCreateDto = new BlogCreateDto();
-        blogCreateDto.setName("test dto");
-        Assert.assertNotNull(blogCreateService.createBlog(creator, blogCreateDto));
+        UserVo creator = new UserVo(1, null, null, null, null, null, null);
+
+        BlogDto BlogDto = new BlogDto();
+        BlogDto.setName("test dto");
+        Assert.assertNotNull(blogCreateService.createBlog(creator, BlogDto, null));
     }
 
     @Test
     @Transactional
     public void createBlog_IncludeInvalidBlogMember_ThrowBlogMembersStateException() {
         expectedException.expect(BlogMembersStateException.class);
-        CurrentUserInfo creator = new CurrentUserInfo();
-        creator.setId(1);
+        UserVo creator = new UserVo(1, null, null, null, null, null, null);
 
         UserDto member = new UserDto();
         member.setId(-1);
 
-        BlogCreateDto blogCreateDto = new BlogCreateDto();
-        blogCreateDto.setName("test");
-        blogCreateDto.setMembers(new ArrayList<>(Collections.singletonList(member)));
+        BlogDto BlogDto = new BlogDto();
+        BlogDto.setName("test");
+        BlogDto.setMembers(new ArrayList<>(Collections.singletonList(member)));
 
-        Assert.assertNotNull(blogCreateService.createBlog(creator, blogCreateDto));
+        Assert.assertNotNull(blogCreateService.createBlog(creator, BlogDto, null));
     }
 }

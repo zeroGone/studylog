@@ -3,8 +3,8 @@ package io.zerogone.service;
 import io.zerogone.config.DatabaseConfiguration;
 import io.zerogone.config.WebConfiguration;
 import io.zerogone.exception.BlogMembersStateException;
-import io.zerogone.model.CurrentUserInfo;
 import io.zerogone.model.UserDto;
+import io.zerogone.model.UserVo;
 import io.zerogone.model.entity.Blog;
 import org.junit.Assert;
 import org.junit.Before;
@@ -32,16 +32,12 @@ public class BlogMemberCreateServiceTest {
 
     private BlogMemberCreateService blogMemberCreateService;
 
-    private CurrentUserInfo currentUserInfo;
+    private UserVo currentUserInfo;
 
     @Before
     public void setUp() {
         blogMemberCreateService = webApplicationContext.getBean(BlogMemberCreateService.class);
-        currentUserInfo = new CurrentUserInfo();
-        currentUserInfo.setId(1);
-        currentUserInfo.setName("김영곤");
-        currentUserInfo.setNickName("zeroGone");
-        currentUserInfo.setEmail("dudrhs571@gmail.com");
+        currentUserInfo = new UserVo(1, null, null, null, null, null, null);
     }
 
     @Test
@@ -51,12 +47,17 @@ public class BlogMemberCreateServiceTest {
 
     @Test
     public void createBlogMembers() {
-        blogMemberCreateService.createBlogMembers(new Blog(1), currentUserInfo, new ArrayList<>());
+        blogMemberCreateService.createBlogMembers(
+                new Blog(1, null, null, null),
+                currentUserInfo, new ArrayList<>());
         List<UserDto> members = new ArrayList<>();
         UserDto userDto = new UserDto();
         userDto.setId(2);
         members.add(userDto);
-        blogMemberCreateService.createBlogMembers(new Blog(1), currentUserInfo, members);
+        blogMemberCreateService.createBlogMembers(
+                new Blog(1, null, null, null),
+                currentUserInfo,
+                members);
     }
 
     @Rule
@@ -74,7 +75,9 @@ public class BlogMemberCreateServiceTest {
         userDto = new UserDto();
         userDto.setId(2);
         members.add(userDto);
-        blogMemberCreateService.createBlogMembers(new Blog(1), currentUserInfo, members);
+        blogMemberCreateService.createBlogMembers(
+                new Blog(1, null, null, null),
+                currentUserInfo, members);
     }
 
     @Test
@@ -86,6 +89,6 @@ public class BlogMemberCreateServiceTest {
         UserDto userDto = new UserDto();
         userDto.setId(0);
         members.add(userDto);
-        blogMemberCreateService.createBlogMembers(new Blog(1), currentUserInfo, members);
+        blogMemberCreateService.createBlogMembers(new Blog(1, null, null, null), currentUserInfo, members);
     }
 }
