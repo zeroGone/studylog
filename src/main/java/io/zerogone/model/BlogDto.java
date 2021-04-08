@@ -1,12 +1,13 @@
 package io.zerogone.model;
 
-import java.time.LocalDateTime;
+import java.util.List;
 
 public class BlogDto {
     private int id;
     private String name;
     private String introduce;
     private String imageUrl;
+    private List<UserDto> members;
 
     public int getId() {
         return id;
@@ -38,5 +39,13 @@ public class BlogDto {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public List<UserDto> getMembers() {
+        return members;
+    }
+
+    public void setMembers(List<UserDto> members) {
+        this.members = members;
     }
 }

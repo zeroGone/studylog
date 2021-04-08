@@ -24,7 +24,7 @@ public class BlogMember {
     @Convert(converter = MemberRoleConverter.class)
     private MemberRole role;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "blog_invitation_key_id")
     private BlogInvitationKey blogInvitationKey;
 
@@ -84,8 +84,8 @@ public class BlogMember {
         return role;
     }
 
-    public BlogInvitationKey getBlogInvitationKey() {
-        return blogInvitationKey;
+    public String getBlogInvitationKey() {
+        return blogInvitationKey.getValue();
     }
 
     public void setBlogInvitationKey(BlogInvitationKey blogInvitationKey) {

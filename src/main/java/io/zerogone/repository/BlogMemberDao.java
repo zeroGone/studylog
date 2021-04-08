@@ -16,15 +16,24 @@ public class BlogMemberDao {
     @PersistenceContext
     private EntityManager entityManager;
 
+    public void save(BlogMember blogMember) {
+        logger.info("-----Saving blog member start-----");
+
+        entityManager.persist(blogMember);
+        entityManager.flush();
+
+        logger.info("-----Saving blog member is ended-----");
+    }
+
     public void save(List<BlogMember> blogMembers) {
-        logger.debug("-----save blogmember start-----");
+        logger.info("-----Saving blog members start-----");
 
         for (BlogMember blogMember : blogMembers) {
             entityManager.persist(blogMember);
         }
         entityManager.flush();
 
-        logger.debug("-----save blogmember end-----");
+        logger.info("-----Saving blog member is ended-----");
     }
 
     public void update(BlogMember blogMember) {
