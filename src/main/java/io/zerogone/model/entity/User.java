@@ -2,6 +2,7 @@ package io.zerogone.model.entity;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "user")
@@ -28,6 +29,9 @@ public class User {
 
     @Column(name = "update_date_time", insertable = false, updatable = false)
     private LocalDateTime updateDateTime;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<BlogMember> blogs;
 
     User() {
 

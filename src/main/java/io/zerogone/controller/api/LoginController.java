@@ -22,7 +22,7 @@ public class LoginController {
     @PostMapping("login")
     public ResponseEntity<UserVo> doLogin(@RequestBody UserDto userDto, HttpSession httpSession) {
         try {
-            UserVo userVo = userSearchService.getUserByEmail(userDto.getEmail());
+            UserVo userVo = userSearchService.getUserVoByEmail(userDto.getEmail());
             httpSession.setAttribute("userInfo", userVo);
             return ResponseEntity.ok(userVo);
         } catch (NotExistedDataException notExistedDataException) {

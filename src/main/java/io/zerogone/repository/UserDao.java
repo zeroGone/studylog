@@ -2,6 +2,8 @@ package io.zerogone.repository;
 
 import ch.qos.logback.classic.Logger;
 import io.zerogone.exception.NotExistedDataException;
+import io.zerogone.model.entity.Blog;
+import io.zerogone.model.entity.BlogMember;
 import io.zerogone.model.entity.User;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -10,10 +12,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.CriteriaUpdate;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
+import java.util.List;
 
 @Repository
 public class UserDao {
@@ -60,5 +60,18 @@ public class UserDao {
         } catch (NoResultException noResultException) {
             throw new NotExistedDataException(User.class, "이메일로 유저 검색", email);
         }
+    }
+
+    public List<User> findAllByBlog(Blog blog) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
+
+        Root<User> root = criteriaQuery.from(User.class);
+        Join<User, BlogMember> join = root.join("blogs");
+
+        criteriaQuery.select(root);
+        criteriaQuery.where(criteriaBuilder.equal(join.get("blog"), blog));
+
+        return entityManager.createQuery(criteriaQuery).getResultList();
     }
 }
