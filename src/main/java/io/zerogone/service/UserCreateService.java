@@ -15,7 +15,9 @@ import javax.transaction.Transactional;
 
 @Service
 public class UserCreateService {
-    private static final String imageFilePath = "img/user";
+    private static final String USER_IMAGE_FILE_PATH = "img/user";
+    private static final String USER_DEFAULT_IMAGE_URL = "/img/user-default/";
+    private static final String USER_DEFAULT_IMAGE_TYPE = ".png";
 
     private final Logger logger = (Logger) LoggerFactory.getLogger(this.getClass());
     private final FileUploadService fileUploadService;
@@ -28,12 +30,13 @@ public class UserCreateService {
 
     @Transactional
     public UserVo createUser(UserDto userDto, MultipartFile imageFile) {
-        if (imageFile != null) {
-            String uploadedImgUrl = fileUploadService.uploadFile(imageFilePath, imageFile);
-            userDto.setImageUrl(uploadedImgUrl);
-        }
+        String userImageUrl = uploadUserImage(imageFile);
 
-        User user = new User(userDto);
+        User user = new User(userDto.getId(),
+                userDto.getName(),
+                userDto.getEmail(),
+                userDto.getNickName(),
+                userImageUrl);
 
         try {
             userDao.save(user);
@@ -42,6 +45,23 @@ public class UserCreateService {
             throw new UniquePropertyException("유저의 이메일이나 닉네임이 중복되었습니다");
         }
 
-        return new UserVo(user);
+        return new UserVo(user.getId(),
+                user.getName(),
+                user.getEmail(),
+                user.getNickName(),
+                user.getImageUrl(),
+                user.getCreateDateTime(),
+                user.getUpdateDateTime());
+    }
+
+    private String uploadUserImage(MultipartFile imageFile) {
+        String uploadedImageUrl = fileUploadService.uploadFile(USER_IMAGE_FILE_PATH, imageFile);
+
+        if (uploadedImageUrl == null) {
+            int randomNumber = (int) (Math.random() * 10);
+            return USER_DEFAULT_IMAGE_URL + randomNumber + USER_DEFAULT_IMAGE_TYPE;
+        } else {
+            return uploadedImageUrl;
+        }
     }
 }

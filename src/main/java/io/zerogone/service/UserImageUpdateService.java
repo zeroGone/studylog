@@ -1,6 +1,5 @@
 package io.zerogone.service;
 
-import io.zerogone.model.UserDto;
 import io.zerogone.model.UserVo;
 import io.zerogone.model.entity.User;
 import io.zerogone.repository.UserDao;
@@ -25,19 +24,20 @@ public class UserImageUpdateService {
     public UserVo updateUserImage(UserVo user, MultipartFile imageFile) {
         String savedImgUrl = fileUploadService.uploadFile(USER_IMAGE_FILE_PATH, imageFile);
 
-        User entity = convert(user, savedImgUrl);
+        User entity = new User(user.getId(),
+                user.getName(),
+                user.getEmail(),
+                user.getNickName(),
+                savedImgUrl);
+        
         userDao.updateImageUrl(entity);
 
-        return new UserVo(entity);
-    }
-
-    private User convert(UserVo vo, String imageUrl) {
-        UserDto dto = new UserDto();
-        dto.setId(vo.getId());
-        dto.setName(vo.getName());
-        dto.setEmail(vo.getEmail());
-        dto.setNickName(vo.getNickName());
-        dto.setImageUrl(imageUrl);
-        return new User(dto);
+        return new UserVo(entity.getId(),
+                entity.getName(),
+                entity.getEmail(),
+                entity.getNickName(),
+                entity.getImageUrl(),
+                entity.getCreateDateTime(),
+                entity.getUpdateDateTime());
     }
 }
