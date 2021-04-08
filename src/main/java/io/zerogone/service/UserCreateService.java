@@ -30,7 +30,7 @@ public class UserCreateService {
 
     @Transactional
     public UserVo createUser(UserDto userDto, MultipartFile imageFile) {
-        String userImageUrl = uploadUserImage(imageFile);
+        String userImageUrl = uploadUserImage(imageFile, userDto.getImageUrl());
 
         User user = new User(userDto.getId(),
                 userDto.getName(),
@@ -54,7 +54,11 @@ public class UserCreateService {
                 user.getUpdateDateTime());
     }
 
-    private String uploadUserImage(MultipartFile imageFile) {
+    private String uploadUserImage(MultipartFile imageFile, String snsImageUrl) {
+        if (snsImageUrl != null) {
+            return snsImageUrl;
+        }
+
         String uploadedImageUrl = fileUploadService.uploadFile(USER_IMAGE_FILE_PATH, imageFile);
 
         if (uploadedImageUrl == null) {

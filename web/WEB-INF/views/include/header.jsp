@@ -12,7 +12,7 @@
     <div class="header-information">
         <div class="user-info">
             <span class="user-info-nickname">${userInfo.nickName}</span>
-            <img src=${userInfo.imgUrl} alt="current-user" class="user-info-image">
+            <img src=${userInfo.imageUrl} alt="current-user" class="user-info-image">
         </div>
         <div class="header-notice">
             <img src="/img/header/notice-active.png" alt="notice-icon" class="header-notice-icon"/>

@@ -19,13 +19,13 @@ function makeFormData() {
     if (imageInputComponent.files[0]) {
         formData.append("image", imageInputComponent.files[0]);
     } else {
-        formData.append("imgUrl", imagePreviewComponent.src);
+        formData.append("imageUrl", imagePreviewComponent.src);
     }
     return formData;
 }
 
 function submitSignupData() {
-    fetch("signup", {
+    fetch("api/user", {
         method: "POST",
         body: makeFormData()
     }).then(response => {
