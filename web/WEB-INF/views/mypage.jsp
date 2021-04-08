@@ -76,8 +76,8 @@
             <c:forEach items="${blogs}" var="blog">
                 <article class="blog-item">
                     <c:choose>
-                        <c:when test="${blog.imgUrl ne null}">
-                            <img class="blog-icon" src="${blog.imgUrl}" alt="blog image"/>
+                        <c:when test="${blog.imageUrl ne null}">
+                            <img class="blog-icon" src="${blog.imageUrl}" alt="blog image"/>
                         </c:when>
                         <c:otherwise>
                             <div class="blog-icon"></div>
