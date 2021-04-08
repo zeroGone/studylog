@@ -88,7 +88,7 @@ public class BlogDaoTest {
     @Test
     public void findAllByUser() {
         User user = new User(1, null, null, null, null);
-        List<Blog> blogs = blogDao.findAllByUser(user);
+        List<Blog> blogs = blogDao.findAllByUserAndBlogMemberRoleIsAdminOrMember(user);
         Assert.assertNotEquals(0, blogs.size());
     }
 }

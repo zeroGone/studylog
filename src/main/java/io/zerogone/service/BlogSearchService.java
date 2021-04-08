@@ -35,7 +35,7 @@ public class BlogSearchService {
                 userVo.getNickName(),
                 userVo.getImageUrl());
 
-        List<Blog> blogs = blogDao.findAllByUser(user);
+        List<Blog> blogs = blogDao.findAllByUserAndBlogMemberRoleIsAdminOrMember(user);
 
         return blogs.stream().map(blog -> new BlogVo(
                 blog.getId(),

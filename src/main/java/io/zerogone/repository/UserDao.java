@@ -4,6 +4,7 @@ import ch.qos.logback.classic.Logger;
 import io.zerogone.exception.NotExistedDataException;
 import io.zerogone.model.entity.Blog;
 import io.zerogone.model.entity.BlogMember;
+import io.zerogone.model.entity.MemberRole;
 import io.zerogone.model.entity.User;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -62,7 +63,7 @@ public class UserDao {
         }
     }
 
-    public List<User> findAllByBlog(Blog blog) {
+    public List<User> findAllByBlogAndBlogMemberRoleIsAdminOrMember(Blog blog) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
 
@@ -70,7 +71,12 @@ public class UserDao {
         Join<User, BlogMember> join = root.join("blogs");
 
         criteriaQuery.select(root);
-        criteriaQuery.where(criteriaBuilder.equal(join.get("blog"), blog));
+        criteriaQuery.where(criteriaBuilder.and(
+                criteriaBuilder.equal(join.get("blog"), blog),
+                criteriaBuilder.or(
+                        criteriaBuilder.equal(join.get("role"), MemberRole.ADMIN),
+                        criteriaBuilder.equal(join.get("role"), MemberRole.MEMBER))));
+
 
         return entityManager.createQuery(criteriaQuery).getResultList();
     }
