@@ -1,8 +1,5 @@
 package io.zerogone.model.entity;
 
-import io.zerogone.exception.NotNullPropertyException;
-import io.zerogone.model.UserDto;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -36,13 +33,12 @@ public class User {
 
     }
 
-    public User(UserDto userDto) {
-        validate(userDto);
-        id = userDto.getId();
-        name = userDto.getName();
-        email = userDto.getEmail();
-        nickName = userDto.getNickName();
-        imageUrl = userDto.getImageUrl();
+    public User(int id, String name, String email, String nickName, String imageUrl) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.nickName = nickName;
+        this.imageUrl = imageUrl;
     }
 
     public int getId() {
@@ -71,17 +67,5 @@ public class User {
 
     public LocalDateTime getUpdateDateTime() {
         return updateDateTime;
-    }
-
-    private void validate(UserDto userDto) {
-        if (userDto.getName() == null) {
-            throw new NotNullPropertyException(User.class, "name");
-        }
-        if (userDto.getEmail() == null) {
-            throw new NotNullPropertyException(User.class, "email");
-        }
-        if (userDto.getNickName() == null) {
-            throw new NotNullPropertyException(User.class, "nickname");
-        }
     }
 }

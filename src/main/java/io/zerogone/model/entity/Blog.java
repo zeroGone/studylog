@@ -1,8 +1,5 @@
 package io.zerogone.model.entity;
 
-import io.zerogone.exception.NotNullPropertyException;
-import io.zerogone.model.BlogDto;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -33,13 +30,11 @@ public class Blog {
 
     }
 
-    public Blog(BlogDto blogDto) {
-        if (blogDto.getName() == null) {
-            throw new NotNullPropertyException(Blog.class, "name");
-        }
-        this.name = blogDto.getName();
-        this.introduce = blogDto.getIntroduce();
-        this.imageUrl = blogDto.getImageUrl();
+    public Blog(int id, String name, String introduce, String imageUrl) {
+        this.id = id;
+        this.name = name;
+        this.introduce = introduce;
+        this.imageUrl = imageUrl;
     }
 
     public int getId() {

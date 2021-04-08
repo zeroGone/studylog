@@ -1,7 +1,6 @@
 package io.zerogone.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import io.zerogone.model.entity.Blog;
 
 import java.time.LocalDateTime;
 
@@ -15,13 +14,13 @@ public class BlogVo {
     @JsonFormat(pattern = "yyyy-MM-dd kk:mm:ss")
     private final LocalDateTime updateDateTime;
 
-    public BlogVo(Blog blog) {
-        this.id = blog.getId();
-        this.name = blog.getName();
-        this.introduce = blog.getIntroduce();
-        this.imageUrl = blog.getImageUrl();
-        this.createDateTime = blog.getCreateDateTime();
-        this.updateDateTime = blog.getUpdateDateTime();
+    public BlogVo(int id, String name, String introduce, String imageUrl, LocalDateTime createDateTime, LocalDateTime updateDateTime) {
+        this.id = id;
+        this.name = name;
+        this.introduce = introduce;
+        this.imageUrl = imageUrl;
+        this.createDateTime = createDateTime;
+        this.updateDateTime = updateDateTime;
     }
 
     public int getId() {
