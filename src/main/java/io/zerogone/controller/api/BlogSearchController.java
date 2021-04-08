@@ -1,7 +1,7 @@
 package io.zerogone.controller.api;
 
+import io.zerogone.model.BlogVo;
 import io.zerogone.service.BlogSearchService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,7 +16,7 @@ public class BlogSearchController {
     }
 
     @GetMapping("api/blog")
-    public ResponseEntity<Object> handleBlogSearchApi(@RequestParam String name) {
-        return new ResponseEntity<>(blogSearchService.getBlogByName(name), HttpStatus.OK);
+    public ResponseEntity<BlogVo> handleBlogSearchApi(@RequestParam String name) {
+        return ResponseEntity.ok(blogSearchService.getBlogVoByName(name));
     }
 }

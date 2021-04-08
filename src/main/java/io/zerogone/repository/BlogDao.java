@@ -3,6 +3,8 @@ package io.zerogone.repository;
 import ch.qos.logback.classic.Logger;
 import io.zerogone.exception.NotExistedDataException;
 import io.zerogone.model.entity.Blog;
+import io.zerogone.model.entity.BlogMember;
+import io.zerogone.model.entity.User;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
@@ -12,7 +14,9 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Root;
+import java.util.List;
 
 @Repository
 public class BlogDao {
@@ -45,5 +49,18 @@ public class BlogDao {
         } catch (NoResultException noResultException) {
             throw new NotExistedDataException(Blog.class, "블로그 이름으로 블로그 검색", name);
         }
+    }
+
+    public List<Blog> findAllByUser(User user) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Blog> criteriaQuery = criteriaBuilder.createQuery(Blog.class);
+
+        Root<Blog> root = criteriaQuery.from(Blog.class);
+        Join<Blog, BlogMember> join = root.join("members");
+
+        criteriaQuery.select(root);
+        criteriaQuery.where(criteriaBuilder.equal(join.get("user"), user));
+
+        return entityManager.createQuery(criteriaQuery).getResultList();
     }
 }

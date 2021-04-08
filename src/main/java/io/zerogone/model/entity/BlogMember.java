@@ -12,11 +12,11 @@ public class BlogMember {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @ManyToOne(targetEntity = User.class)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToOne(targetEntity = Blog.class)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "blog_id", nullable = false)
     private Blog blog;
 
@@ -24,7 +24,7 @@ public class BlogMember {
     @Convert(converter = MemberRoleConverter.class)
     private MemberRole role;
 
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "blog_invitation_key_id")
     private BlogInvitationKey blogInvitationKey;
 
@@ -76,8 +76,20 @@ public class BlogMember {
         return blog.getName();
     }
 
+    public String getBlogIntroduce() {
+        return blog.getIntroduce();
+    }
+
     public String getBlogImageUrl() {
         return blog.getImageUrl();
+    }
+
+    public LocalDateTime getBlogCreateDateTime() {
+        return blog.getCreateDateTime();
+    }
+
+    public LocalDateTime getBlogUpdateDateTime() {
+        return blog.getUpdateDateTime();
     }
 
     public MemberRole getRole() {
