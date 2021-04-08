@@ -33,10 +33,15 @@ public class BlogMemberCreateService {
 
     @Transactional
     public void createBlogMembers(Blog blog, UserVo creator, List<UserDto> members) {
+        createAdminBlogMember(blog, creator);
+
+        if (members == null) {
+            return;
+        }
+
         validateMembers(creator.getId(), members);
 
         logger.info("-----Creating blog members start-----");
-        createAdminBlogMember(blog, creator);
         List<BlogMember> blogMembersToBeInvited = createBlogMembersToBeInvited(blog, members);
         logger.info("-----Creating blog members is ended-----");
 
@@ -44,6 +49,9 @@ public class BlogMemberCreateService {
     }
 
     private void validateMembers(int adminUserId, List<UserDto> members) {
+        if (members == null) {
+            return;
+        }
         logger.info("-----validate blog members-----");
         if (members.stream().anyMatch(member -> Objects.equals(member.getId(), adminUserId))) {
             throw new BlogMembersStateException("한 블로그에 같은 사람이 두 번 포함될 수 없습니다");
