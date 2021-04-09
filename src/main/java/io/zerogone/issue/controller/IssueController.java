@@ -1,4 +1,4 @@
-package io.zerogone.controller;
+package io.zerogone.issue.controller;
 
 import ch.qos.logback.classic.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,14 +16,13 @@ public class IssueController {
         return "issue_list";
     }
 
-    @GetMapping("issue")
-    public String getIssue() {
-        return "issue";
+    @GetMapping("issue/list")
+    public String getIssueListViewName() {
+        return "issue_list";
     }
 
-    @GetMapping("createIssue")
-    public String createIssue() {
+    @GetMapping("issue/write")
+    public String getIssueWriteViewName() {
         return "issue_write";
     }
-
 }

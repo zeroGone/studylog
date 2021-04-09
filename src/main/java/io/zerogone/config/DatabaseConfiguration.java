@@ -20,7 +20,7 @@ import java.util.Properties;
 @EnableTransactionManagement
 public class DatabaseConfiguration {
     private static final String[] MODEL_PACKAGE_LOCATION = new String[]{
-            "io.zerogone.model.entity"
+            "io.zerogone.issue.model"
     };
 
     private final Environment environment;
