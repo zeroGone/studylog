@@ -1,15 +1,26 @@
 const blogCreateContainer = document.querySelector(".blog-create-container");
 
 function getArticleNode(event) {
-    return event.target.closest("article");
+    if (!event.target.classList.contains('blog')) {
+        return event.target.closest("article");
+    }
+    return false;
 }
 
 function isBlogCreateButton(article) {
-    return article.classList.contains("blog-create-button");
+    if (!article) {
+        return false;
+    } else {
+        return article.classList.contains("blog-create-button");
+    }
 }
 
 function moveBlogMainPage(article) {
-    window.location.pathname = article.querySelector(".blog-name").innerText;
+    if (!article) {
+        return false;
+    } else {
+        return window.location.pathname = article.querySelector(".blog-name").innerText;
+    }
 }
 
 function showBlogCreateContainer() {
