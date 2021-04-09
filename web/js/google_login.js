@@ -1,7 +1,7 @@
 const GOOGLE_LOGIN_INFO = {
     API_URL: "login",
     INIT_OPTIONS: {
-        client_id: 'client-id',
+        client_id: '900965677916-dipqmfduh44cl0q623ccopn0r5ivv7s4.apps.googleusercontent.com',
         cookiepolicy: 'single_host_origin',
         scope: 'profile'
     },

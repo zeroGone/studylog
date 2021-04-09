@@ -55,7 +55,9 @@
             </article>
             <div class="create-button">
                 <div class="create-button-icon"><i class="fas fa-pen"></i></div>
-                New issue
+                <a href = "/createIssue">
+                    New issue
+                </a>
             </div>
             <div class="divider"></div>
             <li class="item">
