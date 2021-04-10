@@ -32,7 +32,7 @@ public class UserCreateService {
     public UserVo createUser(UserDto userDto, MultipartFile imageFile) {
         String userImageUrl = uploadUserImage(imageFile, userDto.getImageUrl());
 
-        User user = new User(userDto.getId(),
+        User user = new User(0,
                 userDto.getName(),
                 userDto.getEmail(),
                 userDto.getNickName(),
@@ -41,6 +41,7 @@ public class UserCreateService {
         try {
             userDao.save(user);
         } catch (PersistenceException persistenceException) {
+            logger.error("어디고 : " + persistenceException.getCause().getClass());
             logger.error("user property is duplicated ! " + persistenceException.getMessage());
             throw new UniquePropertyException("유저의 이메일이나 닉네임이 중복되었습니다");
         }
