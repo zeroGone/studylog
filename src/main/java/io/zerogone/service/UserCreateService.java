@@ -41,7 +41,6 @@ public class UserCreateService {
         try {
             userDao.save(user);
         } catch (PersistenceException persistenceException) {
-            logger.error("어디고 : " + persistenceException.getCause().getClass());
             logger.error("user property is duplicated ! " + persistenceException.getMessage());
             throw new UniquePropertyException("유저의 이메일이나 닉네임이 중복되었습니다");
         }
