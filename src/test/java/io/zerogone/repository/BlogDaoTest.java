@@ -42,22 +42,16 @@ public class BlogDaoTest {
     @Test
     @Transactional
     public void save() {
-        Blog blog = new Blog(0,
-                "testBlog",
-                "This is temporary instance fot testing",
-                null);
+        Blog blog = new Blog(0, "testBlog", "This is temporary instance fot testing", null);
         blogDao.save(blog);
         Assert.assertNotEquals(0, blog.getId());
     }
 
     @Test
     @Transactional
-    public void save_BlogNameIsNull_ThrowNotPropertyException() {
+    public void save_BlogNameIsNull_ThrowPersistenceException() {
         expectedException.expect(PersistenceException.class);
-        Blog blog = new Blog(0,
-                null,
-                null,
-                null);
+        Blog blog = new Blog(0, null, null, null);
         blogDao.save(blog);
         Assert.assertNotEquals(0, blog.getId());
     }
@@ -66,10 +60,7 @@ public class BlogDaoTest {
     @Transactional
     public void save_BlogNameIsDuplicated_ThrowPersistenceException() {
         expectedException.expect(PersistenceException.class);
-        Blog blog = new Blog(0,
-                "studylog",
-                null,
-                null);
+        Blog blog = new Blog(0, "studylog", null, null);
         blogDao.save(blog);
         Assert.assertNotEquals(0, blog.getId());
     }
@@ -86,7 +77,7 @@ public class BlogDaoTest {
     }
 
     @Test
-    public void findAllByUser() {
+    public void findAllByUserAndBlogMemberRoleIsAdminOrMember() {
         User user = new User(1, null, null, null, null);
         List<Blog> blogs = blogDao.findAllByUserAndBlogMemberRoleIsAdminOrMember(user);
         Assert.assertNotEquals(0, blogs.size());
