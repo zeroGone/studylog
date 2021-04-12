@@ -28,10 +28,7 @@ public class BlogDao {
 
     public void save(Blog blog) {
         logger.debug("-----save blog start-----");
-
         entityManager.persist(blog);
-        entityManager.flush();
-
         logger.debug("blog id: " + blog.getId());
         logger.debug("-----save blog end-----");
     }
