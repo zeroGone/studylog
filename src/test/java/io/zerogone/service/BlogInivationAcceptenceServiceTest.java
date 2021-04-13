@@ -30,7 +30,7 @@ public class BlogInivationAcceptenceServiceTest {
 
     @Test
     public void acceptBlogInvitation() {
-        BlogVo blog = blogInvitationAcceptenceService.acceptBlogInvitation("_%$zw22WQBHB#%Z");
+        BlogVo blog = blogInvitationAcceptenceService.acceptBlogInvitation("hXfHxxa0nqLHNsk");
         Assert.assertNotNull(blog);
     }
 }

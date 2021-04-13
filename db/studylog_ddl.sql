@@ -33,14 +33,6 @@ CREATE TABLE `studylog`.`blog_member_role` (
   `name` VARCHAR(100) NOT NULL UNIQUE
 );
 
-DROP TABLE IF EXISTS `studylog`.`blog_invitation_key`;
-
-CREATE TABLE `studylog`.`blog_invitation_key` (
-	`id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    `value` VARCHAR(100) NOT NULL,
-    `create_date_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
-);
-
 DROP TABLE IF EXISTS `studylog`.`blog_member` ;
 
 CREATE TABLE `studylog`.`blog_member` (
@@ -48,7 +40,6 @@ CREATE TABLE `studylog`.`blog_member` (
   `user_id` INT UNSIGNED NOT NULL,
   `blog_id` INT UNSIGNED NOT NULL,
   `role_id` INT UNSIGNED NOT NULL,
-  `blog_invitation_key_id` INT UNSIGNED NULL,
   `create_date_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `update_date_time` DATETIME NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   CONSTRAINT `fk_blog_member_user`
@@ -59,10 +50,20 @@ CREATE TABLE `studylog`.`blog_member` (
     REFERENCES `studylog`.`blog` (`id`),
   CONSTRAINT `fk_blog_member_role`
     FOREIGN KEY (`role_id`)
-    REFERENCES `studylog`.`blog_member_role` (`id`),
-  CONSTRAINT `fk_blog_member_blog_inviation_key`
-	FOREIGN KEY (`blog_invitation_key_id`)
-    REFERENCES `studylog`.`blog_invitation_key` (`id`)
+    REFERENCES `studylog`.`blog_member_role` (`id`)
+);
+
+DROP TABLE IF EXISTS `studylog`.`blog_invitation_key`;
+
+CREATE TABLE `studylog`.`blog_invitation_key` (
+	`id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    `value` VARCHAR(100) NOT NULL,
+    `blog_member_id` INT UNSIGNED NOT NULL,
+    `create_date_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT `fk_blog_invitation_key_blog_member`
+		FOREIGN KEY (`blog_member_id`)
+        REFERENCES `studylog`.`blog_member` (`id`)
+        ON DELETE CASCADE
 );
 
 DROP TABLE IF EXISTS `studylog`.`issue_category` ;

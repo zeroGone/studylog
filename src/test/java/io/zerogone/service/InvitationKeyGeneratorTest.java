@@ -14,12 +14,7 @@ public class InvitationKeyGeneratorTest {
 
     @Test
     public void generateKey() {
-        Assert.assertNotNull(generator.generateKey(100));
-        Assert.assertEquals(10, generator.generateKey(10).length());
-    }
-
-    @Test
-    public void generateKey_MinusNumber_returnEmptyString() {
-        Assert.assertEquals("", generator.generateKey(-1));
+        Assert.assertNotNull(generator.generateKey());
+        Assert.assertEquals(15, generator.generateKey().length());
     }
 }

@@ -7,6 +7,13 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "blog_member")
+@NamedEntityGraph(
+        name = "blog-member-by-blog-invitation-key-with-blog",
+        attributeNodes = {
+                @NamedAttributeNode("blogInvitationKey"),
+                @NamedAttributeNode("blog")
+        }
+)
 public class BlogMember {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,8 +31,7 @@ public class BlogMember {
     @Convert(converter = MemberRoleConverter.class)
     private MemberRole role;
 
-    @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-    @JoinColumn(name = "blog_invitation_key_id")
+    @OneToOne(mappedBy = "owner")
     private BlogInvitationKey blogInvitationKey;
 
     @Column(name = "create_date_time", insertable = false, updatable = false)
