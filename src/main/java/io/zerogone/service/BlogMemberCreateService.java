@@ -4,7 +4,10 @@ import ch.qos.logback.classic.Logger;
 import io.zerogone.exception.BlogMembersStateException;
 import io.zerogone.model.UserDto;
 import io.zerogone.model.UserVo;
-import io.zerogone.model.entity.*;
+import io.zerogone.model.entity.Blog;
+import io.zerogone.model.entity.BlogMember;
+import io.zerogone.model.entity.MemberRole;
+import io.zerogone.model.entity.User;
 import io.zerogone.repository.BlogMemberDao;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -12,40 +15,33 @@ import org.springframework.stereotype.Service;
 import javax.mail.MessagingException;
 import javax.persistence.PersistenceException;
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class BlogMemberCreateService {
-    private static final int BLOG_INVITATION_KEY_LENGTH = 15;
-
     private final Logger logger = (Logger) LoggerFactory.getLogger(this.getClass());
     private final BlogMemberDao blogMemberDao;
-    private final EmailService emailService;
-    private final InvitationKeyGenerator invitationKeyGenerator;
+    private final BlogInvitationService blogInvitationService;
 
-    public BlogMemberCreateService(BlogMemberDao blogMemberDao, EmailService emailService) {
+    public BlogMemberCreateService(BlogMemberDao blogMemberDao, BlogInvitationService blogInvitationService) {
         this.blogMemberDao = blogMemberDao;
-        this.emailService = emailService;
-        invitationKeyGenerator = new InvitationKeyGenerator();
+        this.blogInvitationService = blogInvitationService;
     }
 
     @Transactional
     public void createBlogMembers(Blog blog, UserVo creator, List<UserDto> members) {
         createAdminBlogMember(blog, creator);
+        logger.info("-----Blog admin is created -----");
 
-        if (members == null) {
-            return;
+        if (members != null) {
+            logger.info("-----Creating blog members start-----");
+            validateMembers(creator.getId(), members);
+            List<BlogMember> blogMembersToBeInvited = createBlogMembersToBeInvited(blog, members);
+            blogInvitationService.inviteBlogMembers(blogMembersToBeInvited);
+            logger.info("-----Creating blog members is ended-----");
         }
-
-        validateMembers(creator.getId(), members);
-
-        logger.info("-----Creating blog members start-----");
-        List<BlogMember> blogMembersToBeInvited = createBlogMembersToBeInvited(blog, members);
-        logger.info("-----Creating blog members is ended-----");
-
-        sendBlogInvitations(blogMembersToBeInvited);
     }
 
     private void validateMembers(int adminUserId, List<UserDto> members) {
@@ -80,23 +76,16 @@ public class BlogMemberCreateService {
     }
 
     private List<BlogMember> createBlogMembersToBeInvited(Blog blog, List<UserDto> userDtos) {
-        List<BlogMember> members = new ArrayList<>();
-
-        for (UserDto userDto : userDtos) {
-            User user = new User(userDto.getId(),
-                    userDto.getName(),
-                    userDto.getEmail(),
-                    userDto.getNickName(),
-                    userDto.getImageUrl());
-
-            BlogInvitationKey blogInvitationKey =
-                    new BlogInvitationKey(invitationKeyGenerator.generateKey(BLOG_INVITATION_KEY_LENGTH));
-
-            BlogMember blogMember = new BlogMember(user, blog, MemberRole.INVITING);
-            blogMember.setBlogInvitationKey(blogInvitationKey);
-
-            members.add(blogMember);
-        }
+        List<BlogMember> members = userDtos
+                .stream()
+                .map(userDto -> new User(
+                        userDto.getId(),
+                        userDto.getName(),
+                        userDto.getEmail(),
+                        userDto.getNickName(),
+                        userDto.getImageUrl()))
+                .map(user -> new BlogMember(user, blog, MemberRole.INVITING))
+                .collect(Collectors.toList());
 
         try {
             blogMemberDao.save(members);
@@ -105,14 +94,5 @@ public class BlogMemberCreateService {
             throw new BlogMembersStateException("유효하지 않은 블로그 id나 유저 id가 포함되어 있습니다");
         }
         return members;
-    }
-
-    private void sendBlogInvitations(List<BlogMember> members) {
-        try {
-            emailService.sendInvitationEmail(members);
-        } catch (MessagingException messagingException) {
-            logger.error("이메일 전송에 실패하였습니다. 원인 : " + messagingException.getMessage());
-            throw new BlogMembersStateException("초대 메일 전송에 실패하였습니다!");
-        }
     }
 }

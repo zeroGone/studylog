@@ -32,18 +32,18 @@ public class BlogCreateControllerTest {
     @Before
     public void setUp() {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-        userInfo = new UserVo(1, "dudrhs571@gmail.com", "김영곤", "zeroGone", null, null, null);
+        userInfo = new UserVo(4, "dudrhs571@naver.com", "김영곤", "zeroGone7247", null, null, null);
     }
 
     @Test
     public void handleBlogCreateApi() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
                 .post("/api/blog").sessionAttr("userInfo", userInfo)
-                .param("name", "4월 8일 테스트 17:42")
-                .param("members[0].id", "4")
+                .param("name", "4월 13일 테스트")
+                .param("members[0].id", "1")
                 .param("members[0].name", "김영곤")
-                .param("members[0].email", "dudrhs571@naver.com")
-                .param("members[0].nickName", "zeroGone7247"))
+                .param("members[0].email", "dudrhs571@gmail.com")
+                .param("members[0].nickName", "zeroGone"))
                 .andDo(print())
                 .andExpect(status().isCreated());
     }

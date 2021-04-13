@@ -24,8 +24,7 @@ public class BlogMember {
     @Convert(converter = MemberRoleConverter.class)
     private MemberRole role;
 
-    @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-    @JoinColumn(name = "blog_invitation_key_id")
+    @OneToOne(mappedBy = "owner")
     private BlogInvitationKey blogInvitationKey;
 
     @Column(name = "create_date_time", insertable = false, updatable = false)

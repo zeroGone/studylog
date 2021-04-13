@@ -28,7 +28,6 @@ public class EmailServiceTest {
     private WebApplicationContext webApplicationContext;
 
     private EmailService emailService;
-    private InvitationKeyGenerator generator = new InvitationKeyGenerator();
 
     @Before
     public void setUp() throws Exception {
