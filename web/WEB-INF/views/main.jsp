@@ -7,15 +7,20 @@
     <link rel="stylesheet" href="/css/main.css">
     <script src="/js/header.js" defer></script>
     <script src="/js/sidebar.js" defer></script>
+    <script src="/js/main_scroll.js" defer></script>
+    <script src="/js/reviewing_list_control.js" defer></script>
+    <script src="/js/recent_activity_list_control.js" defer></script>
+    <script src="/js/member_list_control.js" defer></script>
     <script src="https://kit.fontawesome.com/b63e743ce0.js" crossorigin="anonymous"></script>
 </head>
-<body>
+<body class="fullscreen">
 <jsp:include page="include/header.jsp"/>
 <jsp:include page="include/sidebar.jsp"/>
 <div class="main-container sideOff">
-    <section class="main-section members">
+    <section data-title="members" class="main-section members">
         <h2 class="main-section-title">Members</h2>
         <div class="member-container">
+            <i class="fas fa-chevron-circle-left member-list-less"></i>
             <ul class="member-list">
                 <c:forEach items="${members}" var="member">
                     <li class="member-list-item">
@@ -25,25 +30,17 @@
                     </li>
                 </c:forEach>
             </ul>
+            <i class="fas fa-chevron-circle-right member-list-more"></i>
         </div>
     </section>
 
-    <section class="main-section reviewing">
+    <section data-title="reviewing" class="main-section reviewing">
         <h2 class="main-section-title reviewing-title">Reviewing</h2>
+        <i class="fas fa-caret-up main-section-list-less reviewing-list-less"></i>
         <ul class="main-section-list reviewing-list">
-            <li class="main-section-list-item reviewing-list-item reviewing-list-item-01">
-                <h2 class="main-section-list-item-title reviewing-list-item-title">StudyHub PR & Commit 주의사항</h2>
-                <span class="main-section-list-item-post reviewing-list-item-post">studyhub</span>
-                <span class="main-section-list-item-date reviewing-list-item-date">2021-02-01</span>
-                <div class="main-section-list-item-footer reviewing-list-item-footer">
-                    <i class="far fa-comment-alt main-section-list-item-footer-comment reviewing-list-item-footer-comment"></i>
-                    <span class="main-section-list-item-footer-comment-count reviewing-list-item-footer-comment-count">2</span>
-                    <img src="/img/user-default/1.png" alt="writer-01"
-                         class="main-section-list-item-footer-image eviewing-list-item-footer-image">
-                </div>
-            </li>
-            <li class="main-section-list-item reviewing-list-item reviewing-list-item-02">
-                <h2 class="main-section-list-item-title reviewing-list-item-title">StudyHub PR & Commit 주의사항</h2>
+            <li class="main-section-list-item reviewing-list-item">
+                <h2 class="main-section-list-item-title reviewing-list-item-title">StudyHub PR & Commit
+                    주의사항1</h2>
                 <span class="main-section-list-item-post reviewing-list-item-post">studyhub</span>
                 <span class="main-section-list-item-date reviewing-list-item-date">2021-02-01</span>
                 <div class="main-section-list-item-footer reviewing-list-item-footer">
@@ -53,8 +50,9 @@
                          class="main-section-list-item-footer-image reviewing-list-item-footer-image">
                 </div>
             </li>
-            <li class="main-section-list-item reviewing-list-item reviewing-list-item-03">
-                <h2 class="main-section-list-item-title reviewing-list-item-title">StudyHub PR & Commit 주의사항</h2>
+            <li class="main-section-list-item reviewing-list-item">
+                <h2 class="main-section-list-item-title reviewing-list-item-title">StudyHub PR & Commit
+                    주의사항2</h2>
                 <span class="main-section-list-item-post reviewing-list-item-post">studyhub</span>
                 <span class="main-section-list-item-date reviewing-list-item-date">2021-02-01</span>
                 <div class="main-section-list-item-footer reviewing-list-item-footer">
@@ -64,8 +62,9 @@
                          class="main-section-list-item-footer-image reviewing-list-item-footer-image">
                 </div>
             </li>
-            <li class="main-section-list-item reviewing-list-item reviewing-list-item-04">
-                <h2 class="main-section-list-item-title reviewing-list-item-title">StudyHub PR & Commit 주의사항</h2>
+            <li class="main-section-list-item reviewing-list-item">
+                <h2 class="main-section-list-item-title reviewing-list-item-title">StudyHub PR & Commit
+                    주의사항3</h2>
                 <span class="main-section-list-item-post reviewing-list-item-post">studyhub</span>
                 <span class="main-section-list-item-date reviewing-list-item-date">2021-02-01</span>
                 <div class="main-section-list-item-footer reviewing-list-item-footer">
@@ -75,8 +74,33 @@
                          class="main-section-list-item-footer-image reviewing-list-item-footer-image">
                 </div>
             </li>
-            <li class="main-section-list-item reviewing-list-item reviewing-list-item-05">
-                <h2 class="main-section-list-item-title reviewing-list-item-title">StudyHub PR & Commit 주의사항</h2>
+            <li class="main-section-list-item reviewing-list-item">
+                <h2 class="main-section-list-item-title reviewing-list-item-title">StudyHub PR & Commit
+                    주의사항4</h2>
+                <span class="main-section-list-item-post reviewing-list-item-post">studyhub</span>
+                <span class="main-section-list-item-date reviewing-list-item-date">2021-02-01</span>
+                <div class="main-section-list-item-footer reviewing-list-item-footer">
+                    <i class="far fa-comment-alt main-section-list-item-footer-comment reviewing-list-item-footer-comment"></i>
+                    <span class="main-section-list-item-footer-comment-count reviewing-list-item-footer-comment-count">2</span>
+                    <img src="/img/user-default/1.png" alt="writer-01"
+                         class="main-section-list-item-footer-image reviewing-list-item-footer-image">
+                </div>
+            </li>
+            <li class="main-section-list-item reviewing-list-item">
+                <h2 class="main-section-list-item-title reviewing-list-item-title">StudyHub PR & Commit
+                    주의사항5</h2>
+                <span class="main-section-list-item-post reviewing-list-item-post">studyhub</span>
+                <span class="main-section-list-item-date reviewing-list-item-date">2021-02-01</span>
+                <div class="main-section-list-item-footer reviewing-list-item-footer">
+                    <i class="far fa-comment-alt main-section-list-item-footer-comment reviewing-list-item-footer-comment"></i>
+                    <span class="main-section-list-item-footer-comment-count reviewing-list-item-footer-comment-count">2</span>
+                    <img src="/img/user-default/1.png" alt="writer-01"
+                         class="main-section-list-item-footer-image reviewing-list-item-footer-image">
+                </div>
+            </li>
+            <li class="main-section-list-item reviewing-list-item">
+                <h2 class="main-section-list-item-title reviewing-list-item-title">StudyHub PR & Commit
+                    주의사항6</h2>
                 <span class="main-section-list-item-post reviewing-list-item-post">studyhub</span>
                 <span class="main-section-list-item-date reviewing-list-item-date">2021-02-01</span>
                 <div class="main-section-list-item-footer reviewing-list-item-footer">
@@ -90,18 +114,19 @@
         <i class="fas fa-caret-down main-section-list-more reviewing-list-more"></i>
     </section>
 
-    <section class="recent-activity">
+    <section data-title="recent-activity" class="main-section recent-activity">
         <article class="recent-activity-container">
             <h2 class="recent-activity-title">Recent activity</h2>
+            <i class="fas fa-caret-up main-section-list-less recent-activity-list-less"></i>
             <ul class="recent-activity-list">
                 <li class="recent-activity-item">
                     <div class="recent-activity-icon newface">
                         <i class="fas fa-grin-wink"></i>
                     </div>
                     <div class="recent-activity-contents">
-                        <div class="recent-activity-text">팀에 뉴페이스가 두두등장~!!</div>
+                        <h3 class="recent-activity-item-title">팀에 뉴페이스가 두두등장~!!</h3>
                         <div class="recent-activity-footer">
-                            <div class="recent-activity-date">2021-02-15</div>
+                            <span class="recent-activity-date">2021-02-15</span>
                             <img class="recent-activity-user" src="/img/user-default/1.png" alt="writer-01">
                         </div>
                     </div>
@@ -111,9 +136,9 @@
                         <i class="fas fa-exclamation-triangle"></i>
                     </div>
                     <div class="recent-activity-contents">
-                        <div class="recent-activity-text">새로운 이슈가 생겼어요!</div>
+                        <h3 class="recent-activity-item-title">새로운 이슈가 생겼어요!</h3>
                         <div class="recent-activity-footer">
-                            <div class="recent-activity-date">2021-02-15</div>
+                            <span class="recent-activity-date">2021-02-15</span>
                             <img class="recent-activity-user" src="/img/user-default/1.png" alt="writer-01">
                         </div>
                     </div>
@@ -123,9 +148,9 @@
                         <i class="fas fa-exclamation-triangle"></i>
                     </div>
                     <div class="recent-activity-contents">
-                        <div class="recent-activity-text">이슈 해결!</div>
+                        <h3 class="recent-activity-item-title">이슈 해결!</h3>
                         <div class="recent-activity-footer">
-                            <div class="recent-activity-date">2021-02-15</div>
+                            <span class="recent-activity-date">2021-02-15</span>
                             <img class="recent-activity-user" src="/img/user-default/1.png" alt="writer-01">
                         </div>
                     </div>
@@ -136,9 +161,9 @@
 
                     </div>
                     <div class="recent-activity-contents">
-                        <div class="recent-activity-text">새로운 댓글이 달렸네요.</div>
+                        <h3 class="recent-activity-item-title">새로운 댓글이 달렸네요.</h3>
                         <div class="recent-activity-footer">
-                            <div class="recent-activity-date">2021-02-15</div>
+                            <span class="recent-activity-date">2021-02-15</span>
                             <img class="recent-activity-user" src="/img/user-default/1.png" alt="writer-01">
                         </div>
                     </div>
@@ -148,9 +173,9 @@
                         <i class="fas fa-comments"></i>
                     </div>
                     <div class="recent-activity-contents">
-                        <div class="recent-activity-text">리뷰 부탁드립니다~!</div>
+                        <h3 class="recent-activity-item-title">리뷰 부탁드립니다~!</h3>
                         <div class="recent-activity-footer">
-                            <div class="recent-activity-date">2021-02-15</div>
+                            <span class="recent-activity-date">2021-02-15</span>
                             <img class="recent-activity-user" src="/img/user-default/1.png" alt="writer-01">
                         </div>
                     </div>
@@ -160,9 +185,9 @@
                         <i class="fas fa-book-open"></i>
                     </div>
                     <div class="recent-activity-contents">
-                        <div class="recent-activity-text">글 게시!</div>
+                        <h3 class="recent-activity-item-title">글 게시!</h3>
                         <div class="recent-activity-footer">
-                            <div class="recent-activity-date">2021-02-15</div>
+                            <span class="recent-activity-date">2021-02-15</span>
                             <img class="recent-activity-user" src="/img/user-default/1.png" alt="writer-01">
                         </div>
                     </div>
