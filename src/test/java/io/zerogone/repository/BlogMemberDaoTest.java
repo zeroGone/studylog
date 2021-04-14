@@ -122,4 +122,9 @@ public class BlogMemberDaoTest {
             Assert.assertNotEquals(0, blogMember.getId());
         }
     }
+
+    @Test
+    public void findByBlogInviationKeyValue() {
+        Assert.assertNotNull(blogMemberDao.findByBlogInviationKeyValue("hXfHxxa0nqLHNsk"));
+    }
 }

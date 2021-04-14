@@ -8,13 +8,6 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "blog_member")
-@NamedEntityGraph(
-        name = "blog-member-by-blog-invitation-key-with-blog",
-        attributeNodes = {
-                @NamedAttributeNode("blogInvitationKey"),
-                @NamedAttributeNode("blog")
-        }
-)
 @DynamicUpdate
 public class BlogMember {
     @Id

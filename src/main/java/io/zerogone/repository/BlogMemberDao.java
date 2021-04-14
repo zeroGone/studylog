@@ -2,6 +2,7 @@ package io.zerogone.repository;
 
 import ch.qos.logback.classic.Logger;
 import io.zerogone.exception.NotExistedDataException;
+import io.zerogone.model.entity.BlogInvitationKey;
 import io.zerogone.model.entity.BlogMember;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -12,6 +13,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Root;
 import java.util.List;
 
@@ -47,12 +49,13 @@ public class BlogMemberDao {
         CriteriaQuery<BlogMember> criteriaQuery = criteriaBuilder.createQuery(BlogMember.class);
 
         Root<BlogMember> root = criteriaQuery.from(BlogMember.class);
+        Join<BlogMember, BlogInvitationKey> blogInvitationKeyJoin = root.join("blogInvitationKey");
+        root.fetch("blog");
 
         criteriaQuery.select(root);
-        criteriaQuery.where(criteriaBuilder.equal(root.get("blogInvitationKey").get("value"), blogInvitationKeyValue));
+        criteriaQuery.where(criteriaBuilder.equal(blogInvitationKeyJoin.get("value"), blogInvitationKeyValue));
 
         TypedQuery<BlogMember> blogTypedQuery = entityManager.createQuery(criteriaQuery);
-        blogTypedQuery.setHint("javax.persistence.loadgraph", entityManager.getEntityGraph("blog-member-by-blog-invitation-key-with-blog"));
         try {
             return blogTypedQuery.getSingleResult();
         } catch (NoResultException noResultException) {
