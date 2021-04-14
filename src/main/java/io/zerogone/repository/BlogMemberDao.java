@@ -26,7 +26,6 @@ public class BlogMemberDao {
         logger.info("-----Saving blog member start-----");
 
         entityManager.persist(blogMember);
-        entityManager.flush();
 
         logger.info("-----Saving blog member is ended-----");
     }
@@ -37,15 +36,8 @@ public class BlogMemberDao {
         for (BlogMember blogMember : blogMembers) {
             entityManager.persist(blogMember);
         }
-        entityManager.flush();
 
         logger.info("-----Saving blog member is ended-----");
-    }
-
-    public void update(BlogMember blogMember) {
-        logger.info("-----Updating blog member start-----");
-        entityManager.merge(blogMember);
-        logger.info("-----Updating blog member is ended-----");
     }
 
     public BlogMember findByBlogInviationKeyValue(String blogInvitationKeyValue) {
