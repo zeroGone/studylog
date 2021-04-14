@@ -47,12 +47,13 @@ public class BlogMemberDao {
         CriteriaQuery<BlogMember> criteriaQuery = criteriaBuilder.createQuery(BlogMember.class);
 
         Root<BlogMember> root = criteriaQuery.from(BlogMember.class);
+        root.fetch("blogInvitationKey");
+        root.fetch("blog");
 
         criteriaQuery.select(root);
         criteriaQuery.where(criteriaBuilder.equal(root.get("blogInvitationKey").get("value"), blogInvitationKeyValue));
 
         TypedQuery<BlogMember> blogTypedQuery = entityManager.createQuery(criteriaQuery);
-        blogTypedQuery.setHint("javax.persistence.loadgraph", entityManager.getEntityGraph("blog-member-by-blog-invitation-key-with-blog"));
         try {
             return blogTypedQuery.getSingleResult();
         } catch (NoResultException noResultException) {
