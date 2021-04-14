@@ -1,6 +1,6 @@
 const blogNameInput = document.querySelector('#blog-name-input');
 blogNameInput.setAttribute('onkeypress', 'if( event.keyCode == 13 ){checkForDuplicateName();}');
-blogNameInput.addEventListener('keyup', setAttributeOverlapToFalse);
+blogNameInput.addEventListener('keyup', checkRegularExpression);
 
 const blogNameCheckButton = document.querySelector('.blog-name-overlap-check');
 blogNameCheckButton.addEventListener('click', checkForDuplicateName);
@@ -8,12 +8,23 @@ blogNameCheckButton.addEventListener('click', checkForDuplicateName);
 const blogCreateButton = document.querySelector('.blog-save');
 blogCreateButton.addEventListener('click', postBlogInfo);
 
-function setAttributeOverlapToFalse() {
-    return blogNameInput.setAttribute('isCheckOverlap', 'false');
+function checkRegularExpression() {
+    blogNameInput.setAttribute('isCheckOverlap', 'false');
+    const expression = /[^a-zA-Z0-9가-힣ㄱ-ㅎ\s]/g;
+    const blogNameDescription = document.querySelector('.blog-name-input-description');
+    if (expression.test(blogNameInput.value)) {
+        blogNameDescription.innerHTML = "특수문자는 입력할 수 없습니다.";
+        return false;
+    } else {
+        blogNameDescription.innerHTML = '문자 사이에 띄어쓰기는 "_ (Underscore)" 처리됩니다.';
+        return true;
+    }
 }
 
 function checkForDuplicateName() {
-    if (!informBlogNameUndefined(blogNameInput)) return activeAlertContainer('blogNameNotValue');
+    if (!informBlogNameUndefined(blogNameInput.value)) return activeAlertContainer('blogNameNotValue');
+    if (!checkRegularExpression()) return activeAlertContainer('nameRegExp');
+
     const replacedName = blogNameInput.value.replace(/ /gi, '_');
     fetch(`api/blog?name=${replacedName}`, {
         method: "GET",
