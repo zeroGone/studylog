@@ -1,6 +1,7 @@
 package io.zerogone.model.entity;
 
 import io.zerogone.service.MemberRoleConverter;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
                 @NamedAttributeNode("blog")
         }
 )
+@DynamicUpdate
 public class BlogMember {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

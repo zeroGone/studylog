@@ -42,12 +42,6 @@ public class BlogMemberDao {
         logger.info("-----Saving blog member is ended-----");
     }
 
-    public void update(BlogMember blogMember) {
-        logger.info("-----Updating blog member start-----");
-        entityManager.merge(blogMember);
-        logger.info("-----Updating blog member is ended-----");
-    }
-
     public BlogMember findByBlogInviationKeyValue(String blogInvitationKeyValue) {
         logger.info("-----Find blog member by blog invitation key value-----");
 

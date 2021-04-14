@@ -19,7 +19,6 @@ public class BlogInvitationAcceptenceService {
     public BlogVo acceptBlogInvitation(String key) {
         BlogMember blogMember = blogMemberDao.findByBlogInviationKeyValue(key);
         blogMember.acceptBlogInvitation();
-        blogMemberDao.update(blogMember);
 
         return new BlogVo(blogMember.getBlogId(),
                 blogMember.getBlogName(),
