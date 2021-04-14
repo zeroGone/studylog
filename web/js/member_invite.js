@@ -149,6 +149,12 @@ function activeAlertContainer(type) {
     if (type === 'blogNameNotValue') {
         alertMessage.innerHTML = '블로그 이름을 입력해주세요.';
         focusLocation = 'blogName';
+    } else if (type === 'blogNameCheck') {
+        alertMessage.innerHTML = '블로그 이름 중복확인을 해주세요.';
+        focusLocation = 'blogName';
+    } else if (type === 'nameRegExp') {
+        alertMessage.innerHTML = '블로그 이름에는 영문과 숫자만 입력할 수 있습니다.';
+        focusLocation = 'blogName';
     } else if (type === 'userNotExist') {
         alertMessage.innerHTML = '해당 유저가 존재하지 않습니다.';
         focusLocation = 'member';
@@ -164,9 +170,6 @@ function activeAlertContainer(type) {
     } else if (type === 'blogNameNotExist') {
         alertMessage.innerHTML = '사용 가능한 블로그 이름입니다.';
         focusLocation = 'introduce';
-    } else if (type === 'blogNameCheck') {
-        alertMessage.innerHTML = '블로그 이름 중복확인을 해주세요.';
-        focusLocation = 'blogName';
     } else if (type === 'image') {
         alertMessage.innerHTML = 'gif, jpg, png 파일만 선택해 주세요.';
         focusLocation = 'image';
