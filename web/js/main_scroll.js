@@ -3,49 +3,30 @@ window.addEventListener('load', function () {
         window.scrollTo({top: 0, behavior: 'smooth'});
 
         const sections = document.querySelectorAll('.main-section');
-        const footer = document.querySelector('.footer');
-        const content = document.querySelector('.main-container');
-        const scrollLength = sections.length;
-        let spin_value = 0;
-        let can_scroll = true;
-        let section_nav = '';
-
-
-        document.body.insertAdjacentHTML('beforeend', '<div class="section-navigation"></div>');
-
-        for (let i = 0; i < sections.length; i++) {
-            section_nav += `<div class="section-button"><span>${sections[i].dataset.title}</span></div>`;
-        }
-        section_nav += `<div class="section-button"><span>footer</span></div>`;
-
-        document.querySelector('.section-navigation').innerHTML = section_nav;
+        let scrollIndex = 0;
 
         const sectionButtons = document.querySelectorAll('.section-button');
-        sectionButtons[0].classList.add('active');
-
-        for (let i = 0; i < sectionButtons.length; i++) {
-            sectionButtons[i].addEventListener('click', function () {
+        [].forEach.call(sectionButtons, function (item, index) {
+            item.addEventListener('click', function () {
                 document.querySelector('.section-button.active').classList.remove('active');
                 this.classList.add('active');
-                spin_value = i;
-                scroll_content(spin_value);
+                scrollIndex = index;
+                scroll_content(scrollIndex);
             });
-        }
+        });
 
-        window.addEventListener('mousewheel', function (e) {
+        let can_scroll = true;
+        window.addEventListener('mousewheel', function (event) {
             if (can_scroll) {
                 can_scroll = false;
 
-                if (e.deltaY > 0) {
-                    // scroll down
-                    if (spin_value < sections.length) spin_value += 1;
+                if (event.deltaY > 0) {
+                    if (scrollIndex < sections.length) scrollIndex += 1;
                 } else {
-                    // scroll up
-                    if (spin_value > 0) spin_value -= 1;
+                    if (scrollIndex > 0) scrollIndex -= 1;
                 }
 
-                scroll_content(spin_value);
-
+                scroll_content(scrollIndex);
             }
 
             setTimeout(function () {
@@ -55,12 +36,15 @@ window.addEventListener('load', function () {
         });
 
         function scroll_content(count) {
-            if (count === scrollLength) {
-                footer.classList.add('active');
+            const content = document.querySelector('.main-container');
+            const footer = document.querySelector('.footer');
+
+            if (count === sections.length) {
                 content.setAttribute('style', `transform: translateY(-${((count - 1) * 100) + 20}vh)`);
+                footer.classList.add('active');
             } else {
-                footer.classList.remove('active');
                 content.setAttribute('style', `transform: translateY(-${count * 100}vh)`);
+                footer.classList.remove('active');
             }
             document.querySelector('.section-button.active').classList.remove('active');
             sectionButtons[count].classList.add('active');

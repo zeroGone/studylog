@@ -8,9 +8,7 @@
     <script src="/js/header.js" defer></script>
     <script src="/js/sidebar.js" defer></script>
     <script src="/js/main_scroll.js" defer></script>
-    <script src="/js/reviewing_list_control.js" defer></script>
-    <script src="/js/recent_activity_list_control.js" defer></script>
-    <script src="/js/member_list_control.js" defer></script>
+    <script src="/js/main_list_control.js" defer></script>
     <script src="https://kit.fontawesome.com/b63e743ce0.js" crossorigin="anonymous"></script>
 </head>
 <body class="fullscreen">
@@ -20,7 +18,7 @@
     <section data-title="members" class="main-section members">
         <h2 class="main-section-title">Members</h2>
         <div class="member-container">
-            <i class="fas fa-chevron-circle-left member-list-less"></i>
+            <i class="fas fa-chevron-circle-left main-section-list-less member-list-less"></i>
             <ul class="member-list">
                 <c:forEach items="${members}" var="member">
                     <li class="member-list-item">
@@ -30,7 +28,7 @@
                     </li>
                 </c:forEach>
             </ul>
-            <i class="fas fa-chevron-circle-right member-list-more"></i>
+            <i class="fas fa-chevron-circle-right main-section-list-more member-list-more"></i>
         </div>
     </section>
 
@@ -196,6 +194,20 @@
             <i class="fas fa-caret-down main-section-list-more recent-activity-list-more"></i>
         </article>
     </section>
+</div>
+<div class="section-navigation">
+    <div class="section-button active">
+        <span class="section-navigation-text">members</span>
+    </div>
+    <div class="section-button">
+        <span class="section-navigation-text">reviewing</span>
+    </div>
+    <div class="section-button">
+        <span class="section-navigation-text">recent-activity</span>
+    </div>
+    <div class="section-button">
+        <span class="section-navigation-text">footer</span>
+    </div>
 </div>
 <jsp:include page="include/footer.jsp"/>
 </body>
