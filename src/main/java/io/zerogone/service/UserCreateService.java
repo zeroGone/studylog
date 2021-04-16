@@ -1,6 +1,7 @@
 package io.zerogone.service;
 
 import ch.qos.logback.classic.Logger;
+import io.zerogone.exception.NotNullPropertyException;
 import io.zerogone.exception.UniquePropertyException;
 import io.zerogone.model.UserDto;
 import io.zerogone.model.UserVo;
@@ -30,6 +31,8 @@ public class UserCreateService {
 
     @Transactional
     public UserVo createUser(UserDto userDto, MultipartFile imageFile) {
+        validate(userDto);
+
         String userImageUrl = uploadUserImage(imageFile, userDto.getImageUrl());
 
         User user = new User(0,
@@ -52,6 +55,20 @@ public class UserCreateService {
                 user.getImageUrl(),
                 user.getCreateDateTime(),
                 user.getUpdateDateTime());
+    }
+
+    private void validate(UserDto userDto) {
+        logger.info("-----validate created User data-----");
+        if (userDto.getName() == null) {
+            throw new NotNullPropertyException(User.class, "name");
+        }
+        if (userDto.getEmail() == null) {
+            throw new NotNullPropertyException(User.class, "email");
+        }
+        if (userDto.getNickName() == null) {
+            throw new NotNullPropertyException(User.class, "nick name");
+        }
+        logger.info("-----validated Blog data!-----");
     }
 
     private String uploadUserImage(MultipartFile imageFile, String snsImageUrl) {
