@@ -43,7 +43,7 @@ public class ApiControllerAdvice {
         logger.debug("catch exception : " + exception.getMessage());
         return new ResponseEntity<>(
                 new ErrorResponse.Builder()
-                        .exception(FileUploadException.class)
+                        .exception(exception.getClass())
                         .cause("데이터베이스 관련 조건에서 벗어남")
                         .statusCode(HttpStatus.BAD_REQUEST)
                         .detail(exception.getMessage())
