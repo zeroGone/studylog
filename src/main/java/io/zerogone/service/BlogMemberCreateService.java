@@ -12,7 +12,6 @@ import io.zerogone.repository.BlogMemberDao;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import javax.mail.MessagingException;
 import javax.persistence.PersistenceException;
 import javax.transaction.Transactional;
 import java.util.List;

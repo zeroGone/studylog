@@ -34,7 +34,10 @@ public class BlogCreateService {
     @Transactional
     public BlogVo createBlog(UserVo creator, BlogDto blogDto, MultipartFile imageFile) {
         validate(blogDto);
+
         String blogImageUrl = uploadBlogImage(imageFile);
+        logger.debug("blog's image url : " + blogImageUrl);
+        
         Blog blog = createBlog(blogDto, blogImageUrl);
 
         blogMemberCreateService.createBlogMembers(blog, creator, blogDto.getMembers());

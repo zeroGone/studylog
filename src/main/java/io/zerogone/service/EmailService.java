@@ -1,6 +1,8 @@
 package io.zerogone.service;
 
+import ch.qos.logback.classic.Logger;
 import io.zerogone.model.entity.BlogMember;
+import org.slf4j.LoggerFactory;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,7 @@ import java.util.List;
 public class EmailService {
     private static final String MESSAGE_ENCODING = "UTF-8";
 
+    private final Logger logger = (Logger) LoggerFactory.getLogger(this.getClass());
     private final JavaMailSender javaMailSender;
 
     public EmailService(JavaMailSender javaMailSender) {
@@ -21,6 +24,7 @@ public class EmailService {
 
     public void sendInvitationEmail(List<BlogMember> members) throws MessagingException {
         for (BlogMember member : members) {
+            logger.info("-----Send blog invitation email to [" + member.getEmail() + "] -----");
             MimeMessage message = javaMailSender.createMimeMessage();
             MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, MESSAGE_ENCODING);
 

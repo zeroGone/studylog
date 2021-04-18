@@ -28,6 +28,7 @@ public class ApiControllerAdvice {
 
     @ExceptionHandler(FileUploadException.class)
     public ResponseEntity<ErrorResponse> handleFileUploadException(FileUploadException fileUploadException) {
+        logger.error("Uploading file is failed. Something is wrong!");
         return new ResponseEntity<>(
                 new ErrorResponse.Builder()
                         .exception(FileUploadException.class)
