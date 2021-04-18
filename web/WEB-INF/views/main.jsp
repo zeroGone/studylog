@@ -209,6 +209,10 @@
         <span class="section-navigation-text">footer</span>
     </div>
 </div>
+<div class="scroll-information">
+    <i class="fas fa-angle-double-down scroll-icon"></i>
+    <span class="scroll-information-text">scroll</span>
+</div>
 <jsp:include page="include/footer.jsp"/>
 </body>
 </html>
