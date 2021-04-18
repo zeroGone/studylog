@@ -1,5 +1,6 @@
 window.addEventListener('load', function () {
-    if (document.body.classList.contains('fullscreen') && window.innerWidth > 1024) {
+    document.querySelector('.footer').classList.remove('fix');
+    if (document.body.classList.contains('fullscreen')) {
         window.scrollTo({top: 0, behavior: 'smooth'});
 
         const sections = document.querySelectorAll('.main-section');
