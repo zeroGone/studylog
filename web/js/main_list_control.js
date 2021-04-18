@@ -3,7 +3,7 @@ const mainSectionListLessButtons = document.querySelectorAll('.main-section-list
 
 const memberLists = document.querySelectorAll('.member-list-item');
 let memberCurrentPage = 1;
-const memberMaxItemCount = 8;
+let memberMaxItemCount = 8;
 
 const reviewingLists = document.querySelectorAll('.reviewing-list-item');
 let reviewingCurrentPage = 1;
@@ -16,10 +16,13 @@ const recentActivityMaxItemCount = 5;
 const hiddenClass = "visually-hidden";
 
 window.addEventListener('load', function () {
+    setLoadWindow();
+    setMemberMaxItemCount();
     setList(memberLists, memberMaxItemCount);
-    setList(reviewingLists, reviewingMaxItemCount);
-    setList(recentActivityLists, recentActivityMaxItemCount);
 
+    setList(reviewingLists, reviewingMaxItemCount);
+
+    setList(recentActivityLists, recentActivityMaxItemCount);
     [].forEach.call(mainSectionListLessButtons, function (item) {
         item.style.visibility = 'hidden';
     });
@@ -29,6 +32,8 @@ function setList(list, max) {
     [].forEach.call(list, function (item, index) {
         if (index > max - 1) {
             item.classList.add(hiddenClass);
+        } else {
+            item.classList.remove(hiddenClass);
         }
     });
 
@@ -122,5 +127,47 @@ function controlListLess(list, button, page, max) {
 
     if (page === 1) {
         button.style.visibility = 'hidden';
+    }
+}
+
+const container = document.querySelector('.main-container');
+window.addEventListener('resize', function (event) {
+    setLoadWindow();
+    setMemberMaxItemCount();
+    setList(memberLists, memberMaxItemCount);
+});
+
+function setWindowPcVersion() {
+    container.classList.add('pc');
+    container.classList.remove('tablet', 'mobile');
+}
+
+function setWindowTabletVersion() {
+    container.classList.add('tablet');
+    container.classList.remove('pc', 'mobile');
+}
+
+function setWindowMobileVersion() {
+    container.classList.add('mobile');
+    container.classList.remove('pc', 'tablet');
+}
+
+function setLoadWindow() {
+    if (window.innerWidth > 1065) {
+        setWindowPcVersion();
+    } else if (window.innerWidth < 1065 && window.innerWidth > 801) {
+        setWindowTabletVersion();
+    } else if (window.innerWidth < 801) {
+        setWindowMobileVersion();
+    }
+}
+
+function setMemberMaxItemCount() {
+    if (container.classList.contains('pc')) {
+        return memberMaxItemCount = 8;
+    } else if (container.classList.contains('tablet')) {
+        return memberMaxItemCount = 9;
+    } else if(container.classList.contains('mobile')){
+        return memberMaxItemCount = 6;
     }
 }
