@@ -47,7 +47,7 @@
 }
 
 .member-list-less {
-    left: 2vw;
+    left: 6vw;
 }
 
 .member-list-more {
@@ -215,6 +215,9 @@
 .reviewing-list-item-title {
     grid-column: 1 / 3;
     margin: 1vh 2vh 1vh;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 .reviewing-list-item-post {
@@ -321,6 +324,7 @@
     opacity: 1;
     visibility: visible;
     transition: all 0.3s;
+    grid-gap: 1vw;
 }
 
 .recent-activity-item:hover,
@@ -358,6 +362,9 @@
     grid-row: 1;
     align-self: center;
     font-weight: normal;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 .recent-activity-footer {
@@ -416,77 +423,173 @@
     box-shadow: 10px 10px 3px rgba(var(--blue-black), 0.5);
 }
 
+/* scroll 제어 css */
+.fullscreen {
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+}
 
-@media only screen and (min-width: 1025px) {
-    .fullscreen {
-        height: 100vh;
-        overflow: hidden;
-        position: relative;
+.fullscreen .main-container {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    transition: transform 0.56s ease-out;
+}
+
+.fullscreen .main-section {
+    height: 100vh;
+}
+
+.section-navigation {
+    position: fixed;
+    background-color: var(--dark-blue);
+    right: 40px;
+    top: calc(50% + 50px);
+    transform: translateY(-50%);
+    padding: 20px 0;
+    border-radius: 35px;
+    box-shadow: 10px 10px 3px rgba(var(--blue-black), 0.5);
+}
+
+.section-button {
+    position: relative;
+    width: 40px;
+    height: 36px;
+    cursor: pointer;
+}
+
+.section-button:after {
+    content: '';
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    left: 10px;
+    top: 8px;
+    border: 3px solid var(--white);
+    border-radius: 50%;
+    transition: border 0.26s ease-in-out;
+}
+
+.section-button.active:after {
+    border-color: var(--sky);
+}
+
+.section-button span {
+    position: absolute;
+    visibility: hidden;
+    opacity: 0;
+    white-space: nowrap;
+    right: 30px;
+    top: 7px;
+    color: var(--white);
+    background-color: var(--leaf);
+    padding: 4px 12px;
+    border-radius: 15px;
+    transition: all 0.25s ease-in-out;
+}
+
+.section-button:hover span {
+    visibility: visible;
+    opacity: 1;
+    transform: translateX(-10px);
+}
+
+
+.scroll-information {
+    display: none;
+    position: absolute;
+    right: 2vw;
+    bottom: 2vh;
+    text-align: center;
+    color: var(--gray);
+    animation: scroll-info 2s ease-in-out infinite alternate;
+}
+
+.scroll-icon {
+    font-size: x-large;
+}
+
+.scroll-information-text {
+    display: block;
+}
+
+@keyframes scroll-info {
+    0% {
+        color: var(--gray);
     }
-
-    .fullscreen .main-container {
-        position: absolute;
-        width: 100%;
-        top: 0;
-        left: 0;
-        transition: transform 0.56s ease-out;
-    }
-
-    .fullscreen .main-section {
-        height: 100vh;
-    }
-
-    .section-navigation {
-        position: fixed;
-        background-color: var(--dark-blue);
-        right: 40px;
-        top: calc(50% + 50px);
-        transform: translateY(-50%);
-        padding: 20px 0;
-        border-radius: 35px;
-        box-shadow: 10px 10px 3px rgba(var(--blue-black), 0.5);
-    }
-
-    .section-button {
-        position: relative;
-        width: 40px;
-        height: 36px;
-        cursor: pointer;
-    }
-
-    .section-button:after {
-        content: '';
-        position: absolute;
-        width: 14px;
-        height: 14px;
-        left: 10px;
-        top: 8px;
-        border: 3px solid var(--white);
-        border-radius: 50%;
-        transition: border 0.26s ease-in-out;
-    }
-
-    .section-button.active:after {
-        border-color: var(--sky);
-    }
-
-    .section-button span {
-        position: absolute;
-        visibility: hidden;
-        opacity: 0;
-        white-space: nowrap;
-        right: 30px;
-        top: 7px;
+    50% {
         color: var(--white);
-        background-color: var(--leaf);
-        padding: 4px 12px;
-        border-radius: 15px;
-        transition: all 0.25s ease-in-out;
+    }
+    100% {
+        color: var(--gray);
+    }
+}
+
+
+/* 태블릿 */
+@media all and (max-width: 1065px) and (min-width: 801px) {
+    .member-list {
+        grid-template-columns: repeat(3, 1fr);
     }
 
-    .section-button:hover span {
-        visibility: visible;
-        opacity: 1;
-        transform: translateX(-10px);
+    .member-list-item {
+        width: 15vw;
+    }
+
+    .member-list-less {
+        left: 10vw;
+    }
+
+    .member-list-more {
+        right: 10vw;
+    }
+}
+
+
+/* 모바일 */
+@media all and (max-width: 800px) {
+    .section-navigation {
+        display: none;
+    }
+
+    .member-list {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .member-list-item {
+        width: 20vw;
+        height: 20vw;
+    }
+
+    .member-list-item-user {
+        width: 15vw;
+        height: 15vw;
+    }
+
+    .member-list-item-nickname {
+        font-size: large;
+    }
+
+    .reviewing-list-item-footer-comment {
+        vertical-align: middle;
+    }
+
+    .reviewing-list-item-footer-image {
+        width: 25px;
+        height: 25px;
+    }
+
+    .recent-activity-title {
+        text-align: center;
+    }
+
+    .recent-activity-footer {
+        text-align: right;
+    }
+
+    .scroll-information {
+        display: block;
     }
 }
