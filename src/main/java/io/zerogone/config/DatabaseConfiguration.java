@@ -12,17 +12,12 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
-import java.util.Objects;
 import java.util.Properties;
 
 @Configuration
 @PropertySource("classpath:application.properties")
 @EnableTransactionManagement
 public class DatabaseConfiguration {
-    private static final String[] MODEL_PACKAGE_LOCATION = new String[]{
-            "io.zerogone.model.entity"
-    };
-
     private final Environment environment;
 
     public DatabaseConfiguration(Environment environment) {
@@ -32,10 +27,10 @@ public class DatabaseConfiguration {
     @Bean
     public DataSource dataSource() {
         BasicDataSource dataSource = new BasicDataSource();
-        dataSource.setDriverClassName(Objects.requireNonNull(environment.getProperty("spring.datasource.driver-class-name")));
-        dataSource.setUrl(Objects.requireNonNull(environment.getProperty("spring.datasource.url")));
-        dataSource.setUsername(Objects.requireNonNull(environment.getProperty("spring.datasource.username")));
-        dataSource.setPassword(Objects.requireNonNull(environment.getProperty("spring.datasource.password")));
+        dataSource.setDriverClassName(environment.getProperty("spring.datasource.driver-class-name"));
+        dataSource.setUrl(environment.getProperty("spring.datasource.url"));
+        dataSource.setUsername(environment.getProperty("spring.datasource.username"));
+        dataSource.setPassword(environment.getProperty("spring.datasource.password"));
         return dataSource;
     }
 
@@ -45,7 +40,7 @@ public class DatabaseConfiguration {
                 = new LocalContainerEntityManagerFactoryBean();
 
         entityManagerFactory.setDataSource(dataSource());
-        entityManagerFactory.setPackagesToScan(MODEL_PACKAGE_LOCATION);
+        entityManagerFactory.setPackagesToScan("io.zerogone.model.entity");
 
         entityManagerFactory.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
         entityManagerFactory.setJpaProperties(getJpaProperties());
@@ -54,18 +49,17 @@ public class DatabaseConfiguration {
 
     private Properties getJpaProperties() {
         Properties properties = new Properties();
-        properties.setProperty("hibernate.dialect", Objects.requireNonNull(environment.getProperty("hibernate.dialect")));
-        properties.setProperty("hibernate.show_sql", Objects.requireNonNull(environment.getProperty("hibernate.show_sql")));
-        properties.setProperty("hibernate.format_sql", Objects.requireNonNull(environment.getProperty("hibernate.format_sql")));
+        properties.setProperty("hibernate.dialect", environment.getProperty("hibernate.dialect"));
+        properties.setProperty("hibernate.show_sql", environment.getProperty("hibernate.show_sql"));
+        properties.setProperty("hibernate.format_sql", environment.getProperty("hibernate.format_sql"));
+        properties.setProperty("hibernate.hbm2ddl.auto", environment.getProperty("hibernate.hbm2ddl.auto"));
         return properties;
     }
 
     @Bean
     public PlatformTransactionManager transactionManager() {
-        JpaTransactionManager transactionManager
-                = new JpaTransactionManager();
-        transactionManager.setEntityManagerFactory(
-                entityManagerFactory().getObject());
+        JpaTransactionManager transactionManager = new JpaTransactionManager();
+        transactionManager.setEntityManagerFactory(entityManagerFactory().getObject());
         return transactionManager;
     }
 }
