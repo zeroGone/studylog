@@ -55,8 +55,8 @@ function setList(list, max) {
 });
 
 function controlListMore(list, button, page, max) {
-    [].forEach.call(list, (item, idx) => {
-        if (idx < max * page || idx >= max * (page + 1)) {
+    [].forEach.call(list, (item, index) => {
+        if (index < max * page || index >= max * (page + 1)) {
             item.classList.add(hiddenClass);
         } else {
             item.classList.remove(hiddenClass);
@@ -117,11 +117,11 @@ function controlListLess(list, button, page, max) {
 
     page--;
 
-    if (button.classList.contains('member-list-more')) {
+    if (button.classList.contains('member-list-less')) {
         memberCurrentPage--;
-    } else if (button.classList.contains('reviewing-list-more')) {
+    } else if (button.classList.contains('reviewing-list-less')) {
         reviewingCurrentPage--;
-    } else if (button.classList.contains('recent-activity-list-more')) {
+    } else if (button.classList.contains('recent-activity-list-less')) {
         recentActivityCurrentPage--;
     }
 
@@ -130,12 +130,58 @@ function controlListLess(list, button, page, max) {
     }
 }
 
+
 const container = document.querySelector('.main-container');
 window.addEventListener('resize', function (event) {
-    setLoadWindow();
-    setMemberMaxItemCount();
-    setList(memberLists, memberMaxItemCount);
+    if (window.innerWidth > 1065) {
+        if (!container.classList.contains('pc')) {
+            setWindowPcVersion();
+            setMemberMaxItemCount();
+            setReorganizeList(memberLists, memberMaxItemCount, memberCurrentPage);
+        }
+    } else if (window.innerWidth < 1065 && window.innerWidth > 801) {
+        if (!container.classList.contains('tablet')) {
+            setWindowTabletVersion();
+            setMemberMaxItemCount();
+            setReorganizeList(memberLists, memberMaxItemCount, memberCurrentPage);
+
+        }
+
+    } else if (window.innerWidth < 801) {
+        if (!container.classList.contains('mobile')) {
+            setWindowMobileVersion();
+            setMemberMaxItemCount();
+            setReorganizeList(memberLists, memberMaxItemCount, memberCurrentPage);
+        }
+    }
 });
+
+function setReorganizeList(list, max, page) {
+    if (page > 1 && list.length <= max * (page - 1)) {
+        page--;
+        memberCurrentPage--;
+    }
+
+    if (list.length - 1 < max || list.length < max * page) {
+        document.querySelector('.member-list-more').style.visibility = 'hidden';
+    } else {
+        document.querySelector('.member-list-more').style.visibility = 'visible';
+    }
+
+    [].forEach.call(list, (item) => {
+        item.classList.add(hiddenClass);
+    });
+
+    [].forEach.call(list, function (item, index) {
+        if (index >= max * page) {
+            item.classList.add(hiddenClass);
+        } else if (index >= max * (page - 1)) {
+            item.classList.remove(hiddenClass);
+        } else {
+            item.classList.add(hiddenClass);
+        }
+    });
+}
 
 function setWindowPcVersion() {
     container.classList.add('pc');
@@ -167,7 +213,7 @@ function setMemberMaxItemCount() {
         return memberMaxItemCount = 8;
     } else if (container.classList.contains('tablet')) {
         return memberMaxItemCount = 9;
-    } else if(container.classList.contains('mobile')){
+    } else if (container.classList.contains('mobile')) {
         return memberMaxItemCount = 6;
     }
 }
