@@ -12,6 +12,7 @@ body {
 .container {
     width: 100%;
     height: auto;
+    min-height: 80vh;
 }
 
 @keyframes slideup {
