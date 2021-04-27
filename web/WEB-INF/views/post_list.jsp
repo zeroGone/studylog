@@ -197,6 +197,7 @@
             </div>
         </div>
     </section>
+    <button type="button" id="post-write" class="post-write-button" onclick="window.location='post.jsp'">글 작성</button>
 </div>
 <jsp:include page="include/footer.jsp"/>
 </body>

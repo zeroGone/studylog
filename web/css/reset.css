@@ -530,7 +530,7 @@ input {
 }
 
 .footer.fix {
-    position: fixed;
+    position: relative;
     top: auto;
     bottom: 0;
     height: 20vh;

@@ -185,3 +185,67 @@ body {
 .card-footer .value {
     font-size: medium;
 }
+
+.post-write-button {
+    position: fixed;
+    top: 15vh;
+    right: 10vw;
+    padding: 1vh 1vw;
+    background-color: var(--light-sky);
+    font-size: medium;
+    color: var(--white);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.post-write-button:hover {
+    background-color: var(--leaf);
+}
+
+/* 태블릿 */
+@media all and (max-width: 1065px) and (min-width: 801px) {
+    .posts-list {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .card {
+        width: 25vw;
+    }
+
+    .card.left {
+        top: auto;
+    }
+
+    .card.right {
+        top: auto;
+    }
+
+    .post-write-button{
+        right: 7vw;
+    }
+}
+
+/* 모바일 */
+@media all and (max-width: 800px) {
+    .posts-list {
+        grid-template-columns: repeat(1, 1fr);
+    }
+
+    .card {
+        width: 40vw;
+    }
+
+    .card.left {
+        top: auto;
+    }
+
+    .card.right {
+        top: auto;
+    }
+
+    .post-write-button{
+        right: 5vw;
+    }
+}
