@@ -1,14 +1,17 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <header class="header">
-    <div class="header-menu sideOff">
-        <div class="header-menu-bars">
-            <span class="header-menu-bar header-menu-bartop"></span>
-            <span class="header-menu-bar header-menu-barmid"></span>
-            <span class="header-menu-bar header-menu-barbottom"></span>
+    <c:if test="${pageContext.request.requestURI ne '/WEB-INF/views/mypage.jsp'}">
+        <div class="header-menu sideOff">
+            <div class="header-menu-bars">
+                <span class="header-menu-bar header-menu-bartop"></span>
+                <span class="header-menu-bar header-menu-barmid"></span>
+                <span class="header-menu-bar header-menu-barbottom"></span>
+            </div>
+            <span class="header-menu-text">menu</span>
         </div>
-        <span class="header-menu-text">menu</span>
-    </div>
-    <h1 class="header-title">${blog.name}</h1>
+        <h1 class="header-title">${blog.name}</h1>
+    </c:if>
     <div class="header-information">
         <div class="user-info">
             <span class="user-info-nickname">${userInfo.nickName}</span>
