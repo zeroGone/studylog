@@ -2,7 +2,7 @@
     <ul class="sidebar-container">
         <li class="sidebar-item">
             <article class="sidebar-logo-wrapper">
-                <img class="sidebar-logo" src="img/logo.png" alt="logo"/>
+                <img class="sidebar-logo" src="/img/logo.png" alt="logo"/>
             </article>
         </li>
         <li class="sidebar-item">

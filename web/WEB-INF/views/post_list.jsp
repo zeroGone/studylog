@@ -3,8 +3,8 @@
 <head>
     <title>StudyLog</title>
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/img/logo.ico" type="image/x-icon">
-    <link rel="stylesheet" href="css/post_list.css">
-    <script src="js/post_list.js" defer></script>
+    <link rel="stylesheet" href="/css/post_list.css">
+    <script src="/js/post_list.js" defer></script>
     <script src="/js/header.js" defer></script>
     <script src="/js/sidebar.js" defer></script>
     <script src="https://kit.fontawesome.com/b63e743ce0.js" crossorigin="anonymous"></script>
@@ -14,7 +14,7 @@
 <jsp:include page="include/sidebar.jsp"/>
 <div class="main-container posts">
     <section class="title">
-        <img src="img/post_icon.png" alt="post_icon" class="title-icon">
+        <img src="/img/post_icon.png" alt="post_icon" class="title-icon">
         <h2 class="title-header">Post</h2>
         <div class="title-footer">
             <span class="title-footer-texts">Look at all the posts.</span>
@@ -27,7 +27,7 @@
     <section class="posts-list">
         <div class="card left">
             <div class="card-image">
-                <img class="card-image-thumbnail" src="img/user-default/2.png" alt="card-image-thumbnail"/>
+                <img class="card-image-thumbnail" src="/img/user-default/2.png" alt="card-image-thumbnail"/>
             </div>
             <div class="card-text">
                 <h3 class="card-title">나는 자연인이다</h3>
@@ -128,7 +128,7 @@
         </div>
         <div class="card left">
             <div class="card-image">
-                <img class="card-image-thumbnail" src="img/user-default/1.png" alt="card-image-thumbnail"/>
+                <img class="card-image-thumbnail" src="/img/user-default/1.png" alt="card-image-thumbnail"/>
             </div>
             <div class="card-text">
                 <h3 class="card-title">나는 자연인이다</h3>
@@ -163,7 +163,7 @@
         </div>
         <div class="card">
             <div class="card-image">
-                <img class="card-image-thumbnail" src="img/user-default/4.png" alt="card-image-thumbnail"/>
+                <img class="card-image-thumbnail" src="/img/user-default/4.png" alt="card-image-thumbnail"/>
             </div>
             <div class="card-text">
                 <h3 class="card-title">나는 자연인이다</h3>
