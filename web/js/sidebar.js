@@ -1,7 +1,7 @@
 window.onload = function () {
     const header = document.querySelector('.header');
     const menuBtn = header.querySelector('.header-menu')
-    const sidebarIFrame = document.querySelector('.sidebar');
+    const sidebar = document.querySelector('.sidebar');
     const mainContainer = document.querySelector('.main-container');
     const overlay = document.querySelector('.overlay');
 
@@ -13,12 +13,12 @@ window.onload = function () {
     });
 
     function sidebarHandler() {
-        if (sidebarIFrame.classList.contains('off')) {
-            sidebarIFrame.classList.add('on');
-            sidebarIFrame.classList.remove('off');
+        if (sidebar.classList.contains('off')) {
+            sidebar.classList.add('on');
+            sidebar.classList.remove('off');
         } else {
-            sidebarIFrame.classList.add('off');
-            sidebarIFrame.classList.remove('on');
+            sidebar.classList.add('off');
+            sidebar.classList.remove('on');
         }
     }
 
