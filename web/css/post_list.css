@@ -48,6 +48,11 @@ body {
     width: 10%;
     text-align: center;
     cursor: pointer;
+    transition: all 0.3s;
+}
+
+.search-icon:hover{
+    color: var(--white);
 }
 
 .search-icon-button {
@@ -222,7 +227,7 @@ body {
         top: auto;
     }
 
-    .post-write-button{
+    .post-write-button {
         right: 7vw;
     }
 }
@@ -245,7 +250,16 @@ body {
         top: auto;
     }
 
-    .post-write-button{
+    .post-write-button {
         right: 5vw;
+    }
+
+    .search-icon {
+        font-size: larger;
+        height: 5vh;
+    }
+
+    .search-icon-button {
+        line-height: 1.5 !important;
     }
 }
