@@ -428,6 +428,10 @@ input {
     grid-template-columns: 1fr 2fr;
 }
 
+.sidebar-item:not(:first-child) {
+    cursor: pointer;
+}
+
 .overlay {
     position: fixed;
     z-index: 9;
