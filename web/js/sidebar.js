@@ -4,12 +4,24 @@ window.onload = function () {
     const sidebar = document.querySelector('.sidebar');
     const mainContainer = document.querySelector('.main-container');
     const overlay = document.querySelector('.overlay');
+    const sidebarElementsContainer = sidebar.querySelector(".sidebar-container");
 
     menuBtn.addEventListener('click', function () {
         sidebarHandler();
         menuBtnClick();
         mainContainerHandler();
         mainContainerOverlayHandler();
+    });
+
+    sidebarElementsContainer.addEventListener("click", (event) => {
+        const target = event.target;
+        const sidebarElement = target.closest(".sidebar-item");
+        const sidebarElementContent = sidebarElement.querySelector(".sidebar-item-content");
+        const sidebarElementText = sidebarElementContent.innerText;
+
+        if (sidebarElementText === "POST") {
+            window.location = window.location.pathname + "/posts";
+        }
     });
 
     function sidebarHandler() {
