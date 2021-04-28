@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.List;
 
 @Repository
 public class BlogInvitationKeyDao {
@@ -15,9 +16,9 @@ public class BlogInvitationKeyDao {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public void save(BlogInvitationKey blogInvitationKey) {
+    public void save(List<BlogInvitationKey> blogInvitationKeys) {
         logger.info("-----Saving blog invitation key start-----");
-        entityManager.persist(blogInvitationKey);
+        blogInvitationKeys.forEach(blogInvitationKey -> entityManager.persist(blogInvitationKey));
         logger.info("-----Saving blog invitation key is ended-----");
     }
 }

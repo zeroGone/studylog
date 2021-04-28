@@ -42,7 +42,11 @@ public class BlogInvitationKey {
         return createDateTime;
     }
 
-    public BlogMember getOwner() {
-        return owner;
+    public String getBlogName() {
+        return owner.getBlogName();
+    }
+
+    public String getOwnerEmail() {
+        return owner.getEmail();
     }
 }

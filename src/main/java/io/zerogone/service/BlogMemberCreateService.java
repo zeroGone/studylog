@@ -83,7 +83,7 @@ public class BlogMemberCreateService {
                         userDto.getEmail(),
                         userDto.getNickName(),
                         userDto.getImageUrl()))
-                .map(user -> new BlogMember(user, blog, MemberRole.INVITING))
+                .map(user -> new BlogMember(user, blog))
                 .collect(Collectors.toList());
 
         try {

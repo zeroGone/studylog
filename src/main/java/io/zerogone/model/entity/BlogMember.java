@@ -26,9 +26,6 @@ public class BlogMember {
     @Convert(converter = MemberRoleConverter.class)
     private MemberRole role;
 
-    @OneToOne(mappedBy = "owner")
-    private BlogInvitationKey blogInvitationKey;
-
     @Column(name = "create_date_time", insertable = false, updatable = false)
     private LocalDateTime createDateTime;
 
@@ -43,6 +40,10 @@ public class BlogMember {
         this.user = user;
         this.blog = blog;
         this.role = role;
+    }
+
+    public BlogMember(User user, Blog blog) {
+        this(user, blog, MemberRole.INVITING);
     }
 
     public int getId() {
@@ -95,14 +96,6 @@ public class BlogMember {
 
     public MemberRole getRole() {
         return role;
-    }
-
-    public String getBlogInvitationKey() {
-        return blogInvitationKey.getValue();
-    }
-
-    public void setBlogInvitationKey(BlogInvitationKey blogInvitationKey) {
-        this.blogInvitationKey = blogInvitationKey;
     }
 
     public void acceptBlogInvitation() {
