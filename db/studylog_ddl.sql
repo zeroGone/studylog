@@ -66,6 +66,29 @@ CREATE TABLE `studylog`.`blog_invitation_key` (
         ON DELETE CASCADE
 );
 
+DROP TABLE IF EXISTS `studylog`.`post`;
+
+CREATE TABLE IF NOT EXISTS `studylog`.`post` (
+  `id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  `title` VARCHAR(255) NOT NULL,
+  `contents` MEDIUMTEXT NOT NULL,
+  `reviewing` TINYINT NOT NULL,
+  `blog_id` INT UNSIGNED NOT NULL,
+  `blog_memeber_id` INT UNSIGNED NOT NULL,
+  `create_date_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_date_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT `fk_post_blog1`
+    FOREIGN KEY (`blog_id`)
+    REFERENCES `studylog`.`blog` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_post_blog_member1`
+    FOREIGN KEY (`blog_memeber_id`)
+    REFERENCES `studylog`.`blog_member` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+);
+
 DROP TABLE IF EXISTS `studylog`.`issue_category` ;
 
 CREATE TABLE `studylog`.`issue_category` (
