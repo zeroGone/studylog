@@ -25,8 +25,10 @@ public class UserSearchService {
                 user.getEmail(),
                 user.getNickName(),
                 user.getImageUrl(),
-                user.getCreateDateTime(),
-                user.getUpdateDateTime());
+                user.getBlogs()
+                        .stream()
+                        .map(blog -> new BlogVo(blog.getId(), blog.getName(), blog.getIntroduce(), blog.getImageUrl()))
+                        .collect(Collectors.toList()));
     }
 
     public List<UserVo> getUserVosByBlogVo(BlogVo blogVo) {
@@ -42,9 +44,7 @@ public class UserSearchService {
                         user.getName(),
                         user.getEmail(),
                         user.getNickName(),
-                        user.getImageUrl(),
-                        user.getCreateDateTime(),
-                        user.getUpdateDateTime()))
+                        user.getImageUrl()))
                 .collect(Collectors.toList());
     }
 }
