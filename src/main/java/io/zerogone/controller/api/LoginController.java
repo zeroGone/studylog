@@ -19,7 +19,7 @@ public class LoginController {
         this.userSearchService = userSearchService;
     }
 
-    @PostMapping("login")
+    @PostMapping("api/login")
     public ResponseEntity<UserVo> doLogin(@RequestBody UserDto userDto, HttpSession httpSession) {
         try {
             UserVo userVo = userSearchService.getUserVoByEmail(userDto.getEmail());
