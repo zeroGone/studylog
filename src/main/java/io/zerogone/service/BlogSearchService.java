@@ -23,9 +23,7 @@ public class BlogSearchService {
         return new BlogVo(blog.getId(),
                 blog.getName(),
                 blog.getIntroduce(),
-                blog.getImageUrl(),
-                blog.getCreateDateTime(),
-                blog.getUpdateDateTime());
+                blog.getImageUrl());
     }
 
     public List<BlogVo> getBlogVosByUserVo(UserVo userVo) {
@@ -41,9 +39,7 @@ public class BlogSearchService {
                 blog.getId(),
                 blog.getName(),
                 blog.getIntroduce(),
-                blog.getImageUrl(),
-                blog.getCreateDateTime(),
-                blog.getUpdateDateTime()))
+                blog.getImageUrl()))
                 .collect(Collectors.toList());
     }
 }

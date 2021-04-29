@@ -25,8 +25,6 @@ public class BlogInvitationAcceptenceService {
         return new BlogVo(blogMember.getBlogId(),
                 blogMember.getBlogName(),
                 blogMember.getBlogIntroduce(),
-                blogMember.getBlogImageUrl(),
-                blogMember.getBlogCreateDateTime(),
-                blogMember.getBlogUpdateDateTime());
+                blogMember.getBlogImageUrl());
     }
 }

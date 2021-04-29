@@ -37,11 +37,11 @@ public class BlogCreateService {
 
         String blogImageUrl = uploadBlogImage(imageFile);
         logger.debug("blog's image url : " + blogImageUrl);
-        
+
         Blog blog = createBlog(blogDto, blogImageUrl);
 
         blogMemberCreateService.createBlogMembers(blog, creator, blogDto.getMembers());
-        return new BlogVo(blog.getId(), blog.getName(), blog.getIntroduce(), blog.getImageUrl(), blog.getCreateDateTime(), blog.getUpdateDateTime());
+        return new BlogVo(blog.getId(), blog.getName(), blog.getIntroduce(), blog.getImageUrl());
     }
 
     private void validate(BlogDto blogCreateDto) {

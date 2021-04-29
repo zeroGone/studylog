@@ -29,15 +29,13 @@ public class UserImageUpdateService {
                 user.getEmail(),
                 user.getNickName(),
                 savedImgUrl);
-        
+
         userDao.updateImageUrl(entity);
 
         return new UserVo(entity.getId(),
                 entity.getName(),
                 entity.getEmail(),
                 entity.getNickName(),
-                entity.getImageUrl(),
-                entity.getCreateDateTime(),
-                entity.getUpdateDateTime());
+                entity.getImageUrl());
     }
 }

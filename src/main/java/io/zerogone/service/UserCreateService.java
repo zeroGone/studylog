@@ -52,9 +52,7 @@ public class UserCreateService {
                 user.getName(),
                 user.getEmail(),
                 user.getNickName(),
-                user.getImageUrl(),
-                user.getCreateDateTime(),
-                user.getUpdateDateTime());
+                user.getImageUrl());
     }
 
     private void validate(UserDto userDto) {
