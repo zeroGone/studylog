@@ -1,8 +1,7 @@
 package io.zerogone.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
-import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserVo {
     private final int id;
@@ -10,19 +9,20 @@ public class UserVo {
     private final String email;
     private final String nickName;
     private final String imageUrl;
-    @JsonFormat(pattern = "yyyy-MM-dd kk:mm:ss")
-    private final LocalDateTime createDateTime;
-    @JsonFormat(pattern = "yyyy-MM-dd kk:mm:ss")
-    private final LocalDateTime updateDateTime;
+    private final List<BlogVo> blogs;
 
-    public UserVo(int id, String name, String email, String nickName, String imageUrl, LocalDateTime createDateTime, LocalDateTime updateDateTime) {
+    public UserVo(int id, String name, String email, String nickName, String imageUrl) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.nickName = nickName;
         this.imageUrl = imageUrl;
-        this.createDateTime = createDateTime;
-        this.updateDateTime = updateDateTime;
+        blogs = new ArrayList<>();
+    }
+
+    public UserVo(int id, String name, String email, String nickName, String imageUrl, List<BlogVo> blogs) {
+        this(id, name, email, nickName, imageUrl);
+        this.blogs.addAll(blogs);
     }
 
     public int getId() {
@@ -45,11 +45,7 @@ public class UserVo {
         return imageUrl;
     }
 
-    public LocalDateTime getCreateDateTime() {
-        return createDateTime;
-    }
-
-    public LocalDateTime getUpdateDateTime() {
-        return updateDateTime;
+    public List<BlogVo> getBlogs() {
+        return blogs;
     }
 }

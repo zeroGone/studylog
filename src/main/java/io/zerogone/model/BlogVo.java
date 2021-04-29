@@ -1,26 +1,16 @@
 package io.zerogone.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
-import java.time.LocalDateTime;
-
 public class BlogVo {
     private final int id;
     private final String name;
     private final String introduce;
     private final String imageUrl;
-    @JsonFormat(pattern = "yyyy-MM-dd kk:mm:ss")
-    private final LocalDateTime createDateTime;
-    @JsonFormat(pattern = "yyyy-MM-dd kk:mm:ss")
-    private final LocalDateTime updateDateTime;
 
-    public BlogVo(int id, String name, String introduce, String imageUrl, LocalDateTime createDateTime, LocalDateTime updateDateTime) {
+    public BlogVo(int id, String name, String introduce, String imageUrl) {
         this.id = id;
         this.name = name;
         this.introduce = introduce;
         this.imageUrl = imageUrl;
-        this.createDateTime = createDateTime;
-        this.updateDateTime = updateDateTime;
     }
 
     public int getId() {
@@ -37,13 +27,5 @@ public class BlogVo {
 
     public String getImageUrl() {
         return imageUrl;
-    }
-
-    public LocalDateTime getCreateDateTime() {
-        return createDateTime;
-    }
-
-    public LocalDateTime getUpdateDateTime() {
-        return updateDateTime;
     }
 }
