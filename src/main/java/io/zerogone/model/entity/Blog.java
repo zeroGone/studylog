@@ -1,7 +1,6 @@
 package io.zerogone.model.entity;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -20,12 +19,6 @@ public class Blog {
 
     @Column(name = "image_url")
     private String imageUrl;
-
-    @Column(name = "create_date_time", insertable = false, updatable = false)
-    private LocalDateTime createDateTime;
-
-    @Column(name = "update_date_time", insertable = false, updatable = false)
-    private LocalDateTime updateDateTime;
 
     @OneToMany(mappedBy = "blog", fetch = FetchType.LAZY)
     private List<BlogMember> members;
@@ -55,14 +48,6 @@ public class Blog {
 
     public String getImageUrl() {
         return imageUrl;
-    }
-
-    public LocalDateTime getCreateDateTime() {
-        return createDateTime;
-    }
-
-    public LocalDateTime getUpdateDateTime() {
-        return updateDateTime;
     }
 
     public List<BlogMember> getMembers() {

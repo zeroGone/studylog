@@ -4,7 +4,6 @@ import io.zerogone.service.MemberRoleConverter;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "blog_member")
@@ -25,12 +24,6 @@ public class BlogMember {
     @Column(name = "role_id")
     @Convert(converter = MemberRoleConverter.class)
     private MemberRole role;
-
-    @Column(name = "create_date_time", insertable = false, updatable = false)
-    private LocalDateTime createDateTime;
-
-    @Column(name = "update_date_time", insertable = false, updatable = false)
-    private LocalDateTime updateDateTime;
 
     BlogMember() {
 
@@ -86,27 +79,11 @@ public class BlogMember {
         return blog.getImageUrl();
     }
 
-    public LocalDateTime getBlogCreateDateTime() {
-        return blog.getCreateDateTime();
-    }
-
-    public LocalDateTime getBlogUpdateDateTime() {
-        return blog.getUpdateDateTime();
-    }
-
     public MemberRole getRole() {
         return role;
     }
 
     public void acceptBlogInvitation() {
         role = MemberRole.MEMBER;
-    }
-
-    public LocalDateTime getCreateDateTime() {
-        return createDateTime;
-    }
-
-    public LocalDateTime getUpdateDateTime() {
-        return updateDateTime;
     }
 }
