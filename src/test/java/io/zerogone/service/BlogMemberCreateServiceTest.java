@@ -37,7 +37,7 @@ public class BlogMemberCreateServiceTest {
     @Before
     public void setUp() {
         blogMemberCreateService = webApplicationContext.getBean(BlogMemberCreateService.class);
-        currentUserInfo = new UserVo(1, null, null, null, null, null, null);
+        currentUserInfo = new UserVo(1, null, null, null, null);
     }
 
     @Test

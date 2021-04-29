@@ -35,7 +35,7 @@ public class MyPageControllerTest {
 
     @Test
     public void getMypageViewNameWitBlogVos() throws Exception {
-        UserVo userVo = new UserVo(1, null, null, null, null, null, null);
+        UserVo userVo = new UserVo(1, null, null, null, null);
         mockMvc.perform(MockMvcRequestBuilders
                 .get("/mypage").sessionAttr("userInfo", userVo))
                 .andDo(print())

@@ -52,7 +52,7 @@ public class BlogSearchServiceTest {
 
     @Test
     public void getBlogVosByUserVos() {
-        UserVo userVo = new UserVo(1, null, null, null, null, null, null);
+        UserVo userVo = new UserVo(1, null, null, null, null);
         List<BlogVo> blogVos = blogSearchService.getBlogVosByUserVo(userVo);
 
         Assert.assertNotNull(blogVos);

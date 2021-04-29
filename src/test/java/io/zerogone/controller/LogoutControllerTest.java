@@ -32,7 +32,7 @@ public class LogoutControllerTest {
     @Before
     public void setUp() {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-        userInfo = new UserVo(1, null, null, null, null, null, null);
+        userInfo = new UserVo(1, null, null, null, null);
     }
 
     @Test

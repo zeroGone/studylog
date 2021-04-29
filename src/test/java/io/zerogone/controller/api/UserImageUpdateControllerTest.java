@@ -44,7 +44,7 @@ public class UserImageUpdateControllerTest {
         mockMvc.perform(MockMvcRequestBuilders
                 .fileUpload("/api/user/1")
                 .file("image", image.getBytes())
-                .sessionAttr("userInfo", new UserVo(1, null, null, null, null, null, null)))
+                .sessionAttr("userInfo", new UserVo(1, null, null, null, null)))
                 .andDo(print())
                 .andExpect(status().isOk());
     }

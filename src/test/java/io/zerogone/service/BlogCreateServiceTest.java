@@ -44,7 +44,7 @@ public class BlogCreateServiceTest {
     @Test
     @Transactional
     public void createBlog() {
-        UserVo creator = new UserVo(1, null, null, null, null, null, null);
+        UserVo creator = new UserVo(1, null, null, null, null);
         BlogDto BlogDto = new BlogDto();
         BlogDto.setName("test");
 
@@ -55,7 +55,7 @@ public class BlogCreateServiceTest {
     @Transactional
     public void createBlog_SameBlogName_ThrowDuplicatedPropertyException() {
         expectedException.expect(UniquePropertyException.class);
-        UserVo creator = new UserVo(1, null, null, null, null, null, null);
+        UserVo creator = new UserVo(1, null, null, null, null);
 
         BlogDto BlogDto = new BlogDto();
         BlogDto.setName("test dto");
@@ -66,7 +66,7 @@ public class BlogCreateServiceTest {
     @Transactional
     public void createBlog_IncludeInvalidBlogMember_ThrowBlogMembersStateException() {
         expectedException.expect(BlogMembersStateException.class);
-        UserVo creator = new UserVo(1, null, null, null, null, null, null);
+        UserVo creator = new UserVo(1, null, null, null, null);
 
         UserDto member = new UserDto();
         member.setId(-1);

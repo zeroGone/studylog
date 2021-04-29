@@ -31,7 +31,7 @@ public class LoginCheckFilterTest {
 
     @Before
     public void setUp() {
-        userInfo = new UserVo(1, null, null, null, null, null, null);
+        userInfo = new UserVo(1, null, null, null, null);
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).addFilter(new LoginCheckFilter()).build();
     }
 

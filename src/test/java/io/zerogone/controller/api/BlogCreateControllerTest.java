@@ -32,7 +32,7 @@ public class BlogCreateControllerTest {
     @Before
     public void setUp() {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-        userInfo = new UserVo(4, "dudrhs571@naver.com", "김영곤", "zeroGone7247", null, null, null);
+        userInfo = new UserVo(4, "dudrhs571@naver.com", "김영곤", "zeroGone7247", null);
     }
 
     @Test
