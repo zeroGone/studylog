@@ -49,4 +49,8 @@ public class BlogInvitationKey {
     public String getOwnerEmail() {
         return owner.getEmail();
     }
+
+    public BlogMember getOwner() {
+        return owner;
+    }
 }
