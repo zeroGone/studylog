@@ -6,7 +6,7 @@ import io.zerogone.exception.BlogMembersStateException;
 import io.zerogone.exception.UniquePropertyException;
 import io.zerogone.model.BlogDto;
 import io.zerogone.model.UserDto;
-import io.zerogone.model.UserVo;
+import io.zerogone.model.vo.UserVo;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;

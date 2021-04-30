@@ -1,20 +1,24 @@
-package io.zerogone.model;
+package io.zerogone.model.vo;
 
-public class BlogVo {
-    private final int id;
+import io.zerogone.model.entity.Blog;
+
+public class BlogVo extends ValueObject {
     private final String name;
     private final String introduce;
     private final String imageUrl;
 
     public BlogVo(int id, String name, String introduce, String imageUrl) {
-        this.id = id;
+        super(id);
         this.name = name;
         this.introduce = introduce;
         this.imageUrl = imageUrl;
     }
 
-    public int getId() {
-        return id;
+    public BlogVo(Blog blog) {
+        super(blog.getId());
+        name = blog.getName();
+        introduce = blog.getIntroduce();
+        imageUrl = blog.getImageUrl();
     }
 
     public String getName() {

@@ -6,3 +6,7 @@ card.forEach((element) => {
         element.classList.add('not-image');
     }
 });
+
+document.getElementById("post-write").addEventListener("click", () => {
+    window.location.pathname += "/new";
+})

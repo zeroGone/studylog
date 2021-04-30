@@ -1,7 +1,7 @@
 package io.zerogone.service;
 
-import io.zerogone.model.BlogVo;
-import io.zerogone.model.UserVo;
+import io.zerogone.model.vo.BlogVo;
+import io.zerogone.model.vo.UserVo;
 import io.zerogone.model.entity.Blog;
 import io.zerogone.model.entity.User;
 import io.zerogone.repository.UserDao;

@@ -3,7 +3,7 @@ package io.zerogone.service;
 import ch.qos.logback.classic.Logger;
 import io.zerogone.exception.BlogMembersStateException;
 import io.zerogone.model.UserDto;
-import io.zerogone.model.UserVo;
+import io.zerogone.model.vo.UserVo;
 import io.zerogone.model.entity.Blog;
 import io.zerogone.model.entity.BlogMember;
 import io.zerogone.model.entity.MemberRole;

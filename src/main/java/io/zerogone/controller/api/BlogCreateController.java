@@ -1,8 +1,8 @@
 package io.zerogone.controller.api;
 
 import io.zerogone.model.BlogDto;
-import io.zerogone.model.BlogVo;
-import io.zerogone.model.UserVo;
+import io.zerogone.model.vo.BlogVo;
+import io.zerogone.model.vo.UserVo;
 import io.zerogone.service.BlogCreateService;
 import io.zerogone.service.FileUploadService;
 import org.springframework.http.HttpStatus;

@@ -1,6 +1,6 @@
 package io.zerogone.service;
 
-import io.zerogone.model.BlogVo;
+import io.zerogone.model.vo.BlogVo;
 import io.zerogone.model.entity.BlogInvitationKey;
 import io.zerogone.model.entity.BlogMember;
 import io.zerogone.repository.BlogInvitationKeyDao;

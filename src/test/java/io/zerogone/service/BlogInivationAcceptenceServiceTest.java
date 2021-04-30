@@ -2,7 +2,7 @@ package io.zerogone.service;
 
 import io.zerogone.config.DatabaseConfiguration;
 import io.zerogone.config.WebConfiguration;
-import io.zerogone.model.BlogVo;
+import io.zerogone.model.vo.BlogVo;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

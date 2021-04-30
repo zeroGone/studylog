@@ -1,7 +1,7 @@
 package io.zerogone.controller;
 
 import io.zerogone.exception.NotExistedDataException;
-import io.zerogone.model.BlogVo;
+import io.zerogone.model.vo.BlogVo;
 import io.zerogone.service.BlogSearchService;
 import io.zerogone.service.UserSearchService;
 import org.springframework.http.HttpStatus;
