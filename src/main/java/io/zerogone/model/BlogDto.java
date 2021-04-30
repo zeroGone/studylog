@@ -2,20 +2,11 @@ package io.zerogone.model;
 
 import java.util.List;
 
-public class BlogDto {
-    private int id;
+public class BlogDto extends DataTransferObjecct {
     private String name;
     private String introduce;
     private String imageUrl;
     private List<UserDto> members;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;

@@ -1,19 +1,13 @@
 package io.zerogone.model;
 
-public class UserDto {
-    private int id;
+import java.util.List;
+
+public class UserDto extends DataTransferObjecct {
     private String name;
     private String nickName;
     private String email;
     private String imageUrl;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
+    private List<BlogDto> blogs;
 
     public String getName() {
         return name;
@@ -45,5 +39,13 @@ public class UserDto {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public List<BlogDto> getBlogs() {
+        return blogs;
+    }
+
+    public void setBlogs(List<BlogDto> blogs) {
+        this.blogs = blogs;
     }
 }
