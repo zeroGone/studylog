@@ -1,4 +1,4 @@
-package io.zerogone.model;
+package io.zerogone.model.dto;
 
 public class DataTransferObjecct {
     private int id;
