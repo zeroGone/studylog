@@ -1,6 +1,6 @@
 package io.zerogone.model.dto;
 
-public class DataTransferObjecct {
+public class DataTransferObject {
     private int id;
 
     public void setId(int id) {

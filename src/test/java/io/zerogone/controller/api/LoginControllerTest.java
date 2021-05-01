@@ -2,7 +2,7 @@ package io.zerogone.controller.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.zerogone.config.WebConfiguration;
-import io.zerogone.model.UserDto;
+import io.zerogone.model.dto.UserDto;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -49,13 +49,28 @@ public class LoginControllerTest {
     }
 
     @Test
+    public void doLogin_NotHavingBlog_ReturnOk() throws Exception {
+        UserDto userDto = new UserDto();
+        userDto.setName("모세현");
+        userDto.setEmail("ahtpgus@naver.com");
+
+        mockMvc.perform(MockMvcRequestBuilders
+                .post("/api/login")
+                .contentType("application/json")
+                .characterEncoding("utf-8")
+                .content(new ObjectMapper().writeValueAsString(userDto)))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test
     public void doLogin_NotExistedUser_ReturnNotFound() throws Exception {
         UserDto userDto = new UserDto();
         userDto.setName("이게누구여");
         userDto.setEmail("모르는사람이여");
 
         mockMvc.perform(MockMvcRequestBuilders
-                .post("/login")
+                .post("/api/login")
                 .contentType("application/json")
                 .characterEncoding("utf-8")
                 .content(new ObjectMapper().writeValueAsString(userDto)))

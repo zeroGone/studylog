@@ -4,7 +4,6 @@ import io.zerogone.config.DatabaseConfiguration;
 import io.zerogone.config.WebConfiguration;
 import io.zerogone.exception.NotExistedDataException;
 import io.zerogone.model.entity.Blog;
-import io.zerogone.model.entity.User;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -20,7 +19,6 @@ import org.springframework.web.context.WebApplicationContext;
 
 import javax.persistence.PersistenceException;
 import javax.transaction.Transactional;
-import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {WebConfiguration.class, DatabaseConfiguration.class}, loader = AnnotationConfigWebContextLoader.class)
@@ -77,9 +75,7 @@ public class BlogDaoTest {
     }
 
     @Test
-    public void findAllByUserAndBlogMemberRoleIsAdminOrMember() {
-        User user = new User(1, null, null, null, null);
-        List<Blog> blogs = blogDao.findAllByUserAndBlogMemberRoleIsAdminOrMember(user);
-        Assert.assertNotEquals(0, blogs.size());
+    public void findByNameWithBlogMembers() {
+        Assert.assertNotNull(blogDao.findWithBlogMembersByName("studylog"));
     }
 }

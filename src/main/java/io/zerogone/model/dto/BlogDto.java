@@ -2,11 +2,10 @@ package io.zerogone.model.dto;
 
 import java.util.List;
 
-public class BlogDto extends DataTransferObjecct {
+public class BlogDto extends DataTransferObject {
     private String name;
     private String introduce;
     private String imageUrl;
-    private List<UserDto> members;
 
     public String getName() {
         return name;
@@ -30,13 +29,5 @@ public class BlogDto extends DataTransferObjecct {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
-    }
-
-    public List<UserDto> getMembers() {
-        return members;
-    }
-
-    public void setMembers(List<UserDto> members) {
-        this.members = members;
     }
 }

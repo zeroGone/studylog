@@ -20,7 +20,7 @@
         <div class="member-container">
             <i class="fas fa-chevron-circle-left main-section-list-less member-list-less"></i>
             <ul class="member-list">
-                <c:forEach items="${members}" var="member">
+                <c:forEach items="${blog.members}" var="member">
                     <li class="member-list-item">
                         <img src="${member.imageUrl}" alt="member img"
                              class="member-list-item-user"/>

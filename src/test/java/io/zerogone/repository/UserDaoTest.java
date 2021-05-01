@@ -3,7 +3,6 @@ package io.zerogone.repository;
 import io.zerogone.config.DatabaseConfiguration;
 import io.zerogone.config.WebConfiguration;
 import io.zerogone.exception.NotExistedDataException;
-import io.zerogone.model.entity.Blog;
 import io.zerogone.model.entity.User;
 import org.junit.Assert;
 import org.junit.Before;
@@ -20,7 +19,6 @@ import org.springframework.web.context.WebApplicationContext;
 
 import javax.persistence.PersistenceException;
 import javax.transaction.Transactional;
-import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {WebConfiguration.class, DatabaseConfiguration.class}, loader = AnnotationConfigWebContextLoader.class)
@@ -131,19 +129,22 @@ public class UserDaoTest {
     }
 
     @Test
-    public void findAllByBlogAndBlogMemberRoleIsAdminOrMember() {
-        Blog blog = new Blog(1, null, null, null);
-        List<User> users = userDao.findAllByBlogAndBlogMemberRoleIsAdminOrMember(blog);
-        Assert.assertNotNull(users);
-        Assert.assertNotEquals(0, users.size());
+    public void findWithBlogsByEmail() {
+        User user = userDao.findWithBlogsByEmail("dudrhs571@gmail.com");
+        Assert.assertNotNull(user);
+        Assert.assertNotEquals(0, user.getId());
+        Assert.assertEquals("dudrhs571@gmail.com", user.getEmail());
     }
 
     @Test
-    public void findAllByBlogAndBlogMemberRoleIsAdminOrMember_GivenIdIsZeroBlog_IllegalStateException() {
-        expectedException.expect(IllegalStateException.class);
-        Blog blog = new Blog(0, null, null, null);
-        List<User> users = userDao.findAllByBlogAndBlogMemberRoleIsAdminOrMember(blog);
-        Assert.assertNotNull(users);
-        Assert.assertNotEquals(0, users.size());
+    public void findWithBlogsByEmail_NotHavingBlog_ReturnEntity() {
+        User user = userDao.findWithBlogsByEmail("ahtpgus@naver.com");
+        Assert.assertNotNull(user);
+    }
+
+    @Test
+    public void findWithBlogsByEmail_GivenEmptyString_ThrowNotExistedDataException() {
+        expectedException.expect(NotExistedDataException.class);
+        Assert.assertNotEquals(0, userDao.findWithBlogsByEmail("").getId());
     }
 }
