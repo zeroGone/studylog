@@ -3,6 +3,7 @@ package io.zerogone.service.fileupload;
 import ch.qos.logback.classic.Logger;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import io.zerogone.exception.FileUploadException;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,7 @@ public class AwsUploader {
             amazonS3.putObject(new PutObjectRequest(bucketName, image.getPath(), image.getInputStream(), null));
         } catch (IOException ioException) {
             logger.error("Uploading file is failed!");
+            throw new FileUploadException(Image.class, image.getPath());
         }
         logger.info("-----Uploading file to AWS s3 is ended-----");
         return new ImageUrl(amazonS3.getUrl(bucketName, image.getPath()).toString());
