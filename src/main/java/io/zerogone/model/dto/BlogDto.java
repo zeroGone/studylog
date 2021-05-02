@@ -1,7 +1,5 @@
 package io.zerogone.model.dto;
 
-import java.util.List;
-
 public class BlogDto extends DataTransferObject {
     private String name;
     private String introduce;
