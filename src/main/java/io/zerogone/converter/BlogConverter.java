@@ -38,7 +38,7 @@ public class BlogConverter implements Converter<Blog> {
                         userDto.setImageUrl(user.getImageUrl());
                         return userDto;
                     }).collect(Collectors.toList()));
-        } catch (LazyInitializationException lazyInitializationException) {
+        } catch (LazyInitializationException | NullPointerException exception) {
             dto.setMembers(new ArrayList<>());
         }
         return dto;

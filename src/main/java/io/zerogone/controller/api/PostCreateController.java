@@ -1,10 +1,10 @@
 package io.zerogone.controller.api;
 
-import io.zerogone.model.BlogDto;
-import io.zerogone.model.vo.BlogVo;
-import io.zerogone.model.vo.UserVo;
-import io.zerogone.model.dto.PostCreateDto;
-import io.zerogone.service.create.CreateService;
+import io.zerogone.model.dto.BlogDto;
+import io.zerogone.model.dto.PostDto;
+import io.zerogone.model.dto.UserWithBlogsDto;
+import io.zerogone.model.entity.Post;
+import io.zerogone.service.create.CreateTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,30 +16,30 @@ import java.util.Objects;
 
 @RestController
 public class PostCreateController {
-    private final CreateService createService;
+    private final CreateTemplate<Post> createTemplate;
 
-    public PostCreateController(CreateService createService) {
-        this.createService = createService;
+    public PostCreateController(CreateTemplate<Post> createTemplate) {
+        this.createTemplate = createTemplate;
     }
 
     @PostMapping("api/post")
-    public ResponseEntity<Object> handlePostCreateApi(@SessionAttribute UserVo userInfo,
-                                                      @RequestBody PostCreateDto postCreateDto) {
+    public ResponseEntity<PostDto> handlePostCreateApi(@SessionAttribute UserWithBlogsDto userInfo,
+                                                       @RequestBody PostDto post) {
 
-        postCreateDto.setWriter(userInfo);
-        postCreateDto.setBlog(getTargetBlog(userInfo, postCreateDto.getBlog()));
+        post.setWriter(userInfo);
+        post.setBlog(getTargetBlog(userInfo, post.getBlog()));
 
-        return new ResponseEntity<>(createService.createEntity(postCreateDto), HttpStatus.CREATED);
+        return new ResponseEntity<>((PostDto) createTemplate.create(post), HttpStatus.CREATED);
     }
 
-    private BlogDto getTargetBlog(UserVo writer, BlogDto blogDto) {
-        BlogVo targetBlogVo = writer.getBlogs()
+    private BlogDto getTargetBlog(UserWithBlogsDto writer, BlogDto blogDto) {
+        BlogDto targetBlog = writer.getBlogs()
                 .stream()
-                .filter(blogVo -> Objects.equals(blogVo.getName(), blogDto.getName()))
+                .filter(blog -> Objects.equals(blog.getName(), blogDto.getName()))
                 .findAny()
                 .orElseThrow(IllegalArgumentException::new);
 
-        blogDto.setId(targetBlogVo.getId());
+        blogDto.setId(targetBlog.getId());
         return blogDto;
     }
 }

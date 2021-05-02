@@ -39,7 +39,7 @@ public class UserConverter implements Converter<User> {
                         return blogDto;
                     })
                     .collect(Collectors.toList()));
-        } catch (LazyInitializationException lazyInitializationException) {
+        } catch (LazyInitializationException | NullPointerException exception) {
             dto.setBlogs(new ArrayList<>());
         }
         return dto;
