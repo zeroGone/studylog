@@ -1,5 +1,6 @@
 package io.zerogone.service.search;
 
+import io.zerogone.converter.Converter;
 import io.zerogone.model.dto.UserDto;
 import io.zerogone.model.entity.User;
 import io.zerogone.repository.UserDao;
@@ -8,20 +9,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserEmailSearchService implements SearchService<String, UserDto> {
     private final UserDao userDao;
+    private final Converter<User> converter;
 
-    public UserEmailSearchService(UserDao userDao) {
+    public UserEmailSearchService(UserDao userDao, Converter<User> converter) {
         this.userDao = userDao;
+        this.converter = converter;
     }
 
     @Override
     public UserDto search(String key) {
         User entity = userDao.findByEmail(key);
-        UserDto dto = new UserDto();
-        dto.setId(entity.getId());
-        dto.setEmail(entity.getEmail());
-        dto.setName(entity.getName());
-        dto.setNickName(entity.getNickName());
-        dto.setImageUrl(entity.getImageUrl());
-        return dto;
+        return (UserDto) converter.convert(entity);
     }
 }
