@@ -1,8 +1,5 @@
 package io.zerogone.model.entity;
 
-import io.zerogone.model.vo.BlogVo;
-import io.zerogone.model.vo.UserVo;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -65,12 +62,12 @@ public class Post {
         return id;
     }
 
-    public BlogVo getBlog() {
-        return new BlogVo(blog);
+    public Blog getBlog() {
+        return blog;
     }
 
-    public UserVo getWriter() {
-        return new UserVo(writer.getId(), writer.getName(), writer.getEmail(), writer.getNickName(), writer.getImageUrl());
+    public User getWriter() {
+        return writer;
     }
 
     public String getTitle() {
@@ -83,6 +80,10 @@ public class Post {
 
     public boolean isReviewing() {
         return isReviewing;
+    }
+
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
     }
 
     public List<Category> getCategories() {
