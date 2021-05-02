@@ -1,8 +1,8 @@
 package io.zerogone.controller.api;
 
-import io.zerogone.model.UserDto;
-import io.zerogone.model.vo.UserVo;
-import io.zerogone.service.UserCreateService;
+import io.zerogone.model.dto.UserDto;
+import io.zerogone.model.dto.UserWithBlogsDto;
+import io.zerogone.service.create.CreateWithImageService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -15,19 +15,23 @@ import javax.servlet.http.HttpSession;
 
 @RestController
 public class UserCreateController {
-    private final UserCreateService userCreateService;
+    private final CreateWithImageService createWithImageService;
 
-    public UserCreateController(UserCreateService userCreateService) {
-        this.userCreateService = userCreateService;
+    public UserCreateController(CreateWithImageService createWithImageService) {
+        this.createWithImageService = createWithImageService;
     }
 
     @PostMapping("api/user")
-    public ResponseEntity<UserVo> handleCreateUserApi(@ModelAttribute UserDto userDto,
-                                                      @RequestPart(required = false) MultipartFile image,
-                                                      HttpSession httpSession) {
-        UserVo userVo = userCreateService.createUser(userDto, image);
-        httpSession.setAttribute("userInfo", userVo);
+    public ResponseEntity<UserDto> handleCreateUserApi(@ModelAttribute UserDto userDto,
+                                                       @RequestPart(required = false) MultipartFile image,
+                                                       HttpSession httpSession) {
+        if (image == null) {
+            userDto = (UserWithBlogsDto) createWithImageService.create(userDto);
+        } else {
+            userDto = (UserWithBlogsDto) createWithImageService.create(userDto, image);
+        }
+        httpSession.setAttribute("userInfo", userDto);
         httpSession.removeAttribute("visitor");
-        return new ResponseEntity<>(userVo, HttpStatus.CREATED);
+        return new ResponseEntity<>(userDto, HttpStatus.CREATED);
     }
 }
