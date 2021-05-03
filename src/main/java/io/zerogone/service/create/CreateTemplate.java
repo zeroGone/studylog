@@ -3,8 +3,6 @@ package io.zerogone.service.create;
 import io.zerogone.converter.Converter;
 import io.zerogone.model.dto.DataTransferObject;
 
-import javax.transaction.Transactional;
-
 public abstract class CreateTemplate<T> {
     private final Converter<T> converter;
 
@@ -12,7 +10,6 @@ public abstract class CreateTemplate<T> {
         this.converter = converter;
     }
 
-    @Transactional
     public DataTransferObject create(DataTransferObject dto) {
         validate(dto);
         T entity = converter.convert(dto);
