@@ -7,12 +7,12 @@ import io.zerogone.service.fileupload.ImageUploadService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserCreateService extends CreateService {
+public class UserCreateWithImageService extends CreateWithImageService {
     private static final String USER_DEFAULT_IMAGE_URL = "/img/user-default/";
     private static final String USER_DEFAULT_IMAGE_TYPE = ".png";
     private final CreateTemplate<User> createTemplate;
 
-    public UserCreateService(ImageUploadService imageUploadService, CreateTemplate<User> createTemplate) {
+    public UserCreateWithImageService(ImageUploadService imageUploadService, CreateTemplate<User> createTemplate) {
         super(imageUploadService);
         this.createTemplate = createTemplate;
     }

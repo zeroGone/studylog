@@ -6,10 +6,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 
-public abstract class CreateService {
+public abstract class CreateWithImageService {
     private final ImageUploadService imageUploadService;
 
-    public CreateService(ImageUploadService imageUploadService) {
+    public CreateWithImageService(ImageUploadService imageUploadService) {
         this.imageUploadService = imageUploadService;
     }
 

@@ -2,7 +2,7 @@ package io.zerogone.controller.api;
 
 import io.zerogone.model.dto.UserDto;
 import io.zerogone.model.dto.UserWithBlogsDto;
-import io.zerogone.service.create.CreateService;
+import io.zerogone.service.create.CreateWithImageService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,10 +16,10 @@ import javax.servlet.http.HttpSession;
 
 @RestController
 public class UserCreateController {
-    private final CreateService createService;
+    private final CreateWithImageService createWithImageService;
 
-    public UserCreateController(@Qualifier("userCreateService") CreateService createService) {
-        this.createService = createService;
+    public UserCreateController(@Qualifier("userCreateService") CreateWithImageService createWithImageService) {
+        this.createWithImageService = createWithImageService;
     }
 
     @PostMapping("api/user")
@@ -28,9 +28,9 @@ public class UserCreateController {
                                                        HttpSession httpSession) {
         UserWithBlogsDto userInfo;
         if (image == null) {
-            userInfo = (UserWithBlogsDto) createService.create(userDto);
+            userInfo = (UserWithBlogsDto) createWithImageService.create(userDto);
         } else {
-            userInfo = (UserWithBlogsDto) createService.create(userDto, image);
+            userInfo = (UserWithBlogsDto) createWithImageService.create(userDto, image);
         }
         httpSession.setAttribute("userInfo", userInfo);
         httpSession.removeAttribute("visitor");
