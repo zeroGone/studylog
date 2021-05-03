@@ -38,6 +38,9 @@ public class UserCreateTemplate extends CreateTemplate<User> {
     void validate(DataTransferObject dto) {
         logger.info("-----validate created User data-----");
         UserDto userDto = (UserDto) dto;
+        if (userDto.getId() != 0) {
+            throw new IllegalArgumentException("생성 시 id를 부여하면 안됩니다");
+        }
         if (userDto.getName() == null) {
             throw new NotNullPropertyException(User.class, "name");
         }
