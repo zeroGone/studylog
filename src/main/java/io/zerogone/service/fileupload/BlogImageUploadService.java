@@ -1,10 +1,9 @@
 package io.zerogone.service.fileupload;
 
-import io.zerogone.model.dto.DataTransferObject;
-import io.zerogone.model.dto.UserDto;
+import io.zerogone.model.dto.BlogDto;
 import org.springframework.web.multipart.MultipartFile;
 
-public class BlogImageUploadService implements ImageUploadService {
+public class BlogImageUploadService implements ImageUploadService<BlogDto> {
     private static final String UPLOAD_PATH = "img/blog";
     private final AwsUploader awsUploader;
 
@@ -13,10 +12,9 @@ public class BlogImageUploadService implements ImageUploadService {
     }
 
     @Override
-    public DataTransferObject upload(DataTransferObject dto, MultipartFile image) {
+    public BlogDto upload(BlogDto dto, MultipartFile image) {
         ImageUrl imageUrl = awsUploader.upload(new Image(UPLOAD_PATH, image));
-        UserDto userDto = (UserDto) dto;
-        userDto.setImageUrl(imageUrl.getValue());
-        return userDto;
+        dto.setImageUrl(imageUrl.getValue());
+        return dto;
     }
 }
