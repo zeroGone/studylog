@@ -5,23 +5,16 @@ import io.zerogone.model.dto.UserDto;
 import io.zerogone.model.entity.User;
 import io.zerogone.service.fileupload.ImageUploadService;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 @Service
-public class UserCreateWithImageService implements CreateWithImageService {
+public class UserCreateService extends CreateService {
     private static final String USER_DEFAULT_IMAGE_URL = "/img/user-default/";
     private static final String USER_DEFAULT_IMAGE_TYPE = ".png";
-    private final ImageUploadService imageUploadService;
     private final CreateTemplate<User> createTemplate;
 
-    public UserCreateWithImageService(ImageUploadService imageUploadService, CreateTemplate<User> createTemplate) {
-        this.imageUploadService = imageUploadService;
+    public UserCreateService(ImageUploadService imageUploadService, CreateTemplate<User> createTemplate) {
+        super(imageUploadService);
         this.createTemplate = createTemplate;
-    }
-
-    @Override
-    public DataTransferObject create(DataTransferObject dto, MultipartFile image) {
-        return create(imageUploadService.upload(dto, image));
     }
 
     @Override
