@@ -15,7 +15,6 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Fetch;
 import javax.persistence.criteria.Root;
-import java.util.List;
 
 @Repository
 public class BlogInvitationKeyDao {
@@ -24,9 +23,9 @@ public class BlogInvitationKeyDao {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public void save(List<BlogInvitationKey> blogInvitationKeys) {
+    public void save(BlogInvitationKey blogInvitationKey) {
         logger.info("-----Saving blog invitation key start-----");
-        blogInvitationKeys.forEach(blogInvitationKey -> entityManager.persist(blogInvitationKey));
+        entityManager.persist(blogInvitationKey);
         logger.info("-----Saving blog invitation key is ended-----");
     }
 

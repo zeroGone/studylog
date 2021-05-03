@@ -17,8 +17,6 @@ import org.springframework.web.context.WebApplicationContext;
 
 import javax.persistence.PersistenceException;
 import javax.transaction.Transactional;
-import java.util.Arrays;
-import java.util.Collections;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {WebConfiguration.class, DatabaseConfiguration.class}, loader = AnnotationConfigWebContextLoader.class)
@@ -47,7 +45,7 @@ public class BlogInvitationKeyDaoTest {
         blogMemberDao.save(blogMember);
 
         BlogInvitationKey blogInvitationKey = new BlogInvitationKey(invitationKeyGenerator.generateKey(), blogMember);
-        blogInvitationKeyDao.save(Collections.singletonList(blogInvitationKey));
+        blogInvitationKeyDao.save(blogInvitationKey);
 
         Assert.assertNotEquals(0, blogInvitationKey.getId());
     }
@@ -57,7 +55,7 @@ public class BlogInvitationKeyDaoTest {
     public void save_OwnerIsNull_ThrowPersistenceException() {
         BlogInvitationKey blogInvitationKey = new BlogInvitationKey(invitationKeyGenerator.generateKey(), null);
         try {
-            blogInvitationKeyDao.save(Collections.singletonList(blogInvitationKey));
+            blogInvitationKeyDao.save(blogInvitationKey);
             assert false;
         } catch (Exception exception) {
             Assert.assertEquals(PersistenceException.class, exception.getClass());
@@ -74,7 +72,7 @@ public class BlogInvitationKeyDaoTest {
 
         BlogInvitationKey blogInvitationKey = new BlogInvitationKey(invitationKeyGenerator.generateKey(), blogMember);
         try {
-            blogInvitationKeyDao.save(Collections.singletonList(blogInvitationKey));
+            blogInvitationKeyDao.save(blogInvitationKey);
             assert false;
         } catch (Exception exception) {
             Assert.assertEquals(IllegalStateException.class, exception.getClass());
@@ -92,7 +90,7 @@ public class BlogInvitationKeyDaoTest {
 
         BlogInvitationKey blogInvitationKey = new BlogInvitationKey(null, blogMember);
         try {
-            blogInvitationKeyDao.save(Collections.singletonList(blogInvitationKey));
+            blogInvitationKeyDao.save(blogInvitationKey);
             assert false;
         } catch (Exception exception) {
             Assert.assertEquals(PersistenceException.class, exception.getClass());

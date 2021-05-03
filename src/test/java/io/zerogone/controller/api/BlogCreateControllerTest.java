@@ -1,7 +1,8 @@
 package io.zerogone.controller.api;
 
 import io.zerogone.config.WebConfiguration;
-import io.zerogone.model.vo.UserVo;
+import io.zerogone.model.dto.UserWithBlogsDto;
+import io.zerogone.service.search.UserWithBlogListSearchService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,19 +28,19 @@ public class BlogCreateControllerTest {
 
     private MockMvc mockMvc;
 
-    private UserVo userInfo;
+    private UserWithBlogsDto userInfo;
 
     @Before
     public void setUp() {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-        userInfo = new UserVo(4, "dudrhs571@naver.com", "김영곤", "zeroGone7247", null);
+        userInfo = webApplicationContext.getBean(UserWithBlogListSearchService.class).search("dudrhs571@naver.com");
     }
 
     @Test
     public void handleBlogCreateApi() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
                 .post("/api/blog").sessionAttr("userInfo", userInfo)
-                .param("name", "4월 13일 테스트")
+                .param("name", "5월 3일 테스트 10:41")
                 .param("members[0].id", "1")
                 .param("members[0].name", "김영곤")
                 .param("members[0].email", "dudrhs571@gmail.com")

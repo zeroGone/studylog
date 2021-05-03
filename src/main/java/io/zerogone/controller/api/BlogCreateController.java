@@ -1,10 +1,10 @@
 package io.zerogone.controller.api;
 
-import io.zerogone.model.BlogDto;
-import io.zerogone.model.vo.BlogVo;
-import io.zerogone.model.vo.UserVo;
-import io.zerogone.service.BlogCreateService;
-import io.zerogone.service.FileUploadService;
+import io.zerogone.model.dto.BlogCreateDto;
+import io.zerogone.model.dto.BlogDto;
+import io.zerogone.model.dto.UserWithBlogsDto;
+import io.zerogone.service.create.CreateWithImageService;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,19 +12,24 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 public class BlogCreateController {
-    private final BlogCreateService blogCreateService;
-    private final FileUploadService fileUploadService;
+    private final CreateWithImageService createWithImageService;
 
-    public BlogCreateController(BlogCreateService blogCreateService, FileUploadService fileUploadService) {
-        this.blogCreateService = blogCreateService;
-        this.fileUploadService = fileUploadService;
+    public BlogCreateController(@Qualifier("blogCreateService") CreateWithImageService createWithImageService) {
+        this.createWithImageService = createWithImageService;
     }
 
     @PostMapping("api/blog")
-    public ResponseEntity<BlogVo> handleBlogCreateApi(@SessionAttribute UserVo userInfo,
-                                                      @ModelAttribute BlogDto blogDto,
-                                                      @RequestPart(required = false) MultipartFile image) {
+    public ResponseEntity<BlogDto> handleBlogCreateApi(@SessionAttribute UserWithBlogsDto userInfo,
+                                                       @ModelAttribute BlogCreateDto blogDto,
+                                                       @RequestPart(required = false) MultipartFile image) {
+        blogDto.setAdmin(userInfo);
 
-        return new ResponseEntity<>(blogCreateService.createBlog(userInfo, blogDto, image), HttpStatus.CREATED);
+        BlogDto responseDto;
+        if (image == null) {
+            responseDto = (BlogDto) createWithImageService.create(blogDto);
+        } else {
+            responseDto = (BlogDto) createWithImageService.create(blogDto, image);
+        }
+        return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }
 }
