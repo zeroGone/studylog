@@ -18,6 +18,5 @@ public abstract class CreateWithImageService {
         return create(imageUploadService.upload(dto, image));
     }
 
-    @Transactional
     public abstract DataTransferObject create(DataTransferObject dto);
 }

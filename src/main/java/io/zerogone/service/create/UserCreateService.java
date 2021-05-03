@@ -6,17 +6,20 @@ import io.zerogone.model.entity.User;
 import io.zerogone.service.fileupload.ImageUploadService;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Service
-public class UserCreateWithImageService extends CreateWithImageService {
+public class UserCreateService extends CreateWithImageService {
     private static final String USER_DEFAULT_IMAGE_URL = "/img/user-default/";
     private static final String USER_DEFAULT_IMAGE_TYPE = ".png";
     private final CreateTemplate<User> createTemplate;
 
-    public UserCreateWithImageService(ImageUploadService imageUploadService, CreateTemplate<User> createTemplate) {
+    public UserCreateService(ImageUploadService imageUploadService, CreateTemplate<User> createTemplate) {
         super(imageUploadService);
         this.createTemplate = createTemplate;
     }
 
+    @Transactional
     @Override
     public DataTransferObject create(DataTransferObject dto) {
         UserDto userDto = (UserDto) dto;
