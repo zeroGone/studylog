@@ -10,16 +10,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class BlogNameSearchService implements SearchService<String, BlogDto> {
     private final BlogDao blogDao;
-    private final Converter<Blog> converter;
+    private final Converter<Blog, BlogDto> converter;
 
-    public BlogNameSearchService(BlogDao blogDao, Converter<Blog> converter) {
+    public BlogNameSearchService(BlogDao blogDao, Converter<Blog, BlogDto> converter) {
         this.blogDao = blogDao;
         this.converter = converter;
     }
 
     @Override
     public BlogDto search(String key) {
-        Blog entity = blogDao.findByName(key);
-        return (BlogDto) converter.convert(entity);
+        return converter.convert(blogDao.findByName(key));
     }
 }

@@ -9,16 +9,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserEmailSearchService implements SearchService<String, UserDto> {
     private final UserDao userDao;
-    private final Converter<User> converter;
+    private final Converter<User, UserDto> converter;
 
-    public UserEmailSearchService(UserDao userDao, Converter<User> converter) {
+    public UserEmailSearchService(UserDao userDao, Converter<User, UserDto> converter) {
         this.userDao = userDao;
         this.converter = converter;
     }
 
     @Override
     public UserDto search(String key) {
-        User entity = userDao.findByEmail(key);
-        return (UserDto) converter.convert(entity);
+        return converter.convert(userDao.findByEmail(key));
     }
 }
