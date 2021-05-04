@@ -5,7 +5,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class PostDto extends DataTransferObject {
+public class PostDto {
+    private int id;
     private String title;
     private String contents;
     private UserDto writer;
@@ -15,6 +16,14 @@ public class PostDto extends DataTransferObject {
     private LocalDateTime createDateTime;
     @JsonFormat(pattern = "yyyy-MM-dd kk:mm:ss")
     private LocalDateTime updateDateTime;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getTitle() {
         return title;
