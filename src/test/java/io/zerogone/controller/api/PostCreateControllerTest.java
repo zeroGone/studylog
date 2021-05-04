@@ -19,6 +19,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import javax.transaction.Transactional;
 import java.util.Arrays;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -42,6 +43,7 @@ public class PostCreateControllerTest {
     }
 
     @Test
+    @Transactional
     public void handlePostCreateApi() throws Exception {
         BlogDto blogDto = new BlogDto();
         blogDto.setName("studylog");

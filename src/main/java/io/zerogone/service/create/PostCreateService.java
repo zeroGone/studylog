@@ -34,6 +34,7 @@ public class PostCreateService implements CreateService<PostDto> {
         validate(dto);
         Post entity = convert(dto);
         postDao.save(entity);
+        dto.setId(entity.getId());
         return dto;
     }
 
