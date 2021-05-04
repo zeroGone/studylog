@@ -26,7 +26,7 @@ public class UserDao {
         logger.info("-----save user start-----");
         entityManager.persist(user);
         logger.debug("created user id : " + user.getId());
-        logger.info("-----save blog end-----");
+        logger.info("-----save user is end-----");
     }
 
     public void updateImageUrl(User user) {
