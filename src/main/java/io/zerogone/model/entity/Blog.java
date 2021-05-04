@@ -36,11 +36,15 @@ public class Blog {
 
     }
 
-    public Blog(int id, String name, String introduce, String imageUrl) {
-        this.id = id;
+    public Blog(String name, String introduce, String imageUrl) {
         this.name = name;
         this.introduce = introduce;
         this.imageUrl = imageUrl;
+    }
+
+    public Blog(int id, String name, String introduce, String imageUrl) {
+        this(name, introduce, imageUrl);
+        this.id = id;
     }
 
     public int getId() {
