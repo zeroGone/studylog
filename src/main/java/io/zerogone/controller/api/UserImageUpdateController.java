@@ -1,7 +1,7 @@
 package io.zerogone.controller.api;
 
 import io.zerogone.model.ErrorResponse;
-import io.zerogone.model.vo.UserVo;
+import io.zerogone.model.dto.UserDto;
 import io.zerogone.service.UserImageUpdateService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +19,7 @@ public class UserImageUpdateController {
     @PostMapping(value = "api/user/{id}")
     public ResponseEntity<Object> handleUpdatingUserImage(
             @PathVariable int id,
-            @SessionAttribute UserVo userInfo,
+            @SessionAttribute UserDto userInfo,
             @RequestPart MultipartFile image) {
 
         if (id != userInfo.getId()) {

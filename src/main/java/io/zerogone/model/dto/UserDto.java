@@ -1,4 +1,6 @@
-package io.zerogone.model;
+package io.zerogone.model.dto;
+
+import java.util.List;
 
 public class UserDto {
     private int id;
@@ -6,6 +8,7 @@ public class UserDto {
     private String nickName;
     private String email;
     private String imageUrl;
+    private List<BlogDto> blogs;
 
     public int getId() {
         return id;
@@ -45,5 +48,13 @@ public class UserDto {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public List<BlogDto> getBlogs() {
+        return blogs;
+    }
+
+    public void setBlogs(List<BlogDto> blogs) {
+        this.blogs = blogs;
     }
 }

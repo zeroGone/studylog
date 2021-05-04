@@ -2,10 +2,10 @@ package io.zerogone.controller.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.zerogone.config.WebConfiguration;
-import io.zerogone.model.BlogDto;
-import io.zerogone.model.dto.PostCreateDto;
-import io.zerogone.model.vo.UserVo;
-import io.zerogone.repository.UserDao;
+import io.zerogone.model.dto.BlogDto;
+import io.zerogone.model.dto.PostDto;
+import io.zerogone.model.dto.UserDto;
+import io.zerogone.service.search.UserWithBlogsSearchService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,7 +19,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.util.Collections;
+import javax.transaction.Transactional;
+import java.util.Arrays;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -33,31 +34,32 @@ public class PostCreateControllerTest {
 
     private MockMvc mockMvc;
 
-    private UserVo userInfo;
+    private UserDto userInfo;
 
     @Before
     public void setUp() {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-        userInfo = new UserVo(webApplicationContext.getBean(UserDao.class).findByEmail("dudrhs571@gmail.com"));
+        userInfo = webApplicationContext.getBean(UserWithBlogsSearchService.class).search("dudrhs571@gmail.com");
     }
 
     @Test
+    @Transactional
     public void handlePostCreateApi() throws Exception {
         BlogDto blogDto = new BlogDto();
         blogDto.setName("studylog");
 
-        PostCreateDto postCreateDto = new PostCreateDto();
-        postCreateDto.setTitle("test0429");
-        postCreateDto.setContents("4월 29일 테스트");
-        postCreateDto.setBlog(blogDto);
-        postCreateDto.setCategories(Collections.singletonList("study"));
+        PostDto postDto = new PostDto();
+        postDto.setTitle("test0429");
+        postDto.setContents("5월 2일 테스트");
+        postDto.setBlog(blogDto);
+        postDto.setCategories(Arrays.asList("study", "project"));
 
         mockMvc.perform(MockMvcRequestBuilders
                 .post("/api/post")
                 .sessionAttr("userInfo", userInfo)
                 .contentType("application/json")
                 .characterEncoding("utf-8")
-                .content(new ObjectMapper().writeValueAsString(postCreateDto)))
+                .content(new ObjectMapper().writeValueAsString(postDto)))
                 .andDo(print())
                 .andExpect(status().isCreated());
     }

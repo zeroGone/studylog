@@ -1,8 +1,8 @@
 package io.zerogone.controller.api;
 
-import io.zerogone.model.UserDto;
-import io.zerogone.model.vo.UserVo;
-import io.zerogone.service.UserCreateService;
+import io.zerogone.model.dto.UserDto;
+import io.zerogone.service.create.CreateService;
+import io.zerogone.service.fileupload.ImageUploadService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -15,19 +15,24 @@ import javax.servlet.http.HttpSession;
 
 @RestController
 public class UserCreateController {
-    private final UserCreateService userCreateService;
+    private final CreateService<UserDto> createService;
+    private final ImageUploadService<UserDto> imageUploadService;
 
-    public UserCreateController(UserCreateService userCreateService) {
-        this.userCreateService = userCreateService;
+    public UserCreateController(CreateService<UserDto> createService, ImageUploadService<UserDto> imageUploadService) {
+        this.createService = createService;
+        this.imageUploadService = imageUploadService;
     }
 
     @PostMapping("api/user")
-    public ResponseEntity<UserVo> handleCreateUserApi(@ModelAttribute UserDto userDto,
-                                                      @RequestPart(required = false) MultipartFile image,
-                                                      HttpSession httpSession) {
-        UserVo userVo = userCreateService.createUser(userDto, image);
-        httpSession.setAttribute("userInfo", userVo);
+    public ResponseEntity<UserDto> handleCreateUserApi(@ModelAttribute UserDto userDto,
+                                                       @RequestPart(required = false) MultipartFile image,
+                                                       HttpSession httpSession) {
+        if (image != null) {
+            userDto = imageUploadService.upload(userDto, image);
+        }
+        UserDto userInfo = createService.create(userDto);
+        httpSession.setAttribute("userInfo", userInfo);
         httpSession.removeAttribute("visitor");
-        return new ResponseEntity<>(userVo, HttpStatus.CREATED);
+        return new ResponseEntity<>(userInfo, HttpStatus.CREATED);
     }
 }

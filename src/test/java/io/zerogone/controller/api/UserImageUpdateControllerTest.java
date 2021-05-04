@@ -2,7 +2,8 @@ package io.zerogone.controller.api;
 
 import io.zerogone.config.DatabaseConfiguration;
 import io.zerogone.config.WebConfiguration;
-import io.zerogone.model.vo.UserVo;
+import io.zerogone.model.dto.UserDto;
+import io.zerogone.service.search.UserWithBlogsSearchService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,9 +32,12 @@ public class UserImageUpdateControllerTest {
 
     private MockMvc mockMvc;
 
+    private UserDto userInfo;
+
     @Before
     public void setUp() throws Exception {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+        userInfo = webApplicationContext.getBean(UserWithBlogsSearchService.class).search("dudrhs571@gmail.com");
     }
 
     @Test
@@ -44,7 +48,7 @@ public class UserImageUpdateControllerTest {
         mockMvc.perform(MockMvcRequestBuilders
                 .fileUpload("/api/user/1")
                 .file("image", image.getBytes())
-                .sessionAttr("userInfo", new UserVo(1, null, null, null, null)))
+                .sessionAttr("userInfo", userInfo))
                 .andDo(print())
                 .andExpect(status().isOk());
     }

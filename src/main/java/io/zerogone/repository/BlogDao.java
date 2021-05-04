@@ -3,9 +3,6 @@ package io.zerogone.repository;
 import ch.qos.logback.classic.Logger;
 import io.zerogone.exception.NotExistedDataException;
 import io.zerogone.model.entity.Blog;
-import io.zerogone.model.entity.BlogMember;
-import io.zerogone.model.entity.MemberRole;
-import io.zerogone.model.entity.User;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
@@ -15,9 +12,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Root;
-import java.util.List;
 
 @Repository
 public class BlogDao {
@@ -49,20 +44,21 @@ public class BlogDao {
         }
     }
 
-    public List<Blog> findAllByUserAndBlogMemberRoleIsAdminOrMember(User user) {
+    public Blog findWithBlogMembersByName(String name) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Blog> criteriaQuery = criteriaBuilder.createQuery(Blog.class);
 
         Root<Blog> root = criteriaQuery.from(Blog.class);
-        Join<Blog, BlogMember> join = root.join("members");
+        root.fetch("members");
 
         criteriaQuery.select(root);
-        criteriaQuery.where(criteriaBuilder.and(
-                criteriaBuilder.equal(join.get("user"), user),
-                criteriaBuilder.or(
-                        criteriaBuilder.equal(join.get("role"), MemberRole.ADMIN),
-                        criteriaBuilder.equal(join.get("role"), MemberRole.MEMBER))));
+        criteriaQuery.where(criteriaBuilder.equal(root.get("name"), name));
 
-        return entityManager.createQuery(criteriaQuery).getResultList();
+        TypedQuery<Blog> blogTypedQuery = entityManager.createQuery(criteriaQuery);
+        try {
+            return blogTypedQuery.getSingleResult();
+        } catch (NoResultException noResultException) {
+            throw new NotExistedDataException(Blog.class, "블로그 이름으로 블로그 검색", name);
+        }
     }
 }

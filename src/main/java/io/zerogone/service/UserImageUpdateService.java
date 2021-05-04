@@ -1,8 +1,9 @@
 package io.zerogone.service;
 
-import io.zerogone.model.vo.UserVo;
+import io.zerogone.model.dto.UserDto;
 import io.zerogone.model.entity.User;
 import io.zerogone.repository.UserDao;
+import io.zerogone.service.fileupload.ImageUploadService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -10,32 +11,19 @@ import javax.transaction.Transactional;
 
 @Service
 public class UserImageUpdateService {
-    private static final String USER_IMAGE_FILE_PATH = "img/user";
-
+    private final ImageUploadService<UserDto> imageUploadService;
     private final UserDao userDao;
-    private final FileUploadService fileUploadService;
 
-    public UserImageUpdateService(UserDao userDao, FileUploadService fileUploadService) {
+    public UserImageUpdateService(ImageUploadService<UserDto> imageUploadService, UserDao userDao) {
+        this.imageUploadService = imageUploadService;
         this.userDao = userDao;
-        this.fileUploadService = fileUploadService;
     }
 
     @Transactional
-    public UserVo updateUserImage(UserVo user, MultipartFile imageFile) {
-        String savedImgUrl = fileUploadService.uploadFile(USER_IMAGE_FILE_PATH, imageFile);
-
-        User entity = new User(user.getId(),
-                user.getName(),
-                user.getEmail(),
-                user.getNickName(),
-                savedImgUrl);
-
+    public UserDto updateUserImage(UserDto user, MultipartFile imageFile) {
+        user = imageUploadService.upload(user, imageFile);
+        User entity = new User(user.getId(), user.getName(), user.getEmail(), user.getNickName(), user.getImageUrl());
         userDao.updateImageUrl(entity);
-
-        return new UserVo(entity.getId(),
-                entity.getName(),
-                entity.getEmail(),
-                entity.getNickName(),
-                entity.getImageUrl());
+        return user;
     }
 }

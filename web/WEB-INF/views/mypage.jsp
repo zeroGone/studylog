@@ -48,7 +48,7 @@
                     <div class="profile-text">
                         <div>
                             <i class="far fa-user"></i>
-                            <span class="profile-content">${userInfo.name}</span>
+                            <span class="profile-content">${user.name}</span>
                         </div>
                     </div>
                 </article>
@@ -57,7 +57,7 @@
                     <div class="profile-text">
                         <div>
                             <i class="fab fa-google"></i>
-                            <span class="profile-content">${userInfo.email}</span>
+                            <span class="profile-content">${user.email}</span>
                         </div>
                     </div>
                 </article>
@@ -66,14 +66,14 @@
                     <div class="profile-text">
                         <div>
                             <i class="fas fa-user-secret"></i>
-                            <span class="profile-content">${userInfo.nickName}</span>
+                            <span class="profile-content">${user.nickName}</span>
                         </div>
                     </div>
                 </article>
             </div>
         </section>
         <section class="blog">
-            <c:forEach items="${blogs}" var="blog">
+            <c:forEach items="${user.blogs}" var="blog">
                 <article class="blog-item">
                     <c:choose>
                         <c:when test="${blog.imageUrl ne null}">

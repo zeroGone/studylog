@@ -1,30 +1,63 @@
 package io.zerogone.controller.api;
 
-import io.zerogone.model.BlogDto;
-import io.zerogone.model.vo.BlogVo;
-import io.zerogone.model.vo.UserVo;
-import io.zerogone.service.BlogCreateService;
-import io.zerogone.service.FileUploadService;
+import io.zerogone.model.dto.BlogDto;
+import io.zerogone.model.dto.BlogMemberDto;
+import io.zerogone.model.dto.UserDto;
+import io.zerogone.model.entity.MemberRole;
+import io.zerogone.service.create.CreateService;
+import io.zerogone.service.fileupload.ImageUploadService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 public class BlogCreateController {
-    private final BlogCreateService blogCreateService;
-    private final FileUploadService fileUploadService;
+    private final ImageUploadService<BlogDto> imageUploadService;
+    private final CreateService<BlogDto> createService;
 
-    public BlogCreateController(BlogCreateService blogCreateService, FileUploadService fileUploadService) {
-        this.blogCreateService = blogCreateService;
-        this.fileUploadService = fileUploadService;
+    public BlogCreateController(ImageUploadService<BlogDto> imageUploadService, CreateService<BlogDto> createService) {
+        this.imageUploadService = imageUploadService;
+        this.createService = createService;
     }
 
     @PostMapping("api/blog")
-    public ResponseEntity<BlogVo> handleBlogCreateApi(@SessionAttribute UserVo userInfo,
-                                                      @ModelAttribute BlogDto blogDto,
-                                                      @RequestPart(required = false) MultipartFile image) {
+    public ResponseEntity<BlogDto> handleBlogCreateApi(@SessionAttribute UserDto userInfo,
+                                                       @ModelAttribute BlogDto blogDto,
+                                                       @RequestPart(required = false) MultipartFile image) {
+        if (image != null) {
+            blogDto = imageUploadService.upload(blogDto, image);
+        }
+        blogDto.setMembers(getMembersWithAdmin(blogDto, userInfo));
+        return new ResponseEntity<>(createService.create(blogDto), HttpStatus.CREATED);
+    }
 
-        return new ResponseEntity<>(blogCreateService.createBlog(userInfo, blogDto, image), HttpStatus.CREATED);
+    private List<BlogMemberDto> getMembersWithAdmin(BlogDto dto, UserDto admin) {
+        List<BlogMemberDto> members = getMembersWithRole(dto);
+        members.add(getAdminMember(admin));
+        return members;
+    }
+
+    private List<BlogMemberDto> getMembersWithRole(BlogDto dto) {
+        if (dto.getMembers() != null) {
+            dto.getMembers().forEach(member -> member.setRole(MemberRole.INVITING));
+            return dto.getMembers();
+        } else {
+            return new ArrayList<>();
+        }
+    }
+
+    private BlogMemberDto getAdminMember(UserDto admin) {
+        BlogMemberDto adminDto = new BlogMemberDto();
+        adminDto.setId(admin.getId());
+        adminDto.setImageUrl(admin.getImageUrl());
+        adminDto.setEmail(admin.getEmail());
+        adminDto.setName(admin.getName());
+        adminDto.setNickName(admin.getNickName());
+        adminDto.setRole(MemberRole.ADMIN);
+        return adminDto;
     }
 }
