@@ -4,7 +4,7 @@ import io.zerogone.config.DatabaseConfiguration;
 import io.zerogone.config.WebConfiguration;
 import io.zerogone.exception.BlogMembersStateException;
 import io.zerogone.model.UserDto;
-import io.zerogone.model.UserVo;
+import io.zerogone.model.vo.UserVo;
 import io.zerogone.model.entity.Blog;
 import org.junit.Assert;
 import org.junit.Before;
@@ -37,7 +37,7 @@ public class BlogMemberCreateServiceTest {
     @Before
     public void setUp() {
         blogMemberCreateService = webApplicationContext.getBean(BlogMemberCreateService.class);
-        currentUserInfo = new UserVo(1, null, null, null, null, null, null);
+        currentUserInfo = new UserVo(1, null, null, null, null);
     }
 
     @Test

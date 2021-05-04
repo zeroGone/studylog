@@ -4,8 +4,8 @@ import ch.qos.logback.classic.Logger;
 import io.zerogone.exception.NotNullPropertyException;
 import io.zerogone.exception.UniquePropertyException;
 import io.zerogone.model.BlogDto;
-import io.zerogone.model.BlogVo;
-import io.zerogone.model.UserVo;
+import io.zerogone.model.vo.BlogVo;
+import io.zerogone.model.vo.UserVo;
 import io.zerogone.model.entity.Blog;
 import io.zerogone.repository.BlogDao;
 import org.slf4j.LoggerFactory;
@@ -37,11 +37,11 @@ public class BlogCreateService {
 
         String blogImageUrl = uploadBlogImage(imageFile);
         logger.debug("blog's image url : " + blogImageUrl);
-        
+
         Blog blog = createBlog(blogDto, blogImageUrl);
 
         blogMemberCreateService.createBlogMembers(blog, creator, blogDto.getMembers());
-        return new BlogVo(blog.getId(), blog.getName(), blog.getIntroduce(), blog.getImageUrl(), blog.getCreateDateTime(), blog.getUpdateDateTime());
+        return new BlogVo(blog.getId(), blog.getName(), blog.getIntroduce(), blog.getImageUrl());
     }
 
     private void validate(BlogDto blogCreateDto) {

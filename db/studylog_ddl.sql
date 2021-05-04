@@ -66,6 +66,50 @@ CREATE TABLE `studylog`.`blog_invitation_key` (
         ON DELETE CASCADE
 );
 
+DROP TABLE IF EXISTS `studylog`.`post`;
+
+CREATE TABLE IF NOT EXISTS `studylog`.`post` (
+  `id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  `title` VARCHAR(255) NOT NULL,
+  `contents` MEDIUMTEXT NOT NULL,
+  `reviewing` TINYINT NOT NULL DEFAULT TRUE,
+  `blog_id` INT UNSIGNED NOT NULL,
+  `user_id` INT UNSIGNED NOT NULL,
+  `create_date_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_date_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT `fk_post_blog`
+    FOREIGN KEY (`blog_id`)
+    REFERENCES `studylog`.`blog` (`id`),
+  CONSTRAINT `fk_post_user`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `studylog`.`user` (`id`)
+);
+
+DROP TABLE IF EXISTS `studylog`.`category` ;
+
+CREATE TABLE IF NOT EXISTS `studylog`.`category` (
+  `id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  `name` VARCHAR(100) NOT NULL UNIQUE,
+  `create_date_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+DROP TABLE IF EXISTS `studylog`.`post_has_category` ;
+
+CREATE TABLE IF NOT EXISTS `studylog`.`post_has_category` (
+  `post_id` INT UNSIGNED NOT NULL,
+  `category_id` INT UNSIGNED NOT NULL,
+  `create_date_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`post_id`, `category_id`),
+  CONSTRAINT `fk_post_has_category_post1`
+    FOREIGN KEY (`post_id`)
+    REFERENCES `studylog`.`post` (`id`),
+  CONSTRAINT `fk_post_has_category_category1`
+    FOREIGN KEY (`category_id`)
+    REFERENCES `studylog`.`category` (`id`)
+);
+
+----------------------------------------
+
 DROP TABLE IF EXISTS `studylog`.`issue_category` ;
 
 CREATE TABLE `studylog`.`issue_category` (

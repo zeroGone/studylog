@@ -1,7 +1,7 @@
 package io.zerogone.controller.api;
 
 import io.zerogone.config.WebConfiguration;
-import io.zerogone.model.UserVo;
+import io.zerogone.model.vo.UserVo;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,7 +32,7 @@ public class BlogCreateControllerTest {
     @Before
     public void setUp() {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-        userInfo = new UserVo(4, "dudrhs571@naver.com", "김영곤", "zeroGone7247", null, null, null);
+        userInfo = new UserVo(4, "dudrhs571@naver.com", "김영곤", "zeroGone7247", null);
     }
 
     @Test

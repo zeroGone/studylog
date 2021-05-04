@@ -1,6 +1,6 @@
 package io.zerogone.controller;
 
-import io.zerogone.model.UserVo;
+import io.zerogone.model.vo.UserVo;
 import io.zerogone.service.BlogSearchService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

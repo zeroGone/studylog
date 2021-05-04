@@ -1,7 +1,7 @@
 package io.zerogone.service;
 
 import ch.qos.logback.classic.Logger;
-import io.zerogone.model.entity.BlogMember;
+import io.zerogone.model.entity.BlogInvitationKey;
 import org.slf4j.LoggerFactory;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -22,24 +22,20 @@ public class EmailService {
         this.javaMailSender = javaMailSender;
     }
 
-    public void sendInvitationEmail(List<BlogMember> members) throws MessagingException {
-        for (BlogMember member : members) {
-            logger.info("-----Send blog invitation email to [" + member.getEmail() + "] -----");
+    public void sendInvitationEmail(List<BlogInvitationKey> blogInvitationKeys) throws MessagingException {
+        for (BlogInvitationKey key : blogInvitationKeys) {
+            logger.info("-----Send blog invitation email to [" + key.getOwnerEmail() + "] -----");
             MimeMessage message = javaMailSender.createMimeMessage();
             MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, MESSAGE_ENCODING);
 
-            messageHelper.setTo(member.getEmail());
-            message.setSubject("[StudyLog] " + member.getBlogName() + " 의 멤버로 초대합니다!");
-            messageHelper.setText(getInvitationContent(member.getBlogName(), member.getBlogInvitationKey()), true);
+            messageHelper.setTo(key.getOwnerEmail());
+            message.setSubject("[StudyLog] " + key.getBlogName() + " 의 멤버로 초대합니다!");
+            messageHelper.setText("<h1> " + key.getBlogName() + " 의 일원으로 초대합니다!</h1>" +
+                    "<div> 아래 링크를 클릭하시면 " +
+                    key.getBlogName() + " 의 확정 멤버가 됩니다~! </div>" +
+                    "<div> 열심히 활동 해주세요 ! </div>" +
+                    "<a href='http://localhost:8080/blog/accept?key=" + key.getValue() + "'> 초대 수락하기 </a>", true);
             javaMailSender.send(message);
         }
-    }
-
-    private String getInvitationContent(String blogName, String key) {
-        return "<h1> " + blogName + " 의 일원으로 초대합니다!</h1>" +
-                "<div> 아래 링크를 클릭하시면 " +
-                blogName + " 의 확정 멤버가 됩니다~! </div>" +
-                "<div> 열심히 활동 해주세요 ! </div>" +
-                "<a href='http://localhost:8080/blog/accept?key=" + key + "'> 초대 수락하기 </a>";
     }
 }

@@ -2,7 +2,7 @@ package io.zerogone.controller.api;
 
 import io.zerogone.exception.NotExistedDataException;
 import io.zerogone.model.UserDto;
-import io.zerogone.model.UserVo;
+import io.zerogone.model.vo.UserVo;
 import io.zerogone.service.UserSearchService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,7 +19,7 @@ public class LoginController {
         this.userSearchService = userSearchService;
     }
 
-    @PostMapping("login")
+    @PostMapping("api/login")
     public ResponseEntity<UserVo> doLogin(@RequestBody UserDto userDto, HttpSession httpSession) {
         try {
             UserVo userVo = userSearchService.getUserVoByEmail(userDto.getEmail());

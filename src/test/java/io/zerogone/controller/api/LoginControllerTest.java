@@ -40,7 +40,7 @@ public class LoginControllerTest {
         userDto.setEmail("dudrhs571@gmail.com");
 
         mockMvc.perform(MockMvcRequestBuilders
-                .post("/login")
+                .post("/api/login")
                 .contentType("application/json")
                 .characterEncoding("utf-8")
                 .content(new ObjectMapper().writeValueAsString(userDto)))

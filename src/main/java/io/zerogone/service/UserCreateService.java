@@ -4,7 +4,7 @@ import ch.qos.logback.classic.Logger;
 import io.zerogone.exception.NotNullPropertyException;
 import io.zerogone.exception.UniquePropertyException;
 import io.zerogone.model.UserDto;
-import io.zerogone.model.UserVo;
+import io.zerogone.model.vo.UserVo;
 import io.zerogone.model.entity.User;
 import io.zerogone.repository.UserDao;
 import org.slf4j.LoggerFactory;
@@ -52,9 +52,7 @@ public class UserCreateService {
                 user.getName(),
                 user.getEmail(),
                 user.getNickName(),
-                user.getImageUrl(),
-                user.getCreateDateTime(),
-                user.getUpdateDateTime());
+                user.getImageUrl());
     }
 
     private void validate(UserDto userDto) {

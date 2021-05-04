@@ -1,7 +1,7 @@
 package io.zerogone.filter;
 
 import io.zerogone.config.WebConfiguration;
-import io.zerogone.model.UserVo;
+import io.zerogone.model.vo.UserVo;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,7 +31,7 @@ public class LoginCheckFilterTest {
 
     @Before
     public void setUp() {
-        userInfo = new UserVo(1, null, null, null, null, null, null);
+        userInfo = new UserVo(1, null, null, null, null);
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).addFilter(new LoginCheckFilter()).build();
     }
 

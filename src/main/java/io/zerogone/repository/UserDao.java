@@ -44,11 +44,13 @@ public class UserDao {
     }
 
     public User findByEmail(String email) {
-        logger.info("-----find user by email : " + email + "-----");
+        logger.info("-----Find user with user's blogs by email : " + email + " -----");
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
 
         Root<User> root = criteriaQuery.from(User.class);
+        root.fetch("blogs");
+
         criteriaQuery.select(root);
         criteriaQuery.where(criteriaBuilder.equal(root.get("email"), email));
 

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import javax.mail.MessagingException;
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class BlogInvitationService {
@@ -28,22 +29,15 @@ public class BlogInvitationService {
 
     @Transactional
     public void inviteBlogMembers(List<BlogMember> blogMembers) {
-        createBlogInvitationKeys(blogMembers);
-        sendBlogInvitations(blogMembers);
-    }
+        List<BlogInvitationKey> blogInvitationKeys = blogMembers
+                .stream()
+                .map(blogMember -> new BlogInvitationKey(invitationKeyGenerator.generateKey(), blogMember))
+                .collect(Collectors.toList());
 
-    private void createBlogInvitationKeys(List<BlogMember> blogMembers) {
-        blogMembers.forEach(blogMember -> {
-            BlogInvitationKey blogInvitationKey =
-                    new BlogInvitationKey(invitationKeyGenerator.generateKey(), blogMember);
-            blogInvitationKeyDao.save(blogInvitationKey);
-            blogMember.setBlogInvitationKey(blogInvitationKey);
-        });
-    }
+        blogInvitationKeyDao.save(blogInvitationKeys);
 
-    private void sendBlogInvitations(List<BlogMember> members) {
         try {
-            emailService.sendInvitationEmail(members);
+            emailService.sendInvitationEmail(blogInvitationKeys);
         } catch (MessagingException messagingException) {
             logger.error("이메일 전송에 실패하였습니다. 원인 : " + messagingException.getMessage());
             throw new BlogMembersStateException("초대 메일 전송에 실패하였습니다!");

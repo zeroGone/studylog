@@ -1,7 +1,7 @@
 package io.zerogone.controller.api;
 
 import io.zerogone.model.UserDto;
-import io.zerogone.model.UserVo;
+import io.zerogone.model.vo.UserVo;
 import io.zerogone.service.UserCreateService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

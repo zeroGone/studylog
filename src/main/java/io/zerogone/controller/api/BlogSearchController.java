@@ -1,6 +1,6 @@
 package io.zerogone.controller.api;
 
-import io.zerogone.model.BlogVo;
+import io.zerogone.model.vo.BlogVo;
 import io.zerogone.service.BlogSearchService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

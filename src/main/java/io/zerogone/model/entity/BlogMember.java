@@ -4,7 +4,6 @@ import io.zerogone.service.MemberRoleConverter;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "blog_member")
@@ -26,15 +25,6 @@ public class BlogMember {
     @Convert(converter = MemberRoleConverter.class)
     private MemberRole role;
 
-    @OneToOne(mappedBy = "owner")
-    private BlogInvitationKey blogInvitationKey;
-
-    @Column(name = "create_date_time", insertable = false, updatable = false)
-    private LocalDateTime createDateTime;
-
-    @Column(name = "update_date_time", insertable = false, updatable = false)
-    private LocalDateTime updateDateTime;
-
     BlogMember() {
 
     }
@@ -43,6 +33,10 @@ public class BlogMember {
         this.user = user;
         this.blog = blog;
         this.role = role;
+    }
+
+    public BlogMember(User user, Blog blog) {
+        this(user, blog, MemberRole.INVITING);
     }
 
     public int getId() {
@@ -85,35 +79,11 @@ public class BlogMember {
         return blog.getImageUrl();
     }
 
-    public LocalDateTime getBlogCreateDateTime() {
-        return blog.getCreateDateTime();
-    }
-
-    public LocalDateTime getBlogUpdateDateTime() {
-        return blog.getUpdateDateTime();
-    }
-
     public MemberRole getRole() {
         return role;
     }
 
-    public String getBlogInvitationKey() {
-        return blogInvitationKey.getValue();
-    }
-
-    public void setBlogInvitationKey(BlogInvitationKey blogInvitationKey) {
-        this.blogInvitationKey = blogInvitationKey;
-    }
-
     public void acceptBlogInvitation() {
         role = MemberRole.MEMBER;
-    }
-
-    public LocalDateTime getCreateDateTime() {
-        return createDateTime;
-    }
-
-    public LocalDateTime getUpdateDateTime() {
-        return updateDateTime;
     }
 }

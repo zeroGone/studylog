@@ -1,6 +1,6 @@
 package io.zerogone.service;
 
-import io.zerogone.model.UserVo;
+import io.zerogone.model.vo.UserVo;
 import io.zerogone.model.entity.User;
 import io.zerogone.repository.UserDao;
 import org.springframework.stereotype.Service;
@@ -29,15 +29,13 @@ public class UserImageUpdateService {
                 user.getEmail(),
                 user.getNickName(),
                 savedImgUrl);
-        
+
         userDao.updateImageUrl(entity);
 
         return new UserVo(entity.getId(),
                 entity.getName(),
                 entity.getEmail(),
                 entity.getNickName(),
-                entity.getImageUrl(),
-                entity.getCreateDateTime(),
-                entity.getUpdateDateTime());
+                entity.getImageUrl());
     }
 }

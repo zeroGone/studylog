@@ -1,7 +1,7 @@
 package io.zerogone.service;
 
-import io.zerogone.model.BlogVo;
-import io.zerogone.model.UserVo;
+import io.zerogone.model.vo.BlogVo;
+import io.zerogone.model.vo.UserVo;
 import io.zerogone.model.entity.Blog;
 import io.zerogone.model.entity.User;
 import io.zerogone.repository.BlogDao;
@@ -23,9 +23,7 @@ public class BlogSearchService {
         return new BlogVo(blog.getId(),
                 blog.getName(),
                 blog.getIntroduce(),
-                blog.getImageUrl(),
-                blog.getCreateDateTime(),
-                blog.getUpdateDateTime());
+                blog.getImageUrl());
     }
 
     public List<BlogVo> getBlogVosByUserVo(UserVo userVo) {
@@ -41,9 +39,7 @@ public class BlogSearchService {
                 blog.getId(),
                 blog.getName(),
                 blog.getIntroduce(),
-                blog.getImageUrl(),
-                blog.getCreateDateTime(),
-                blog.getUpdateDateTime()))
+                blog.getImageUrl()))
                 .collect(Collectors.toList());
     }
 }

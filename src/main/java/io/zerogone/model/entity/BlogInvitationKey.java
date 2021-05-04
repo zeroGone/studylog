@@ -18,9 +18,6 @@ public class BlogInvitationKey {
     @JoinColumn(name = "blog_member_id", referencedColumnName = "id", nullable = false, updatable = false)
     private BlogMember owner;
 
-    @Column(name = "create_date_time", insertable = false, updatable = false)
-    private LocalDateTime createDateTime;
-
     BlogInvitationKey() {
 
     }
@@ -38,8 +35,12 @@ public class BlogInvitationKey {
         return value;
     }
 
-    public LocalDateTime getCreateDateTime() {
-        return createDateTime;
+    public String getBlogName() {
+        return owner.getBlogName();
+    }
+
+    public String getOwnerEmail() {
+        return owner.getEmail();
     }
 
     public BlogMember getOwner() {

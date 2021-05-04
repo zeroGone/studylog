@@ -3,8 +3,8 @@ package io.zerogone.service;
 import io.zerogone.config.DatabaseConfiguration;
 import io.zerogone.config.WebConfiguration;
 import io.zerogone.exception.NotExistedDataException;
-import io.zerogone.model.BlogVo;
-import io.zerogone.model.UserVo;
+import io.zerogone.model.vo.BlogVo;
+import io.zerogone.model.vo.UserVo;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -52,7 +52,7 @@ public class BlogSearchServiceTest {
 
     @Test
     public void getBlogVosByUserVos() {
-        UserVo userVo = new UserVo(1, null, null, null, null, null, null);
+        UserVo userVo = new UserVo(1, null, null, null, null);
         List<BlogVo> blogVos = blogSearchService.getBlogVosByUserVo(userVo);
 
         Assert.assertNotNull(blogVos);
