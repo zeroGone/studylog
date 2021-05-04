@@ -1,7 +1,8 @@
 package io.zerogone.controller;
 
 import io.zerogone.config.WebConfiguration;
-import io.zerogone.model.dto.UserWithBlogsDto;
+import io.zerogone.model.dto.UserDto;
+import io.zerogone.service.search.UserWithBlogsSearchService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,18 +29,18 @@ public class MyPageControllerTest {
 
     private MockMvc mockMvc;
 
+    private UserDto userInfo;
+
     @Before
     public void setUp() {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+        userInfo = webApplicationContext.getBean(UserWithBlogsSearchService.class).search("dudrhs571@naver.com");
     }
 
     @Test
     public void getMypageViewNameWitBlogVos() throws Exception {
-        UserWithBlogsDto user = new UserWithBlogsDto();
-        user.setId(1);
-        user.setEmail("dudrhs571@gmail.com");
         mockMvc.perform(MockMvcRequestBuilders
-                .get("/mypage").sessionAttr("userInfo", user))
+                .get("/mypage").sessionAttr("userInfo", userInfo))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(view().name("mypage"));

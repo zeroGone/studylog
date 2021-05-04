@@ -1,8 +1,9 @@
 package io.zerogone.controller;
 
 import io.zerogone.exception.NotExistedDataException;
-import io.zerogone.model.dto.BlogWithMembersDto;
+import io.zerogone.model.dto.BlogDto;
 import io.zerogone.service.search.SearchService;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,9 +12,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class BlogController {
-    private final SearchService<String, BlogWithMembersDto> searchService;
+    private final SearchService<String, BlogDto> searchService;
 
-    public BlogController(SearchService<String, BlogWithMembersDto> searchService) {
+    public BlogController(@Qualifier("blogWithMembersSearchService") SearchService<String, BlogDto> searchService) {
         this.searchService = searchService;
     }
 

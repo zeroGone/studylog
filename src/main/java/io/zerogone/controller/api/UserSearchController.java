@@ -2,6 +2,7 @@ package io.zerogone.controller.api;
 
 import io.zerogone.model.dto.UserDto;
 import io.zerogone.service.search.SearchService;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserSearchController {
     private final SearchService<String, UserDto> searchService;
 
-    public UserSearchController(SearchService<String, UserDto> searchService) {
+    public UserSearchController(@Qualifier("userEmailSearchService") SearchService<String, UserDto> searchService) {
         this.searchService = searchService;
     }
 
