@@ -39,7 +39,6 @@ public class BlogCreateControllerTest {
     }
 
     @Test
-    @Transactional
     public void handleBlogCreateApi() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
                 .post("/api/blog").sessionAttr("userInfo", userInfo)

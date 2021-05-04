@@ -1,6 +1,6 @@
 package io.zerogone.service;
 
-import io.zerogone.model.vo.BlogVo;
+import io.zerogone.model.dto.BlogDto;
 import io.zerogone.model.entity.BlogInvitationKey;
 import io.zerogone.model.entity.BlogMember;
 import io.zerogone.repository.BlogInvitationKeyDao;
@@ -17,14 +17,16 @@ public class BlogInvitationAcceptenceService {
     }
 
     @Transactional
-    public BlogVo acceptBlogInvitation(String key) {
+    public BlogDto acceptBlogInvitation(String key) {
         BlogInvitationKey blogInvitationKey = blogInvitationKeyDao.findWithBlogMemberByValue(key);
         BlogMember blogMember = blogInvitationKey.getOwner();
         blogMember.acceptBlogInvitation();
 
-        return new BlogVo(blogMember.getBlogId(),
-                blogMember.getBlogName(),
-                blogMember.getBlogIntroduce(),
-                blogMember.getBlogImageUrl());
+        BlogDto blogDto = new BlogDto();
+        blogDto.setId(blogMember.getBlogId());
+        blogDto.setName(blogMember.getBlogName());
+        blogDto.setIntroduce(blogMember.getBlogIntroduce());
+        blogDto.setImageUrl(blogMember.getBlogImageUrl());
+        return blogDto;
     }
 }

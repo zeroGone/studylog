@@ -34,7 +34,7 @@ public class BlogInvitationAcceptenceControllerTest {
 
     @Test
     public void getBlogAcceptViewName() throws Exception {
-        mockMvc.perform(get("/blog/accept").param("key", "y/@P=_3to%er??2"))
+        mockMvc.perform(get("/blog/accept").param("key", "18LV5yvxjstix09"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("blog_accept"))
                 .andDo(print());
