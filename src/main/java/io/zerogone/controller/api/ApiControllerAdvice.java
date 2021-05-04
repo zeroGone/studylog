@@ -52,4 +52,16 @@ public class ApiControllerAdvice {
                 HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ErrorResponse> handleIllegalArgumentException(Exception exception) {
+        logger.debug("catch exception : " + exception.getMessage());
+        return new ResponseEntity<>(
+                new ErrorResponse.Builder()
+                        .exception(exception.getClass())
+                        .cause(exception.getMessage())
+                        .statusCode(HttpStatus.BAD_REQUEST)
+                        .detail(exception.getMessage())
+                        .build(),
+                HttpStatus.BAD_REQUEST);
+    }
 }

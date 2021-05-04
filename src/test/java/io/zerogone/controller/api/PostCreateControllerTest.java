@@ -4,8 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.zerogone.config.WebConfiguration;
 import io.zerogone.model.dto.BlogDto;
 import io.zerogone.model.dto.PostDto;
-import io.zerogone.model.dto.UserWithBlogsDto;
-import io.zerogone.service.search.UserWithBlogListSearchService;
+import io.zerogone.model.dto.UserDto;
+import io.zerogone.service.search.UserWithBlogsSearchService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,12 +33,12 @@ public class PostCreateControllerTest {
 
     private MockMvc mockMvc;
 
-    private UserWithBlogsDto userInfo;
+    private UserDto userInfo;
 
     @Before
     public void setUp() {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-        userInfo = webApplicationContext.getBean(UserWithBlogListSearchService.class).search("dudrhs571@gmail.com");
+        userInfo = webApplicationContext.getBean(UserWithBlogsSearchService.class).search("dudrhs571@gmail.com");
     }
 
     @Test

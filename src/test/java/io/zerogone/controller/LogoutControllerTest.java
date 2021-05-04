@@ -1,7 +1,8 @@
 package io.zerogone.controller;
 
 import io.zerogone.config.WebConfiguration;
-import io.zerogone.model.vo.UserVo;
+import io.zerogone.model.dto.UserDto;
+import io.zerogone.service.search.UserWithBlogsSearchService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,12 +28,12 @@ public class LogoutControllerTest {
 
     private MockMvc mockMvc;
 
-    private UserVo userInfo;
+    private UserDto userInfo;
 
     @Before
     public void setUp() {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-        userInfo = new UserVo(1, null, null, null, null);
+        userInfo = webApplicationContext.getBean(UserWithBlogsSearchService.class).search("dudrhs571@naver.com");
     }
 
     @Test

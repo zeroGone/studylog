@@ -1,7 +1,5 @@
 package io.zerogone.service.create;
 
-import io.zerogone.model.dto.DataTransferObject;
-
-public interface CreateService {
-    DataTransferObject create(DataTransferObject dto);
+public interface CreateService<T> {
+    T create(T dto);
 }

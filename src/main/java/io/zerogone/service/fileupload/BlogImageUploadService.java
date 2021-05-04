@@ -1,8 +1,10 @@
 package io.zerogone.service.fileupload;
 
 import io.zerogone.model.dto.BlogDto;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+@Service
 public class BlogImageUploadService implements ImageUploadService<BlogDto> {
     private static final String UPLOAD_PATH = "img/blog";
     private final AwsUploader awsUploader;

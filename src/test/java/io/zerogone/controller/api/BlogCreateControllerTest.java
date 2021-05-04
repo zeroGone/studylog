@@ -1,8 +1,8 @@
 package io.zerogone.controller.api;
 
 import io.zerogone.config.WebConfiguration;
-import io.zerogone.model.dto.UserWithBlogsDto;
-import io.zerogone.service.search.UserWithBlogListSearchService;
+import io.zerogone.model.dto.UserDto;
+import io.zerogone.service.search.UserWithBlogsSearchService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,6 +16,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import javax.transaction.Transactional;
+
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -28,19 +30,20 @@ public class BlogCreateControllerTest {
 
     private MockMvc mockMvc;
 
-    private UserWithBlogsDto userInfo;
+    private UserDto userInfo;
 
     @Before
     public void setUp() {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-        userInfo = webApplicationContext.getBean(UserWithBlogListSearchService.class).search("dudrhs571@naver.com");
+        userInfo = webApplicationContext.getBean(UserWithBlogsSearchService.class).search("dudrhs571@naver.com");
     }
 
     @Test
+    @Transactional
     public void handleBlogCreateApi() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
                 .post("/api/blog").sessionAttr("userInfo", userInfo)
-                .param("name", "5월 3일 테스트 10:41")
+                .param("name", "5월 4일 테스트")
                 .param("members[0].id", "1")
                 .param("members[0].name", "김영곤")
                 .param("members[0].email", "dudrhs571@gmail.com")
@@ -69,6 +72,7 @@ public class BlogCreateControllerTest {
     }
 
     @Test
+    @Transactional
     public void handleBlogCreateApi_BlogMemberIsNone_ReturnCreated() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
                 .post("/api/blog").sessionAttr("userInfo", userInfo)

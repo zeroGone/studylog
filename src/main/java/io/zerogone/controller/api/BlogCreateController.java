@@ -1,35 +1,63 @@
 package io.zerogone.controller.api;
 
-import io.zerogone.model.dto.BlogCreateDto;
 import io.zerogone.model.dto.BlogDto;
-import io.zerogone.model.dto.UserWithBlogsDto;
-import io.zerogone.service.create.CreateWithImageService;
-import org.springframework.beans.factory.annotation.Qualifier;
+import io.zerogone.model.dto.BlogMemberDto;
+import io.zerogone.model.dto.UserDto;
+import io.zerogone.model.entity.MemberRole;
+import io.zerogone.service.create.CreateService;
+import io.zerogone.service.fileupload.ImageUploadService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 public class BlogCreateController {
-    private final CreateWithImageService createWithImageService;
+    private final ImageUploadService<BlogDto> imageUploadService;
+    private final CreateService<BlogDto> createService;
 
-    public BlogCreateController(@Qualifier("blogCreateService") CreateWithImageService createWithImageService) {
-        this.createWithImageService = createWithImageService;
+    public BlogCreateController(ImageUploadService<BlogDto> imageUploadService, CreateService<BlogDto> createService) {
+        this.imageUploadService = imageUploadService;
+        this.createService = createService;
     }
 
     @PostMapping("api/blog")
-    public ResponseEntity<BlogDto> handleBlogCreateApi(@SessionAttribute UserWithBlogsDto userInfo,
-                                                       @ModelAttribute BlogCreateDto blogDto,
+    public ResponseEntity<BlogDto> handleBlogCreateApi(@SessionAttribute UserDto userInfo,
+                                                       @ModelAttribute BlogDto blogDto,
                                                        @RequestPart(required = false) MultipartFile image) {
-        blogDto.setAdmin(userInfo);
-
-        BlogDto responseDto;
-        if (image == null) {
-            responseDto = (BlogDto) createWithImageService.create(blogDto);
-        } else {
-            responseDto = (BlogDto) createWithImageService.create(blogDto, image);
+        if (image != null) {
+            blogDto = imageUploadService.upload(blogDto, image);
         }
-        return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
+        blogDto.setMembers(getMembersWithAdmin(blogDto, userInfo));
+        return new ResponseEntity<>(createService.create(blogDto), HttpStatus.CREATED);
+    }
+
+    private List<BlogMemberDto> getMembersWithAdmin(BlogDto dto, UserDto admin) {
+        List<BlogMemberDto> members = getMembersWithRole(dto);
+        members.add(getAdminMember(admin));
+        return members;
+    }
+
+    private List<BlogMemberDto> getMembersWithRole(BlogDto dto) {
+        if (dto.getMembers() != null) {
+            dto.getMembers().forEach(member -> member.setRole(MemberRole.INVITING));
+            return dto.getMembers();
+        } else {
+            return new ArrayList<>();
+        }
+    }
+
+    private BlogMemberDto getAdminMember(UserDto admin) {
+        BlogMemberDto adminDto = new BlogMemberDto();
+        adminDto.setId(admin.getId());
+        adminDto.setImageUrl(admin.getImageUrl());
+        adminDto.setEmail(admin.getEmail());
+        adminDto.setName(admin.getName());
+        adminDto.setNickName(admin.getNickName());
+        adminDto.setRole(MemberRole.ADMIN);
+        return adminDto;
     }
 }

@@ -1,89 +1,64 @@
 package io.zerogone.service.create;
 
 import ch.qos.logback.classic.Logger;
-import io.zerogone.exception.BlogMembersStateException;
-import io.zerogone.model.dto.*;
+import io.zerogone.converter.Converter;
+import io.zerogone.exception.NotNullPropertyException;
+import io.zerogone.exception.UniquePropertyException;
+import io.zerogone.model.dto.BlogDto;
+import io.zerogone.model.dto.BlogMemberDto;
 import io.zerogone.model.entity.Blog;
-import io.zerogone.model.entity.MemberRole;
-import io.zerogone.service.fileupload.ImageUploadService;
+import io.zerogone.repository.BlogDao;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.PersistenceException;
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Service
-public class BlogCreateService extends CreateWithImageService {
-    private final Logger logger = (Logger) LoggerFactory.getLogger(this.getClass());
-
+public class BlogCreateService implements CreateService<BlogDto> {
     private static final String BLOG_DEFAULT_IMAGE_URL = "/img/blog-default.png";
-    private final CreateTemplate<Blog> createTemplate;
-    private final CreateService createService;
 
-    public BlogCreateService(ImageUploadService imageUploadService,
-                             CreateTemplate<Blog> createTemplate,
-                             @Qualifier("blogMemberCreateService") CreateService createService) {
-        super(imageUploadService);
-        this.createTemplate = createTemplate;
-        this.createService = createService;
+    private final Logger logger = (Logger) LoggerFactory.getLogger(this.getClass());
+    private final BlogDao blogDao;
+    private final CreateService<List<BlogMemberDto>> membersCreateService;
+    private final Converter<Blog, BlogDto> entityConverter;
+
+    public BlogCreateService(BlogDao blogDao,
+                             CreateService<List<BlogMemberDto>> membersCreateService,
+                             Converter<Blog, BlogDto> entityConverter) {
+        this.blogDao = blogDao;
+        this.membersCreateService = membersCreateService;
+        this.entityConverter = entityConverter;
     }
 
     @Transactional
     @Override
-    public DataTransferObject create(DataTransferObject dto) {
-        BlogCreateDto blogDto = (BlogCreateDto) dto;
-
-        if (blogDto.getImageUrl() == null) {
-            blogDto.setImageUrl(BLOG_DEFAULT_IMAGE_URL);
+    public BlogDto create(BlogDto dto) {
+        if (dto.getName() == null) {
+            throw new NotNullPropertyException(Blog.class, "name");
+        }
+        if (dto.getImageUrl() == null) {
+            dto.setImageUrl(BLOG_DEFAULT_IMAGE_URL);
+        }
+        Blog entity = new Blog(dto.getName(), dto.getIntroduce(), dto.getImageUrl());
+        try {
+            blogDao.save(entity);
+        } catch (PersistenceException persistenceException) {
+            persistenceException.printStackTrace();
+            logger.error("Blog name is duplicated ! " + persistenceException.getMessage());
+            throw new UniquePropertyException("블로그 이름이 중복되었습니다");
         }
 
-        BlogDto createdBlogDto = (BlogDto) createTemplate.create(blogDto);
-        blogDto.setId(createdBlogDto.getId());
-        createBlogMembers(blogDto);
-        return createdBlogDto;
+        setMembersBlog(entity, dto.getMembers());
+        membersCreateService.create(dto.getMembers());
+        return entityConverter.convert(entity);
     }
 
-    private void createBlogMembers(BlogCreateDto blogDto) {
-        List<BlogMemberDto> members = new ArrayList<>();
-        members.add(createAdmin(blogDto, blogDto.getAdmin()));
-        members.addAll(createMembers(blogDto, blogDto.getMembers()));
-        validateMembers(members);
-        members.forEach(createService::create);
-    }
-
-    private BlogMemberDto createAdmin(BlogDto blogDto, UserDto userDto) {
-        BlogMemberDto blogMemberDto = new BlogMemberDto();
-        blogMemberDto.setBlog(blogDto);
-        blogMemberDto.setUser(userDto);
-        blogMemberDto.setRole(MemberRole.ADMIN);
-        return blogMemberDto;
-    }
-
-    private List<BlogMemberDto> createMembers(BlogDto blogDto, List<UserDto> users) {
-        List<BlogMemberDto> blogMemberDtos = new ArrayList<>();
-        for (UserDto user : users) {
-            BlogMemberDto blogMemberDto = new BlogMemberDto();
-            blogMemberDto.setBlog(blogDto);
-            blogMemberDto.setUser(user);
-            blogMemberDto.setRole(MemberRole.INVITING);
-            blogMemberDtos.add(blogMemberDto);
-        }
-        return blogMemberDtos;
-    }
-
-    private void validateMembers(List<BlogMemberDto> blogMemberDtos) {
-        logger.info("-----validate blog members-----");
-        List<UserDto> members = blogMemberDtos.stream().map(BlogMemberDto::getUser).collect(Collectors.toList());
-        if (members.stream().map(UserDto::getId).distinct().count() < members.size()) {
-            throw new BlogMembersStateException("한 블로그에 같은 사람이 두 번 포함될 수 없습니다");
-        }
-        if (members.stream().anyMatch(member -> Objects.equals(member.getId(), 0))) {
-            throw new BlogMembersStateException("유효하지 않은 아이디를 가진 유저가 존재합니다");
-        }
-        logger.info("-----Blog Members are validated!-----");
+    private void setMembersBlog(Blog blog, List<BlogMemberDto> blogMemberDtos) {
+        blogMemberDtos.forEach(blogMemberDto -> {
+            blogMemberDto.setBlogId(blog.getId());
+            blogMemberDto.setBlogName(blog.getName());
+        });
     }
 }

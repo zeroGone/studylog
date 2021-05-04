@@ -2,9 +2,8 @@ package io.zerogone.controller.api;
 
 import io.zerogone.model.dto.BlogDto;
 import io.zerogone.model.dto.PostDto;
-import io.zerogone.model.dto.UserWithBlogsDto;
-import io.zerogone.model.entity.Post;
-import io.zerogone.service.create.CreateTemplate;
+import io.zerogone.model.dto.UserDto;
+import io.zerogone.service.create.CreateService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,23 +15,23 @@ import java.util.Objects;
 
 @RestController
 public class PostCreateController {
-    private final CreateTemplate<Post> createTemplate;
+    private final CreateService<PostDto> createService;
 
-    public PostCreateController(CreateTemplate<Post> createTemplate) {
-        this.createTemplate = createTemplate;
+    public PostCreateController(CreateService<PostDto> createService) {
+        this.createService = createService;
     }
 
     @PostMapping("api/post")
-    public ResponseEntity<PostDto> handlePostCreateApi(@SessionAttribute UserWithBlogsDto userInfo,
+    public ResponseEntity<PostDto> handlePostCreateApi(@SessionAttribute UserDto userInfo,
                                                        @RequestBody PostDto post) {
 
         post.setWriter(userInfo);
         post.setBlog(getTargetBlog(userInfo, post.getBlog()));
 
-        return new ResponseEntity<>((PostDto) createTemplate.create(post), HttpStatus.CREATED);
+        return new ResponseEntity<>(createService.create(post), HttpStatus.CREATED);
     }
 
-    private BlogDto getTargetBlog(UserWithBlogsDto writer, BlogDto blogDto) {
+    private BlogDto getTargetBlog(UserDto writer, BlogDto blogDto) {
         BlogDto targetBlog = writer.getBlogs()
                 .stream()
                 .filter(blog -> Objects.equals(blog.getName(), blogDto.getName()))
