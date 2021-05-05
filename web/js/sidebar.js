@@ -21,6 +21,8 @@ window.onload = function () {
 
         if (sidebarElementText === "POST") {
             window.location = window.location.pathname + "/posts";
+        } else if (sidebarElementText === "SETTING") {
+            window.location = window.location.pathname + "/setting";
         }
     });
 

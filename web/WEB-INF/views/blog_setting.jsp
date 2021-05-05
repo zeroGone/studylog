@@ -1,9 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <title>StudyLog</title>
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/img/logo.ico" type="image/x-icon">
-    <link rel="stylesheet" href="css/blog_setting.css">
+    <link rel="stylesheet" href="/css/blog_setting.css">
     <script src="/js/header.js" defer></script>
     <script src="/js/sidebar.js" defer></script>
     <script src="https://kit.fontawesome.com/b63e743ce0.js" crossorigin="anonymous"></script>
@@ -15,14 +16,15 @@
     <h2 class="blog-setting-title">블로그 설정</h2>
     <div class="blog-info">
         <div class="blog-info-images">
-            <img src="/img/user-default/1.png" alt="blog-image" class="blog-info-images-image">
+            <img src="${blog.imageUrl}" alt="blog-image" class="blog-info-images-image">
             <div class="blog-info-images-edit-container">
                 <i class="fas fa-plus blog-info-images-edit"></i>
             </div>
         </div>
         <div class="blog-info-texts">
-            <input type="text" class="blog-info-texts-name" value="zeroGone's World" readonly/>
-            <input type="text" class="blog-info-texts-introduction" placeholder="블로그를 소개해보세요."/>
+            <input type="text" class="blog-info-texts-name" value="${blog.name}" readonly/>
+            <input type="text" class="blog-info-texts-introduction" placeholder="블로그를 소개해보세요."
+                   value="${blog.introduce}"/>
         </div>
     </div>
     <div class="member">
@@ -44,45 +46,19 @@
                 <span class="member-user-access-level">접근 수준</span>
             </div>
             <ul class="member-list">
-                <li class="member-list-item member-list-item-01">
-                    <img src="/img/user-default/1.png" alt="user-01-image" class="member-list-item-image"/>
-                    <span class="member-list-item-name">김민섭</span>
-                    <span class="member-list-item-email">welcltm@gmail.com</span>
-                    <span class="member-list-item-access-level">관리자 <i
-                            class="fas fa-caret-down member-list-item-access-level-control"></i></span>
-                    <div class="member-list-item-access-level-setting">
-                        <span class="member-list-item-access-level-setting-administrator">관리자</span>
-                        <span class="member-list-item-access-level-setting-member">멤버</span>
-                    </div>
-                </li>
-                <li class="member-list-item member-list-item-02">
-                    <img src="/img/user-default/2.png" alt="user-02-image" class="member-list-item-image"/>
-                    <span class="member-list-item-name">양진민</span>
-                    <span class="member-list-item-email">yjm7485@naver.com</span>
-                    <span class="member-list-item-access-level">관리자 <i
-                            class="fas fa-caret-down member-list-item-access-level-control"></i></span>
-                </li>
-                <li class="member-list-item member-list-item-03">
-                    <img src="/img/user-default/3.png" alt="user-03-image" class="member-list-item-image"/>
-                    <span class="member-list-item-name">김영곤</span>
-                    <span class="member-list-item-email">dudrhs571@gmail.com</span>
-                    <span class="member-list-item-access-level">관리자 <i
-                            class="fas fa-caret-down member-list-item-access-level-control"></i></span>
-                </li>
-                <li class="member-list-item member-list-item-04">
-                    <img src="/img/user-default/4.png" alt="user-04-image" class="member-list-item-image"/>
-                    <span class="member-list-item-name">이혜지</span>
-                    <span class="member-list-item-email">201632025@office.skhu.ac.kr</span>
-                    <span class="member-list-item-access-level">멤버 <i
-                            class="fas fa-caret-down member-list-item-access-level-control"></i></span>
-                </li>
-                <li class="member-list-item member-list-item-05">
-                    <img src="/img/user-default/5.png" alt="user-05-image" class="member-list-item-image"/>
-                    <span class="member-list-item-name">명혜연</span>
-                    <span class="member-list-item-email">audgpdus@gmail.com</span>
-                    <span class="member-list-item-access-level">멤버 <i
-                            class="fas fa-caret-down member-list-item-access-level-control"></i></span>
-                </li>
+                <c:forEach items="${blog.members}" var="member">
+                    <li class="member-list-item member-list-item-01">
+                        <img src="${member.imageUrl}" alt="user-01-image" class="member-list-item-image"/>
+                        <span class="member-list-item-name">${member.name}</span>
+                        <span class="member-list-item-email">${member.email}</span>
+                        <span class="member-list-item-access-level">관리자 <i
+                                class="fas fa-caret-down member-list-item-access-level-control"></i></span>
+                        <div class="member-list-item-access-level-setting">
+                            <span class="member-list-item-access-level-setting-administrator">관리자</span>
+                            <span class="member-list-item-access-level-setting-member">멤버</span>
+                        </div>
+                    </li>
+                </c:forEach>
             </ul>
         </div>
     </div>
