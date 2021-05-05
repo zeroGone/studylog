@@ -36,10 +36,10 @@ public class BlogUpdateController {
     public ResponseEntity<BlogDto> handleUpdatingBlogWithImage(
             @SessionAttribute UserDto userInfo,
             @RequestBody BlogDto blog,
-            MultipartFile imageFile) {
+            MultipartFile image) {
 
         validateAuth(userInfo, blog);
-        blog = imageUploadService.upload(blog, imageFile);
+        blog = imageUploadService.upload(blog, image);
 
         return ResponseEntity.ok(updateService.updateBlog(blog));
     }
