@@ -1,32 +1,37 @@
 package io.zerogone.service;
 
+import io.zerogone.converter.Converter;
 import io.zerogone.model.dto.BlogDto;
-import io.zerogone.model.entity.BlogInvitationKey;
+import io.zerogone.model.dto.UserDto;
+import io.zerogone.model.entity.Blog;
 import io.zerogone.model.entity.BlogMember;
-import io.zerogone.repository.BlogInvitationKeyDao;
+import io.zerogone.repository.BlogDao;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Objects;
 
 @Service
 public class BlogInvitationAcceptenceService {
-    private final BlogInvitationKeyDao blogInvitationKeyDao;
+    private final BlogDao blogDao;
+    private final Converter<Blog, BlogDto> converter;
 
-    public BlogInvitationAcceptenceService(BlogInvitationKeyDao blogInvitationKeyDao) {
-        this.blogInvitationKeyDao = blogInvitationKeyDao;
+    public BlogInvitationAcceptenceService(BlogDao blogDao, Converter<Blog, BlogDto> converter) {
+        this.blogDao = blogDao;
+        this.converter = converter;
     }
 
     @Transactional
-    public BlogDto acceptBlogInvitation(String key) {
-        BlogInvitationKey blogInvitationKey = blogInvitationKeyDao.findWithBlogMemberByValue(key);
-        BlogMember blogMember = blogInvitationKey.getOwner();
-        blogMember.acceptBlogInvitation();
+    public BlogDto acceptBlogInvitation(UserDto userInfo, String key) {
+        Blog entity = blogDao.findWithBlogMembersByInvitationKey(key);
 
-        BlogDto blogDto = new BlogDto();
-        blogDto.setId(blogMember.getBlogId());
-        blogDto.setName(blogMember.getBlogName());
-        blogDto.setIntroduce(blogMember.getBlogIntroduce());
-        blogDto.setImageUrl(blogMember.getBlogImageUrl());
-        return blogDto;
+        BlogMember targetMember = entity.getMembers()
+                .stream()
+                .filter(member -> Objects.equals(member.getUserId(), userInfo.getId()))
+                .findAny()
+                .orElseThrow(IllegalArgumentException::new);
+
+        targetMember.acceptBlogInvitation();
+        return converter.convert(entity);
     }
 }

@@ -64,4 +64,22 @@ public class BlogDao {
             throw new NotExistedDataException(Blog.class, "블로그 이름으로 블로그 검색", name);
         }
     }
+
+    public Blog findWithBlogMembersByInvitationKey(String invitationKey) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Blog> criteriaQuery = criteriaBuilder.createQuery(Blog.class);
+
+        Root<Blog> root = criteriaQuery.from(Blog.class);
+        Fetch<Blog, BlogMember> memberFetch = root.fetch("members");
+        memberFetch.fetch("user");
+        criteriaQuery.select(root);
+        criteriaQuery.where(criteriaBuilder.equal(root.get("invitationKey"), invitationKey));
+
+        TypedQuery<Blog> blogTypedQuery = entityManager.createQuery(criteriaQuery);
+        try {
+            return blogTypedQuery.getSingleResult();
+        } catch (NoResultException noResultException) {
+            throw new NotExistedDataException(Blog.class, "블로그 초대 키로 블로그 검색", invitationKey);
+        }
+    }
 }
