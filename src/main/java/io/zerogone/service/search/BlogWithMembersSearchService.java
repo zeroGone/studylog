@@ -8,8 +8,8 @@ import io.zerogone.model.entity.BlogMember;
 import io.zerogone.repository.BlogDao;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Service
 public class BlogWithMembersSearchService implements SearchService<String, BlogDto> {
@@ -30,8 +30,8 @@ public class BlogWithMembersSearchService implements SearchService<String, BlogD
         return dto;
     }
 
-    private List<BlogMemberDto> convertMembers(List<BlogMember> members) {
-        List<BlogMemberDto> memberDtos = new ArrayList<>();
+    private Set<BlogMemberDto> convertMembers(Set<BlogMember> members) {
+        Set<BlogMemberDto> memberDtos = new HashSet<>();
         for (BlogMember member : members) {
             BlogMemberDto memberDto = new BlogMemberDto();
             memberDto.setId(member.getUserId());

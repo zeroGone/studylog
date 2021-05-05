@@ -1,9 +1,9 @@
 package io.zerogone.model.entity;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "blog")
@@ -16,14 +16,14 @@ public class Blog {
     @Column(nullable = false, unique = true, updatable = false)
     private String name;
 
-    @Column(updatable = false)
+    @Column
     private String introduce;
 
     @Column(name = "image_url")
     private String imageUrl;
 
-    @OneToMany(mappedBy = "blog", cascade = CascadeType.PERSIST)
-    private final List<BlogMember> members = new ArrayList<>();
+    @OneToMany(mappedBy = "blogId", cascade = CascadeType.PERSIST)
+    private final Set<BlogMember> members = new HashSet<>();
 
     @Column(name = "invitation_key", nullable = false, updatable = false)
     private String invitationKey;
@@ -56,16 +56,24 @@ public class Blog {
         return introduce;
     }
 
+    public void setIntroduce(String introduce) {
+        this.introduce = introduce;
+    }
+
     public String getImageUrl() {
         return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public void addMember(BlogMember member) {
         members.add(member);
     }
 
-    public List<BlogMember> getMembers() {
-        return Collections.unmodifiableList(members);
+    public Set<BlogMember> getMembers() {
+        return Collections.unmodifiableSet(members);
     }
 
     public String getInvitationKey() {

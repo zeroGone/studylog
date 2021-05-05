@@ -11,8 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @RestController
 public class BlogCreateController {
@@ -35,18 +35,18 @@ public class BlogCreateController {
         return new ResponseEntity<>(createService.create(blogDto), HttpStatus.CREATED);
     }
 
-    private List<BlogMemberDto> getMembersWithAdmin(BlogDto dto, UserDto admin) {
-        List<BlogMemberDto> members = getMembersWithRole(dto);
+    private Set<BlogMemberDto> getMembersWithAdmin(BlogDto dto, UserDto admin) {
+        Set<BlogMemberDto> members = getMembersWithRole(dto);
         members.add(getAdminMember(admin));
         return members;
     }
 
-    private List<BlogMemberDto> getMembersWithRole(BlogDto dto) {
+    private Set<BlogMemberDto> getMembersWithRole(BlogDto dto) {
         if (dto.getMembers() != null) {
             dto.getMembers().forEach(member -> member.setRole(MemberRole.INVITING));
             return dto.getMembers();
         } else {
-            return new ArrayList<>();
+            return new HashSet<>();
         }
     }
 
