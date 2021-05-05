@@ -39,10 +39,11 @@ public class BlogCreateControllerTest {
     }
 
     @Test
+    @Transactional
     public void handleBlogCreateApi() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
                 .post("/api/blog").sessionAttr("userInfo", userInfo)
-                .param("name", "5월 4일 테스트")
+                .param("name", "5월 5일 테스트")
                 .param("members[0].id", "1")
                 .param("members[0].name", "김영곤")
                 .param("members[0].email", "dudrhs571@gmail.com")

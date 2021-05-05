@@ -54,7 +54,7 @@ public class PostCreateService implements CreateService<PostDto> {
         User user = new User(writer.getId(), writer.getName(), writer.getEmail(), writer.getNickName(), writer.getImageUrl());
 
         BlogDto blogDto = dto.getBlog();
-        Blog blog = new Blog(blogDto.getId(), blogDto.getName(), blogDto.getIntroduce(), blogDto.getImageUrl());
+        Blog blog = new Blog(blogDto.getId(), blogDto.getName(), blogDto.getIntroduce(), blogDto.getImageUrl(), blogDto.getInvitationKey());
 
         List<Category> categories = saveCategories(dto.getCategories());
         return new Post(dto.getTitle(), dto.getContents(), user, blog, categories);
