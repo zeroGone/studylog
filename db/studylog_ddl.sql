@@ -58,11 +58,11 @@ DROP TABLE IF EXISTS `studylog`.`blog_invitation_key`;
 CREATE TABLE `studylog`.`blog_invitation_key` (
 	`id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     `value` VARCHAR(100) NOT NULL,
-    `blog_member_id` INT UNSIGNED NOT NULL,
+    `blog_id` INT UNSIGNED NOT NULL,
     `create_date_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT `fk_blog_invitation_key_blog_member`
-		FOREIGN KEY (`blog_member_id`)
-        REFERENCES `studylog`.`blog_member` (`id`)
+    CONSTRAINT `fk_blog_invitation_key_blog`
+		FOREIGN KEY (`blog_id`)
+        REFERENCES `studylog`.`blog` (`id`)
         ON DELETE CASCADE
 );
 
