@@ -4,6 +4,7 @@ import io.zerogone.config.DatabaseConfiguration;
 import io.zerogone.config.WebConfiguration;
 import io.zerogone.exception.NotExistedDataException;
 import io.zerogone.model.entity.Blog;
+import io.zerogone.model.entity.BlogMember;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -40,7 +41,12 @@ public class BlogDaoTest {
     @Test
     @Transactional
     public void save() {
-        Blog blog = new Blog(0, "testBlog", "This is temporary instance fot testing", null);
+        String name = "testBlog";
+        StringBuilder builder = new StringBuilder();
+        for (char character : name.toCharArray()) {
+            builder.append((int) character);
+        }
+        Blog blog = new Blog("testBlog", "This is temporary instance fot testing", null, builder.toString());
         blogDao.save(blog);
         Assert.assertNotEquals(0, blog.getId());
     }
@@ -49,7 +55,7 @@ public class BlogDaoTest {
     @Transactional
     public void save_BlogNameIsNull_ThrowPersistenceException() {
         expectedException.expect(PersistenceException.class);
-        Blog blog = new Blog(0, null, null, null);
+        Blog blog = new Blog(null, null, null, null);
         blogDao.save(blog);
         Assert.assertNotEquals(0, blog.getId());
     }
@@ -58,7 +64,7 @@ public class BlogDaoTest {
     @Transactional
     public void save_BlogNameIsDuplicated_ThrowPersistenceException() {
         expectedException.expect(PersistenceException.class);
-        Blog blog = new Blog(0, "studylog", null, null);
+        Blog blog = new Blog("studylog", null, null, " ");
         blogDao.save(blog);
         Assert.assertNotEquals(0, blog.getId());
     }

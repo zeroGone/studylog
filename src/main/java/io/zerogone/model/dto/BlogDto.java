@@ -1,13 +1,14 @@
 package io.zerogone.model.dto;
 
-import java.util.List;
+import java.util.Set;
 
 public class BlogDto {
     private int id;
     private String name;
     private String introduce;
     private String imageUrl;
-    private List<BlogMemberDto> members;
+    private Set<BlogMemberDto> members;
+    private String invitationKey;
 
     public int getId() {
         return id;
@@ -41,11 +42,19 @@ public class BlogDto {
         this.imageUrl = imageUrl;
     }
 
-    public List<BlogMemberDto> getMembers() {
+    public Set<BlogMemberDto> getMembers() {
         return members;
     }
 
-    public void setMembers(List<BlogMemberDto> members) {
+    public void setMembers(Set<BlogMemberDto> members) {
         this.members = members;
+    }
+
+    public String getInvitationKey() {
+        return invitationKey;
+    }
+
+    public void setInvitationKey(String invitationKey) {
+        this.invitationKey = invitationKey;
     }
 }

@@ -22,6 +22,7 @@ CREATE TABLE `studylog`.`blog` (
   `name` VARCHAR(255) NOT NULL UNIQUE,
   `introduce` VARCHAR(255) NULL,
   `image_url` VARCHAR(255) NULL,
+  `invitation_key` VARCHAR(255) NOT NULL UNIQUE,
   `create_date_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `update_date_time` DATETIME NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
@@ -51,19 +52,6 @@ CREATE TABLE `studylog`.`blog_member` (
   CONSTRAINT `fk_blog_member_role`
     FOREIGN KEY (`role_id`)
     REFERENCES `studylog`.`blog_member_role` (`id`)
-);
-
-DROP TABLE IF EXISTS `studylog`.`blog_invitation_key`;
-
-CREATE TABLE `studylog`.`blog_invitation_key` (
-	`id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    `value` VARCHAR(100) NOT NULL,
-    `blog_member_id` INT UNSIGNED NOT NULL,
-    `create_date_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT `fk_blog_invitation_key_blog_member`
-		FOREIGN KEY (`blog_member_id`)
-        REFERENCES `studylog`.`blog_member` (`id`)
-        ON DELETE CASCADE
 );
 
 DROP TABLE IF EXISTS `studylog`.`post`;

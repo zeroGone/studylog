@@ -4,6 +4,7 @@ import io.zerogone.service.MemberRoleConverter;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "blog_member")
@@ -17,9 +18,8 @@ public class BlogMember {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "blog_id", nullable = false)
-    private Blog blog;
+    @Column(name = "blog_id", nullable = false, updatable = false)
+    private int blogId;
 
     @Column(name = "role_id")
     @Convert(converter = MemberRoleConverter.class)
@@ -29,14 +29,14 @@ public class BlogMember {
 
     }
 
-    public BlogMember(User user, Blog blog, MemberRole role) {
+    public BlogMember(User user, int blogId, MemberRole role) {
         this.user = user;
-        this.blog = blog;
+        this.blogId = blogId;
         this.role = role;
     }
 
-    public BlogMember(User user, Blog blog) {
-        this(user, blog, MemberRole.INVITING);
+    public BlogMember(User user, int blogId) {
+        this(user, blogId, MemberRole.INVITING);
     }
 
     public int getId() {
@@ -64,19 +64,7 @@ public class BlogMember {
     }
 
     public int getBlogId() {
-        return blog.getId();
-    }
-
-    public String getBlogName() {
-        return blog.getName();
-    }
-
-    public String getBlogIntroduce() {
-        return blog.getIntroduce();
-    }
-
-    public String getBlogImageUrl() {
-        return blog.getImageUrl();
+        return blogId;
     }
 
     public MemberRole getRole() {
@@ -85,5 +73,18 @@ public class BlogMember {
 
     public void acceptBlogInvitation() {
         role = MemberRole.MEMBER;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BlogMember that = (BlogMember) o;
+        return blogId == that.blogId && getUserId() == that.getUserId();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(user.getId(), blogId);
     }
 }

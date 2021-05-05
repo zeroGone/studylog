@@ -21,11 +21,13 @@
             <i class="fas fa-chevron-circle-left main-section-list-less member-list-less"></i>
             <ul class="member-list">
                 <c:forEach items="${blog.members}" var="member">
-                    <li class="member-list-item">
-                        <img src="${member.imageUrl}" alt="member img"
-                             class="member-list-item-user"/>
-                        <span class="member-list-item-nickname">${member.nickName}</span>
-                    </li>
+                    <c:if test="${member.role ne 'INVITING'}">
+                        <li class="member-list-item">
+                            <img src="${member.imageUrl}" alt="member img"
+                                 class="member-list-item-user"/>
+                            <span class="member-list-item-nickname">${member.nickName}</span>
+                        </li>
+                    </c:if>
                 </c:forEach>
             </ul>
             <i class="fas fa-chevron-circle-right main-section-list-more member-list-more"></i>

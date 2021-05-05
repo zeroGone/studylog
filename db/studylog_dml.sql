@@ -13,8 +13,8 @@ INSERT INTO `user`(`name`, `email`, `nick_name`, `image_url`) VALUES
 INSERT INTO `blog_member_role`(`name`)
 VALUES ("ADMIN"), ("MEMBER"), ("INVITING");
 
-INSERT INTO `blog`(`name`, `introduce`, `image_url`)
-VALUES ("studylog", "web platform for team blog", "/img/blog-default.png");
+INSERT INTO `blog`(`name`, `introduce`, `image_url`, `invitation_key`)
+VALUES ("studylog", "web platform for team blog", "/img/blog-default.png", "115116117100121108111103");
 
 INSERT INTO `blog_member` (`user_id`, `blog_id`, `role_id`)
 VALUES (1, 1, 1), (6,1,2);
