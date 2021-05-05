@@ -30,6 +30,10 @@ public class BlogDao {
         logger.debug("-----save blog end-----");
     }
 
+    public Blog findById(int id) {
+        return entityManager.find(Blog.class, id);
+    }
+
     public Blog findByName(String name) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Blog> criteriaQuery = criteriaBuilder.createQuery(Blog.class);
