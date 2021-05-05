@@ -9,9 +9,6 @@ public class BlogMemberDto {
     private String email;
     private String imageUrl;
     private int blogId;
-    private String blogName;
-    private String blogIntroduce;
-    private String blogImageUrl;
     private MemberRole role;
 
     public int getId() {
@@ -60,30 +57,6 @@ public class BlogMemberDto {
 
     public void setBlogId(int blogId) {
         this.blogId = blogId;
-    }
-
-    public String getBlogName() {
-        return blogName;
-    }
-
-    public void setBlogName(String blogName) {
-        this.blogName = blogName;
-    }
-
-    public String getBlogIntroduce() {
-        return blogIntroduce;
-    }
-
-    public void setBlogIntroduce(String blogIntroduce) {
-        this.blogIntroduce = blogIntroduce;
-    }
-
-    public String getBlogImageUrl() {
-        return blogImageUrl;
-    }
-
-    public void setBlogImageUrl(String blogImageUrl) {
-        this.blogImageUrl = blogImageUrl;
     }
 
     public MemberRole getRole() {
