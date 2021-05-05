@@ -51,8 +51,14 @@
                         <img src="${member.imageUrl}" alt="user-01-image" class="member-list-item-image"/>
                         <span class="member-list-item-name">${member.name}</span>
                         <span class="member-list-item-email">${member.email}</span>
-                        <span class="member-list-item-access-level">관리자 <i
-                                class="fas fa-caret-down member-list-item-access-level-control"></i></span>
+                        <span class="member-list-item-access-level">
+                            <i class="fas fa-caret-down member-list-item-access-level-control"></i>
+                            <c:choose>
+                                <c:when test="${member.role eq 'ADMIN'}">관리자</c:when>
+                                <c:when test="${member.role eq 'MEMBER'}">멤버</c:when>
+                                <c:when test="${member.role eq 'INVITING'}">초대중</c:when>
+                            </c:choose>
+                        </span>
                         <div class="member-list-item-access-level-setting">
                             <span class="member-list-item-access-level-setting-administrator">관리자</span>
                             <span class="member-list-item-access-level-setting-member">멤버</span>

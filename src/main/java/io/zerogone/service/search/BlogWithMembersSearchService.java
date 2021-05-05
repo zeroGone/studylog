@@ -4,7 +4,7 @@ import io.zerogone.converter.Converter;
 import io.zerogone.model.dto.BlogDto;
 import io.zerogone.model.dto.BlogMemberDto;
 import io.zerogone.model.entity.Blog;
-import io.zerogone.model.entity.User;
+import io.zerogone.model.entity.BlogMember;
 import io.zerogone.repository.BlogDao;
 import org.springframework.stereotype.Service;
 
@@ -30,24 +30,16 @@ public class BlogWithMembersSearchService implements SearchService<String, BlogD
         return dto;
     }
 
-    private BlogDto convertEntity(Blog entity) {
-        BlogDto dto = new BlogDto();
-        dto.setId(entity.getId());
-        dto.setName(entity.getName());
-        dto.setIntroduce(entity.getIntroduce());
-        dto.setImageUrl(entity.getImageUrl());
-        return dto;
-    }
-
-    private List<BlogMemberDto> convertMembers(List<User> members) {
+    private List<BlogMemberDto> convertMembers(List<BlogMember> members) {
         List<BlogMemberDto> memberDtos = new ArrayList<>();
-        for (User user : members) {
+        for (BlogMember member : members) {
             BlogMemberDto memberDto = new BlogMemberDto();
-            memberDto.setId(user.getId());
-            memberDto.setName(user.getName());
-            memberDto.setEmail(user.getEmail());
-            memberDto.setNickName(user.getNickName());
-            memberDto.setImageUrl(user.getImageUrl());
+            memberDto.setId(member.getUserId());
+            memberDto.setName(member.getName());
+            memberDto.setEmail(member.getEmail());
+            memberDto.setNickName(member.getNickName());
+            memberDto.setImageUrl(member.getImageUrl());
+            memberDto.setRole(member.getRole());
             memberDtos.add(memberDto);
         }
         return memberDtos;

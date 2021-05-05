@@ -3,6 +3,7 @@ package io.zerogone.repository;
 import ch.qos.logback.classic.Logger;
 import io.zerogone.exception.NotExistedDataException;
 import io.zerogone.model.entity.Blog;
+import io.zerogone.model.entity.BlogMember;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
@@ -12,6 +13,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Fetch;
 import javax.persistence.criteria.Root;
 
 @Repository
@@ -49,7 +51,8 @@ public class BlogDao {
         CriteriaQuery<Blog> criteriaQuery = criteriaBuilder.createQuery(Blog.class);
 
         Root<Blog> root = criteriaQuery.from(Blog.class);
-        root.fetch("members");
+        Fetch<Blog, BlogMember> memberFetch = root.fetch("members");
+        memberFetch.fetch("user");
 
         criteriaQuery.select(root);
         criteriaQuery.where(criteriaBuilder.equal(root.get("name"), name));
