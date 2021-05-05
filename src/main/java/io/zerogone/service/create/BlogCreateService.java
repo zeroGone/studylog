@@ -16,11 +16,11 @@ import io.zerogone.service.BlogInvitationService;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import javax.mail.MessagingException;
 import javax.persistence.PersistenceException;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -57,7 +57,7 @@ public class BlogCreateService implements CreateService<BlogDto> {
         if (dto.getName() == null) {
             throw new NotNullPropertyException(Blog.class, "name");
         }
-        List<BlogMemberDto> members = dto.getMembers();
+        Set<BlogMemberDto> members = dto.getMembers();
         if (members.stream().map(BlogMemberDto::getId).distinct().count() < members.size()) {
             throw new BlogMembersStateException("한 블로그에 같은 사람이 두 번 포함될 수 없습니다");
         }
@@ -76,7 +76,7 @@ public class BlogCreateService implements CreateService<BlogDto> {
         Blog entity = new Blog(dto.getName(), dto.getIntroduce(), dto.getImageUrl(), keyBuilder.toString());
         dto.getMembers().stream().map(memberDto -> {
             User user = new User(memberDto.getId(), memberDto.getName(), memberDto.getEmail(), memberDto.getNickName(), memberDto.getImageUrl());
-            return new BlogMember(user, entity, memberDto.getRole());
+            return new BlogMember(user, entity.getId(), memberDto.getRole());
         }).forEach(entity::addMember);
         return entity;
     }
@@ -87,13 +87,6 @@ public class BlogCreateService implements CreateService<BlogDto> {
                 .filter(member -> Objects.equals(member.getRole(), MemberRole.INVITING))
                 .collect(Collectors.toList());
 
-        targetMembers.forEach(member -> {
-            try {
-                blogInvitationService.inviteMemberToBlog(member.getEmail(), entity.getName(), entity.getInvitationKey());
-            } catch (MessagingException messagingException) {
-                logger.error("이메일 전송에 실패하였습니다. 원인 : " + messagingException.getMessage());
-                throw new BlogMembersStateException("초대 메일 전송에 실패하였습니다!");
-            }
-        });
+        targetMembers.forEach(member -> blogInvitationService.inviteMemberToBlog(member.getEmail(), entity.getName(), entity.getInvitationKey()));
     }
 }
