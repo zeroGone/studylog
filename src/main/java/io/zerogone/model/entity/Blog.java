@@ -1,6 +1,8 @@
 package io.zerogone.model.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Entity
@@ -20,21 +22,25 @@ public class Blog {
     @Column(name = "image_url")
     private String imageUrl;
 
-    @OneToMany(mappedBy = "blog")
-    private List<BlogMember> members;
+    @OneToMany(mappedBy = "blog", cascade = CascadeType.PERSIST)
+    private final List<BlogMember> members = new ArrayList<>();
+
+    @Column(name = "invitation_key", nullable = false, updatable = false)
+    private String invitationKey;
 
     Blog() {
 
     }
 
-    public Blog(String name, String introduce, String imageUrl) {
+    public Blog(String name, String introduce, String imageUrl, String invitationKey) {
         this.name = name;
         this.introduce = introduce;
         this.imageUrl = imageUrl;
+        this.invitationKey = invitationKey;
     }
 
-    public Blog(int id, String name, String introduce, String imageUrl) {
-        this(name, introduce, imageUrl);
+    public Blog(int id, String name, String introduce, String imageUrl, String invitationKey) {
+        this(name, introduce, imageUrl, invitationKey);
         this.id = id;
     }
 
@@ -54,7 +60,15 @@ public class Blog {
         return imageUrl;
     }
 
+    public void addMember(BlogMember member) {
+        members.add(member);
+    }
+
     public List<BlogMember> getMembers() {
-        return members;
+        return Collections.unmodifiableList(members);
+    }
+
+    public String getInvitationKey() {
+        return invitationKey;
     }
 }

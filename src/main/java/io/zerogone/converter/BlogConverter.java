@@ -13,6 +13,7 @@ public class BlogConverter implements Converter<Blog, BlogDto> {
         dto.setName(key.getName());
         dto.setIntroduce(key.getIntroduce());
         dto.setImageUrl(key.getImageUrl());
+        dto.setInvitationKey(key.getInvitationKey());
         return dto;
     }
 }

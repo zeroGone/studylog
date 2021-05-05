@@ -8,6 +8,7 @@ public class BlogDto {
     private String introduce;
     private String imageUrl;
     private List<BlogMemberDto> members;
+    private String invitationKey;
 
     public int getId() {
         return id;
@@ -47,5 +48,13 @@ public class BlogDto {
 
     public void setMembers(List<BlogMemberDto> members) {
         this.members = members;
+    }
+
+    public String getInvitationKey() {
+        return invitationKey;
+    }
+
+    public void setInvitationKey(String invitationKey) {
+        this.invitationKey = invitationKey;
     }
 }
