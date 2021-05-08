@@ -9,6 +9,7 @@ public class PostDto {
     private int id;
     private String title;
     private String contents;
+    private int hits;
     private UserDto writer;
     private BlogDto blog;
     private List<String> categories;
@@ -39,6 +40,14 @@ public class PostDto {
 
     public void setContents(String contents) {
         this.contents = contents;
+    }
+
+    public int getHits() {
+        return hits;
+    }
+
+    public void setHits(int hits) {
+        this.hits = hits;
     }
 
     public UserDto getWriter() {
