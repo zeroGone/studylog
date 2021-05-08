@@ -1,5 +1,7 @@
 package io.zerogone.model.entity;
 
+import org.hibernate.annotations.DynamicUpdate;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -7,6 +9,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "post")
+@DynamicUpdate
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,6 +24,9 @@ public class Post {
     @Column(name = "reviewing", nullable = false, insertable = false)
     private boolean isReviewing;
 
+    @Column(name = "hits", insertable = false)
+    private int hits;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "blog_id", referencedColumnName = "id")
     private Blog blog;
@@ -29,7 +35,7 @@ public class Post {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User writer;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "post_has_category",
             joinColumns = @JoinColumn(name = "post_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id")
@@ -76,6 +82,14 @@ public class Post {
 
     public String getContents() {
         return contents;
+    }
+
+    public int getHits() {
+        return hits;
+    }
+
+    public void hit() {
+        this.hits += 1;
     }
 
     public boolean isReviewing() {

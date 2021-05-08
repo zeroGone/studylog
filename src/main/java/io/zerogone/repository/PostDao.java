@@ -14,4 +14,8 @@ public class PostDao {
     public void save(Post post) {
         entityManager.persist(post);
     }
+
+    public Post findById(int id) {
+        return entityManager.find(Post.class, id);
+    }
 }

@@ -19,6 +19,9 @@ VALUES ("studylog", "web platform for team blog", "/img/blog-default.png", "1151
 INSERT INTO `blog_member` (`user_id`, `blog_id`, `role_id`)
 VALUES (1, 1, 1), (6,1,2);
 
+INSERT INTO `post` (`title`, `contents`, `blog_id`, `user_id`)
+VALUES ("studylog project", "It is developing now", 1, 1);
+
 INSERT INTO `issue_category` (`name`)
 VALUES ("NOTICE"), ("QUESTION"), ("CHAT"), ("REQUEST");
 

@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -15,17 +16,17 @@
 <jsp:include page="include/sidebar.jsp"/>
 <div class="main-container">
     <div class="main-container-header">
-        <h2 class="title">이것은 제목입니다.</h2>
+        <h2 class="title">${post.title}</h2>
         <ul class="hashtags">
-            <li class="hashtags-item">#영곤</li>
-            <li class="hashtags-item">#진민</li>
-            <li class="hashtags-item">#스터디로그</li>
+            <c:forEach items="${post.categories}" var="category">
+                <li class="hashtags-item">#${category}</li>
+            </c:forEach>
         </ul>
-        <span class="view-number">291,323,239 views</span>
+        <span class="view-number">${post.hits} views</span>
     </div>
     <div class="editor-container"></div>
     <div class="writer">
-        <img class="writer-image" src="/img/user-default/5.png" alt="writer"/>
+        <img class="writer-image" src="${post.writer.imageUrl}" alt="writer"/>
         <h3 class="writer-name">zeroGone</h3>
     </div>
     <div class="comment-divider">comment</div>
