@@ -170,8 +170,11 @@ function activeAlertContainer(type) {
     } else if (type === 'blogNameNotExist') {
         alertMessage.innerHTML = '사용 가능한 블로그 이름입니다.';
         focusLocation = 'introduce';
-    } else if (type === 'image') {
+    } else if (type === 'imageCheckFormat') {
         alertMessage.innerHTML = 'gif, jpg, png 파일만 선택해 주세요.';
+        focusLocation = 'image';
+    } else if (type === 'notPostImage') {
+        alertMessage.innerHTML = '이미지를 저장할 수 없습니다. 잠시후 다시 시도해 주세요.';
         focusLocation = 'image';
     } else if (type === 'notValidEmail') {
         alertMessage.innerHTML = '올바른 이메일 형식을 입력해 주세요.';
