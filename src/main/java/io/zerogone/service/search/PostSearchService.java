@@ -31,7 +31,6 @@ public class PostSearchService implements SearchService<Integer, PostDto> {
             throw new NotExistedDataException(Post.class, "id로 게시글 검색", Integer.toString(id));
         }
         entity.hit();
-
         PostDto postDto = new PostDto();
         postDto.setId(entity.getId());
         postDto.setTitle(entity.getTitle());
