@@ -42,7 +42,7 @@
                     <i class="fas fa-plus user-image-edit-icon"></i>
                 </button>
             </div>
-            <div class="profile-info">
+            <div class="profile-info" data-user-id="${user.id}">
                 <article class="profile-name">
                     <div class="profile-header1">name</div>
                     <div class="profile-text">
