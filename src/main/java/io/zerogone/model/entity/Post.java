@@ -31,7 +31,7 @@ public class Post {
     @JoinColumn(name = "blog_id", referencedColumnName = "id")
     private Blog blog;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User writer;
 

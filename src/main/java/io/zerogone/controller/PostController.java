@@ -15,12 +15,6 @@ public class PostController {
         this.searchService = searchService;
     }
 
-    @GetMapping("{name}/posts")
-
-    public String getPostListViewName() {
-        return "post_list";
-    }
-
     @GetMapping("{name}/posts/new")
     public String getCreatePostViewName() {
         return "post_write";
