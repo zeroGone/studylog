@@ -24,9 +24,9 @@
         </ul>
         <span class="view-number">${post.hits} views</span>
     </div>
-    <div class="editor-container"></div>
+    <div class="editor-container" data-contents='${post.contents}'></div>
     <div class="writer">
-        <img class="writer-image" src="${post.writer.imageUrl}" alt="writer"/>
+        <img class="writer-image" src='${post.writer.imageUrl}' alt="writer"/>
         <h3 class="writer-name">zeroGone</h3>
     </div>
     <div class="comment-divider">comment</div>
