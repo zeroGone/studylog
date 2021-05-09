@@ -30,7 +30,7 @@ function handleGoogleApiFail(error) {
 }
 
 function submit(userProfile) {
-    fetch("login", {
+    fetch("api/login", {
         method: "POST",
         headers: {
             "Content-Type": "application/json; charset=utf-8",
