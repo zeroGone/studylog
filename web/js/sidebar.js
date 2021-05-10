@@ -19,10 +19,14 @@ window.onload = function () {
         const sidebarElementContent = sidebarElement.querySelector(".sidebar-item-content");
         const sidebarElementText = sidebarElementContent.innerText;
 
-        if (sidebarElementText === "POST") {
-            window.location = window.location.pathname + "/posts";
+        if (sidebarElementText === "ISSUE") {
+            window.location = window.location.origin + window.location.pathname.replace(/issue|review|posts|setting/, 'issue');
+        } else if (sidebarElementText === "REVIEW") {
+            window.location = window.location.origin + window.location.pathname.replace(/issue|review|posts|setting/, 'review');
+        } else if (sidebarElementText === "POST") {
+            window.location = window.location.origin + window.location.pathname.replace(/issue|review|posts|setting/, 'posts');
         } else if (sidebarElementText === "SETTING") {
-            window.location = window.location.pathname + "/setting";
+            window.location = window.location.origin + window.location.pathname.replace(/issue|review|posts|setting/, 'setting');
         }
     });
 
