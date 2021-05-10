@@ -1,9 +1,9 @@
 package io.zerogone.controller.api;
 
 import io.zerogone.exception.NotExistedDataException;
+import io.zerogone.model.Email;
 import io.zerogone.model.dto.UserDto;
 import io.zerogone.service.search.SearchService;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,16 +13,16 @@ import javax.servlet.http.HttpSession;
 
 @RestController
 public class LoginController {
-    private final SearchService<String, UserDto> searchService;
+    private final SearchService<Email, UserDto> searchService;
 
-    public LoginController(@Qualifier("userWithBlogsSearchService") SearchService<String, UserDto> searchService) {
+    public LoginController(SearchService<Email, UserDto> searchService) {
         this.searchService = searchService;
     }
 
     @PostMapping("api/login")
     public ResponseEntity<UserDto> doLogin(@RequestBody UserDto userDto, HttpSession httpSession) {
         try {
-            UserDto dto = searchService.search(userDto.getEmail());
+            UserDto dto = searchService.search(new Email(userDto.getEmail()));
             httpSession.setAttribute("userInfo", dto);
             return ResponseEntity.ok(dto);
         } catch (NotExistedDataException notExistedDataException) {
