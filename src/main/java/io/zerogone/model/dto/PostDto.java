@@ -1,8 +1,6 @@
 package io.zerogone.model.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 public class PostDto {
@@ -13,10 +11,8 @@ public class PostDto {
     private UserDto writer;
     private BlogDto blog;
     private List<String> categories;
-    @JsonFormat(pattern = "yyyy-MM-dd kk:mm:ss")
-    private LocalDateTime createDateTime;
-    @JsonFormat(pattern = "yyyy-MM-dd kk:mm:ss")
-    private LocalDateTime updateDateTime;
+    private LocalDate createDate;
+    private LocalDate updateDate;
 
     public int getId() {
         return id;
@@ -74,19 +70,19 @@ public class PostDto {
         this.categories = categories;
     }
 
-    public LocalDateTime getCreateDateTime() {
-        return createDateTime;
+    public LocalDate getCreateDate() {
+        return createDate;
     }
 
-    public void setCreateDateTime(LocalDateTime createDateTime) {
-        this.createDateTime = createDateTime;
+    public void setCreateDate(LocalDate createDate) {
+        this.createDate = createDate;
     }
 
-    public LocalDateTime getUpdateDateTime() {
-        return updateDateTime;
+    public LocalDate getUpdateDate() {
+        return updateDate;
     }
 
-    public void setUpdateDateTime(LocalDateTime updateDateTime) {
-        this.updateDateTime = updateDateTime;
+    public void setUpdateDate(LocalDate updateDate) {
+        this.updateDate = updateDate;
     }
 }

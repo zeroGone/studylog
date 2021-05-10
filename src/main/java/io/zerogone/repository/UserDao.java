@@ -10,10 +10,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.CriteriaUpdate;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 
 @Repository
 public class UserDao {
@@ -48,6 +45,7 @@ public class UserDao {
         CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
 
         Root<User> root = criteriaQuery.from(User.class);
+        root.fetch("blogs", JoinType.LEFT);
 
         criteriaQuery.select(root);
         criteriaQuery.where(criteriaBuilder.equal(root.get("email"), email));
@@ -57,25 +55,6 @@ public class UserDao {
             return query.getSingleResult();
         } catch (NoResultException noResultException) {
             throw new NotExistedDataException(User.class, "이메일로 유저 검색", email);
-        }
-    }
-
-    public User findWithBlogsByEmail(String email) {
-        logger.info("-----Find user with user's blogs by email : " + email + " -----");
-        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
-
-        Root<User> root = criteriaQuery.from(User.class);
-        root.fetch("blogs");
-
-        criteriaQuery.select(root);
-        criteriaQuery.where(criteriaBuilder.equal(root.get("email"), email));
-
-        TypedQuery<User> query = entityManager.createQuery(criteriaQuery);
-        try {
-            return query.getSingleResult();
-        } catch (NoResultException noResultException) {
-            return findByEmail(email);
         }
     }
 }
