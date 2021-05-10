@@ -2,10 +2,11 @@ package io.zerogone.converter;
 
 import io.zerogone.model.dto.UserDto;
 import io.zerogone.model.entity.User;
+import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
 @Component
-public class UserConverter implements Converter<User, UserDto> {
+public class UserEntityToDtoConverter implements Converter<User, UserDto> {
     @Override
     public UserDto convert(User key) {
         UserDto dto = new UserDto();

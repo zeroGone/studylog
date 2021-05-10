@@ -1,7 +1,6 @@
 package io.zerogone.service.create;
 
 import ch.qos.logback.classic.Logger;
-import io.zerogone.converter.Converter;
 import io.zerogone.exception.BlogMembersStateException;
 import io.zerogone.exception.NotNullPropertyException;
 import io.zerogone.exception.UniquePropertyException;
@@ -14,6 +13,7 @@ import io.zerogone.model.entity.User;
 import io.zerogone.repository.BlogDao;
 import io.zerogone.service.BlogInvitationService;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.PersistenceException;
