@@ -97,6 +97,22 @@ CREATE TABLE IF NOT EXISTS `studylog`.`post_has_category` (
     REFERENCES `studylog`.`category` (`id`)
 );
 
+DROP TABLE IF EXISTS `studylog`.`comment` ;
+
+CREATE TABLE IF NOT EXISTS `studylog`.`comment` (
+  `id` INT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
+  `contents` MEDIUMTEXT NOT NULL,
+  `post_id` INT UNSIGNED NOT NULL,
+  `user_id` INT UNSIGNED NOT NULL,
+  `create_date_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT `fk_comment_post`
+    FOREIGN KEY (`post_id`)
+    REFERENCES `studylog`.`post` (`id`),
+  CONSTRAINT `fk_comment_user`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `studylog`.`user` (`id`)
+);
+
 ----------------------------------------
 
 DROP TABLE IF EXISTS `studylog`.`issue_category` ;
