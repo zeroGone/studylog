@@ -1,9 +1,9 @@
 package io.zerogone.service.search;
 
-import io.zerogone.converter.Converter;
 import io.zerogone.model.dto.UserDto;
 import io.zerogone.model.entity.User;
 import io.zerogone.repository.UserDao;
+import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Service;
 
 @Service

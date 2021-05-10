@@ -1,11 +1,11 @@
 package io.zerogone.service.search;
 
-import io.zerogone.converter.Converter;
 import io.zerogone.model.dto.BlogDto;
 import io.zerogone.model.dto.BlogMemberDto;
 import io.zerogone.model.entity.Blog;
 import io.zerogone.model.entity.BlogMember;
 import io.zerogone.repository.BlogDao;
+import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
