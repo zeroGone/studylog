@@ -1,5 +1,6 @@
 package io.zerogone.service.search;
 
+import io.zerogone.model.Name;
 import io.zerogone.model.dto.PostDto;
 import io.zerogone.model.entity.Post;
 import io.zerogone.repository.PostDao;
@@ -10,7 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class PostListSearchService implements SearchService<String, List<PostDto>> {
+public class PostListSearchService implements SearchService<Name, List<PostDto>> {
     private final PostDao postDao;
     private final Converter<Post, PostDto> converter;
 
@@ -20,8 +21,8 @@ public class PostListSearchService implements SearchService<String, List<PostDto
     }
 
     @Override
-    public List<PostDto> search(String blogName) {
-        List<Post> entities = postDao.findAllByBlogName(blogName);
+    public List<PostDto> search(Name blogName) {
+        List<Post> entities = postDao.findAllByBlogName(blogName.getValue());
         return entities.stream().map(converter::convert).collect(Collectors.toList());
     }
 }
