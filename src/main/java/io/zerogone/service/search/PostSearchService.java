@@ -24,7 +24,7 @@ public class PostSearchService implements SearchService<Integer, PostDto> {
     public PostDto search(Integer id) {
         Post entity = postDao.findById(id);
         if (entity == null) {
-            throw new NotExistedDataException(Post.class, "id로 게시글 검색", Integer.toString(id));
+            throw new NotExistedDataException(Post.class, "id로 게시글 검색", id.toString());
         }
         entity.hit();
         return converter.convert(entity);

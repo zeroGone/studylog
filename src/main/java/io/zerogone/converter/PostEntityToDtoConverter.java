@@ -12,12 +12,6 @@ import java.util.stream.Collectors;
 
 @Component
 public class PostEntityToDtoConverter implements Converter<Post, PostDto> {
-    private final Converter<User, UserDto> converter;
-
-    public PostEntityToDtoConverter(Converter<User, UserDto> converter) {
-        this.converter = converter;
-    }
-
     @Override
     public PostDto convert(Post entity) {
         PostDto postDto = new PostDto();
@@ -27,7 +21,17 @@ public class PostEntityToDtoConverter implements Converter<Post, PostDto> {
         postDto.setHits(entity.getHits());
         postDto.setCreateDate(entity.getCreateDateTime().toLocalDate());
         postDto.setCategories(entity.getCategories().stream().map(Category::getName).collect(Collectors.toList()));
-        postDto.setWriter(converter.convert(entity.getWriter()));
+        postDto.setWriter(convertWriter(entity.getWriter()));
         return postDto;
+    }
+
+    private UserDto convertWriter(User writer) {
+        UserDto dto = new UserDto();
+        dto.setId(writer.getId());
+        dto.setEmail(writer.getEmail());
+        dto.setName(writer.getName());
+        dto.setNickName(writer.getNickName());
+        dto.setImageUrl(writer.getImageUrl());
+        return dto;
     }
 }

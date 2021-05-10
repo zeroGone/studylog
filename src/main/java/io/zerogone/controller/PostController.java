@@ -21,8 +21,8 @@ public class PostController {
     }
 
     @GetMapping("{name}/posts/{id}")
-    public String getPostViewNameWithPostDto(@PathVariable("id") int postId, Model model) {
-        model.addAttribute("post", searchService.search(postId));
+    public String getPostViewNameWithPostDto(@PathVariable Integer id, Model model) {
+        model.addAttribute("post", searchService.search(id));
         return "post";
     }
 }
