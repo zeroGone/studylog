@@ -37,7 +37,7 @@
             </section>
             <section class="sidebar-item-wrapper sidebar-item-text-wrapper sidebar-even-number-item-color">
                 <article class="sidebar-item-content">
-                    POST
+                    POSTS
                 </article>
             </section>
         </li>

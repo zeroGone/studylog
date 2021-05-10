@@ -17,17 +17,17 @@ window.onload = function () {
         const target = event.target;
         const sidebarElement = target.closest(".sidebar-item");
         const sidebarElementContent = sidebarElement.querySelector(".sidebar-item-content");
-        const sidebarElementText = sidebarElementContent.innerText;
+        const sidebarElementText = sidebarElementContent.innerText.toLowerCase();
 
-        if (sidebarElementText === "ISSUE") {
-            window.location = window.location.origin + window.location.pathname.replace(/issue|review|posts|setting/, 'issue');
-        } else if (sidebarElementText === "REVIEW") {
-            window.location = window.location.origin + window.location.pathname.replace(/issue|review|posts|setting/, 'review');
-        } else if (sidebarElementText === "POST") {
-            window.location = window.location.origin + window.location.pathname.replace(/issue|review|posts|setting/, 'posts');
-        } else if (sidebarElementText === "SETTING") {
-            window.location = window.location.origin + window.location.pathname.replace(/issue|review|posts|setting/, 'setting');
+        const location = window.location.href;
+        const PageExp = /issue|review|posts|setting/;
+
+        if (location.match(PageExp)) {
+            return window.location = window.location.origin + window.location.pathname.replace(PageExp, sidebarElementText);
+        } else {
+            return window.location = window.location.href + '/' + sidebarElementText;
         }
+
     });
 
     function sidebarHandler() {
