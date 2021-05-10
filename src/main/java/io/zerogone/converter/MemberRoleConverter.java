@@ -1,4 +1,4 @@
-package io.zerogone.service;
+package io.zerogone.converter;
 
 import io.zerogone.model.entity.MemberRole;
 
