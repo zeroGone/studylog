@@ -6,6 +6,8 @@ import io.zerogone.model.dto.UserDto;
 import io.zerogone.model.entity.MemberRole;
 import io.zerogone.service.BlogUpdateService;
 import io.zerogone.service.fileupload.ImageUploadService;
+import io.zerogone.service.fileupload.ImageUrl;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,10 +16,11 @@ import java.util.Objects;
 
 @RestController
 public class BlogUpdateController {
-    private final ImageUploadService<BlogDto> imageUploadService;
+    private final ImageUploadService imageUploadService;
     private final BlogUpdateService updateService;
 
-    public BlogUpdateController(ImageUploadService<BlogDto> imageUploadService, BlogUpdateService updateService) {
+    public BlogUpdateController(@Qualifier("blogImageUploadService") ImageUploadService imageUploadService,
+                                BlogUpdateService updateService) {
         this.imageUploadService = imageUploadService;
         this.updateService = updateService;
     }
@@ -39,7 +42,8 @@ public class BlogUpdateController {
             MultipartFile image) {
 
         validateAuth(userInfo, blog);
-        blog = imageUploadService.upload(blog, image);
+        ImageUrl newImageUrl = imageUploadService.upload(image);
+        blog.setImageUrl(newImageUrl.getValue());
 
         return ResponseEntity.ok(updateService.updateBlog(blog));
     }
