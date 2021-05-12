@@ -10,8 +10,8 @@ class User {
 let userInfoData;
 
 const userSearchButton = document.querySelector('.blog-member-search');
-userSearchButton.addEventListener('click', getUserInfo);
-document.querySelector('#blog-member-input').setAttribute('onkeypress', 'if( event.keyCode == 13 ){getUserInfo();}');
+// userSearchButton.addEventListener('click', getUserInfo);
+// document.querySelector('#blog-member-input').setAttribute('onkeypress', 'if( event.keyCode == 13 ){getUserInfo();}');
 
 function createElement(tagName, className, text, attributeNames, attributeValues) {
     const element = document.createElement(tagName);
@@ -179,6 +179,8 @@ function activeAlertContainer(type) {
     } else if (type === 'notValidEmail') {
         alertMessage.innerHTML = '올바른 이메일 형식을 입력해 주세요.';
         focusLocation = 'member';
+    } else if (type === 'memberInviteLinkCopy') {
+        alertMessage.innerHTML = '초대 링크가 복사되었습니다.';
     }
 
     const confirm = document.querySelector('.alert-confirm');
