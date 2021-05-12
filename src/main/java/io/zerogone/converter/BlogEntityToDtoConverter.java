@@ -25,7 +25,7 @@ public class BlogEntityToDtoConverter implements Converter<Blog, BlogDto> {
         dto.setIntroduce(entity.getIntroduce());
         dto.setImageUrl(entity.getImageUrl());
         dto.setInvitationKey(entity.getInvitationKey());
-        dto.setMembers(entity.getMembers().stream().map(blogMemberConverter::convert).collect(Collectors.toSet()));
+        dto.setMembers(entity.getMembers().stream().map(blogMemberConverter::convert).collect(Collectors.toList()));
         return dto;
     }
 }
