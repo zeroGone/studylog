@@ -22,7 +22,7 @@ public class Blog {
     @Column(name = "image_url")
     private String imageUrl;
 
-    @OneToMany(mappedBy = "blogId", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "blog", cascade = CascadeType.PERSIST)
     private final Set<BlogMember> members = new HashSet<>();
 
     @Column(name = "invitation_key", nullable = false, updatable = false)
