@@ -39,6 +39,10 @@ public class UserDao {
         logger.info("-----Updating user's image url is ended-----");
     }
 
+    public User findById(int id) {
+        return entityManager.find(User.class, id);
+    }
+
     public User findByEmail(String email) {
         logger.info("-----Find user with user's blogs by email : " + email + " -----");
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();

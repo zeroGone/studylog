@@ -6,6 +6,8 @@ import io.zerogone.model.ErrorResponse;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindException;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -63,5 +65,33 @@ public class ApiControllerAdvice {
                         .detail(exception.getMessage())
                         .build(),
                 HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(BindException.class)
+    public ResponseEntity<ErrorResponse> handleBindException(BindException exception) {
+        FieldError fieldError = exception.getFieldError();
+        logger.error("유효성 검증 실패 : " + fieldError.toString());
+        return ResponseEntity
+                .badRequest()
+                .body(new ErrorResponse
+                        .Builder()
+                        .exception(IllegalArgumentException.class)
+                        .cause(fieldError.getDefaultMessage())
+                        .detail("잘못된 값 : " + fieldError.getField())
+                        .statusCode(HttpStatus.BAD_REQUEST)
+                        .build());
+    }
+
+    @ExceptionHandler(NotExistDataException.class)
+    public ResponseEntity<ErrorResponse> handleNotExistDataException(NotExistDataException exception) {
+        return ResponseEntity
+                .badRequest()
+                .body(new ErrorResponse
+                        .Builder()
+                        .exception(NotExistDataException.class)
+                        .cause(exception.getMessage())
+                        .detail("입력된 값:[" + exception.getExceptionValue() + "]")
+                        .statusCode(HttpStatus.BAD_REQUEST)
+                        .build());
     }
 }

@@ -30,10 +30,10 @@ public class BlogMember {
 
     }
 
-    private BlogMember(Builder builder) {
-        this.user = new User(builder.userId, builder.name, builder.email, builder.nickName, builder.imageUrl);
-        this.blog = builder.blog;
-        this.role = builder.role;
+    public BlogMember(User user, Blog blog, MemberRole role) {
+        this.user = user;
+        this.blog = blog;
+        this.role = role;
     }
 
     public int getUserId() {
@@ -79,49 +79,5 @@ public class BlogMember {
     @Override
     public int hashCode() {
         return Objects.hash(getUserId(), getBlogId());
-    }
-
-    public static class Builder {
-        private final Blog blog;
-        private final int userId;
-        private String name;
-        private String nickName;
-        private String email;
-        private String imageUrl;
-        private MemberRole role;
-
-        public Builder(Blog blog, int userId) {
-            this.blog = blog;
-            this.userId = userId;
-        }
-
-        public Builder name(String name) {
-            this.name = name;
-            return this;
-        }
-
-        public Builder nickName(String nickName) {
-            this.nickName = nickName;
-            return this;
-        }
-
-        public Builder email(String email) {
-            this.email = email;
-            return this;
-        }
-
-        public Builder imageUrl(String imageUrl) {
-            this.imageUrl = imageUrl;
-            return this;
-        }
-
-        public Builder role(MemberRole role) {
-            this.role = role;
-            return this;
-        }
-
-        public BlogMember build() {
-            return new BlogMember(this);
-        }
     }
 }
