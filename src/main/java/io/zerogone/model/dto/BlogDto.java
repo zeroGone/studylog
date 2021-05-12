@@ -1,13 +1,19 @@
 package io.zerogone.model.dto;
 
-import java.util.Set;
+import io.zerogone.validator.NotOverlap;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
+import java.util.List;
 
 public class BlogDto {
     private int id;
+    @NotEmpty(message = "블로그의 이름이 있어야 합니다")
     private String name;
     private String introduce;
     private String imageUrl;
-    private Set<BlogMemberDto> members;
+    @NotOverlap
+    private List<@Valid BlogMemberDto> members;
     private String invitationKey;
 
     public int getId() {
@@ -42,11 +48,11 @@ public class BlogDto {
         this.imageUrl = imageUrl;
     }
 
-    public Set<BlogMemberDto> getMembers() {
+    public List<BlogMemberDto> getMembers() {
         return members;
     }
 
-    public void setMembers(Set<BlogMemberDto> members) {
+    public void setMembers(List<BlogMemberDto> members) {
         this.members = members;
     }
 
