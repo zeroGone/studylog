@@ -1,68 +1,56 @@
 package io.zerogone.service.create;
 
-import ch.qos.logback.classic.Logger;
-import io.zerogone.exception.NotNullPropertyException;
 import io.zerogone.exception.UniquePropertyException;
 import io.zerogone.model.dto.UserDto;
 import io.zerogone.model.entity.User;
 import io.zerogone.repository.UserDao;
-import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.PersistenceException;
+import javax.persistence.NoResultException;
 import javax.transaction.Transactional;
 
 @Service
 public class UserCreateService implements CreateService<UserDto> {
-    private static final String USER_DEFAULT_IMAGE_URL = "/img/user-default/";
-    private static final String USER_DEFAULT_IMAGE_TYPE = ".png";
-
-    private final Logger logger = (Logger) LoggerFactory.getLogger(this.getClass());
     private final UserDao userDao;
-    private final Converter<User, UserDto> converter;
+    private final Converter<User, UserDto> entityConverter;
+    private final Converter<UserDto, User> dtoConverter;
 
-    public UserCreateService(UserDao userDao, Converter<User, UserDto> converter) {
+    public UserCreateService(UserDao userDao, Converter<User, UserDto> entityConverter, Converter<UserDto, User> dtoConverter) {
         this.userDao = userDao;
-        this.converter = converter;
+        this.entityConverter = entityConverter;
+        this.dtoConverter = dtoConverter;
     }
 
     @Transactional
     @Override
     public UserDto create(UserDto dto) {
-        validate(dto);
-
-        if (dto.getImageUrl() == null) {
-            int randomNumber = (int) (Math.random() * 10);
-            dto.setImageUrl(USER_DEFAULT_IMAGE_URL + randomNumber + USER_DEFAULT_IMAGE_TYPE);
+        if (isNotUniqueEmail(dto.getEmail())) {
+            throw new UniquePropertyException("이메일이 중복되었습니다", dto.getEmail());
         }
-
-        User entity = new User(dto.getName(), dto.getEmail(), dto.getNickName(), dto.getImageUrl());
-
-        try {
-            userDao.save(entity);
-        } catch (PersistenceException persistenceException) {
-            logger.error("user property is duplicated ! " + persistenceException.getMessage());
-            throw new UniquePropertyException("유저의 이메일이나 닉네임이 중복되었습니다");
+        if (isNotUniqueNickName(dto.getNickName())) {
+            throw new UniquePropertyException("닉네임이 중복되었습니다", dto.getNickName());
         }
-
-        return converter.convert(entity);
+        User entity = dtoConverter.convert(dto);
+        userDao.save(entity);
+        return entityConverter.convert(entity);
     }
 
-    private void validate(UserDto userDto) {
-        logger.info("-----validate created User data-----");
-        if (userDto.getId() != 0) {
-            throw new IllegalArgumentException("생성 시 id를 부여하면 안됩니다");
+    private boolean isNotUniqueNickName(String nickName) {
+        try {
+            userDao.findByNickName(nickName);
+            return true;
+        } catch (NoResultException noResultException) {
+            return false;
         }
-        if (userDto.getName() == null) {
-            throw new NotNullPropertyException(User.class, "name");
+    }
+
+    private boolean isNotUniqueEmail(String email) {
+        try {
+            userDao.findByEmail(email);
+            return true;
+        } catch (NoResultException noResultException) {
+            return false;
         }
-        if (userDto.getEmail() == null) {
-            throw new NotNullPropertyException(User.class, "email");
-        }
-        if (userDto.getNickName() == null) {
-            throw new NotNullPropertyException(User.class, "nick name");
-        }
-        logger.info("-----validated Blog data!-----");
     }
 }

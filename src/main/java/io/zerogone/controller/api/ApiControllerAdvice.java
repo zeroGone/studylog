@@ -11,6 +11,9 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+
 @RestControllerAdvice
 public class ApiControllerAdvice {
     private final Logger logger = (Logger) LoggerFactory.getLogger(this.getClass());
@@ -78,6 +81,25 @@ public class ApiControllerAdvice {
                         .exception(IllegalArgumentException.class)
                         .cause(fieldError.getDefaultMessage())
                         .detail("잘못된 값 : " + fieldError.getField())
+                        .statusCode(HttpStatus.BAD_REQUEST)
+                        .build());
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<ErrorResponse> handleConstraintViolationException(ConstraintViolationException exception) {
+        StringBuilder causes = new StringBuilder();
+        StringBuilder invalidProperties = new StringBuilder();
+        for (ConstraintViolation constraintViolation : exception.getConstraintViolations()) {
+            causes.append(constraintViolation.getMessage()).append(" ");
+            invalidProperties.append(constraintViolation.getPropertyPath().toString()).append(" ");
+        }
+        return ResponseEntity
+                .badRequest()
+                .body(new ErrorResponse
+                        .Builder()
+                        .exception(IllegalArgumentException.class)
+                        .cause("[" + causes + "]")
+                        .detail("잘못 입력된 속성 : [" + invalidProperties + "]")
                         .statusCode(HttpStatus.BAD_REQUEST)
                         .build());
     }

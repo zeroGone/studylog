@@ -1,9 +1,7 @@
 package io.zerogone.exception;
 
-import javax.persistence.PersistenceException;
-
-public class UniquePropertyException extends PersistenceException {
-    public UniquePropertyException(String message) {
-        super(message);
+public class UniquePropertyException extends CustomRuntimeException {
+    public UniquePropertyException(String message, Object exceptionValue) {
+        super(message, exceptionValue);
     }
 }

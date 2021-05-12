@@ -1,18 +1,22 @@
 package io.zerogone.model.dto;
 
+import io.zerogone.validator.NewEntity;
 import io.zerogone.validator.NotOverlap;
+import org.hibernate.validator.constraints.Range;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.groups.Default;
 import java.util.List;
 
 public class BlogDto {
+    @Range(min = 0, max = 0, groups = NewEntity.class, message = "생성 시 id를 가지고 있으면 안됩니다")
     private int id;
-    @NotEmpty(message = "블로그의 이름이 있어야 합니다")
+    @NotEmpty(message = "블로그의 이름이 있어야 합니다", groups = {NewEntity.class, Default.class})
     private String name;
     private String introduce;
     private String imageUrl;
-    @NotOverlap
+    @NotOverlap(groups = {NewEntity.class, Default.class})
     private List<@Valid BlogMemberDto> members;
     private String invitationKey;
 

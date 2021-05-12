@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 @RestController
 public class UserCreateController {
@@ -27,7 +28,7 @@ public class UserCreateController {
     }
 
     @PostMapping("api/user")
-    public ResponseEntity<UserDto> handleCreateUserApi(@ModelAttribute UserDto userDto,
+    public ResponseEntity<UserDto> handleCreateUserApi(@ModelAttribute @Valid UserDto userDto,
                                                        @RequestPart(required = false) MultipartFile image,
                                                        HttpSession httpSession) {
 

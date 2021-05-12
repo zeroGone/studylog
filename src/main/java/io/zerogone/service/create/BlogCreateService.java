@@ -43,7 +43,7 @@ public class BlogCreateService implements CreateService<BlogDto> {
     @Override
     public BlogDto create(BlogDto dto) {
         if (isOverlappedBlogName(dto.getName())) {
-            throw new UniquePropertyException("블로그 이름이 중복되었습니다");
+            throw new UniquePropertyException("블로그 이름이 중복되었습니다", dto.getName());
         }
 
         createBlogInvitationKey(dto);
