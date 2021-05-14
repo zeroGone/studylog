@@ -7,7 +7,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -85,6 +87,22 @@ public class ApiControllerAdvice {
                         .build());
     }
 
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException exception) {
+        BindingResult bindingResult = exception.getBindingResult();
+        FieldError fieldError = bindingResult.getFieldError();
+        return ResponseEntity
+                .badRequest()
+                .body(new ErrorResponse
+                        .Builder()
+                        .exception(exception.getClass())
+                        .cause(fieldError.getDefaultMessage())
+                        .detail("잘못된 값 : " + fieldError.getField())
+                        .statusCode(HttpStatus.BAD_REQUEST)
+                        .build()
+                );
+    }
+
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ErrorResponse> handleConstraintViolationException(ConstraintViolationException exception) {
         StringBuilder causes = new StringBuilder();
@@ -113,7 +131,7 @@ public class ApiControllerAdvice {
                         .exception(NotExistDataException.class)
                         .cause(exception.getMessage())
                         .detail("입력된 값:[" + exception.getExceptionValue() + "]")
-                        .statusCode(HttpStatus.BAD_REQUEST)
+                        .statusCode(HttpStatus.NOT_FOUND)
                         .build());
     }
 }
