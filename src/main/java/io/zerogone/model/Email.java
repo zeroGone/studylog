@@ -8,13 +8,13 @@ import javax.validation.constraints.NotBlank;
 public class Email {
     @NotBlank(message = "이메일 형식이어야 합니다")
     @javax.validation.constraints.Email(message = "이메일 형식이어야 합니다")
-    private final String value;
+    private final String email;
 
     public Email(String email) {
-        value = email;
+        this.email = email;
     }
 
-    public String getValue() {
-        return value;
+    public String get() {
+        return email;
     }
 }
