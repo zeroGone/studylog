@@ -1,32 +1,31 @@
 package io.zerogone.controller;
 
-import io.zerogone.exception.NotExistedDataException;
-import io.zerogone.model.Name;
+import io.zerogone.model.BlogName;
 import io.zerogone.model.dto.BlogDto;
 import io.zerogone.service.search.SearchService;
-import org.springframework.http.HttpStatus;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
 
-@Controller
-public class BlogController {
-    private final SearchService<Name, BlogDto> searchService;
+import javax.validation.Valid;
 
-    public BlogController(SearchService<Name, BlogDto> searchService) {
+@Controller
+@Validated
+public class BlogController {
+    private final SearchService<BlogName, BlogDto> searchService;
+
+    public BlogController(@Qualifier("blogSearchService") SearchService<BlogName, BlogDto> searchService) {
         this.searchService = searchService;
     }
 
     @GetMapping("{name}")
-    public ModelAndView handleBlogMainPage(@PathVariable Name name) {
+    public ModelAndView handleBlogMainPage(@PathVariable @Valid BlogName name) {
         ModelAndView modelAndView = new ModelAndView();
-        try {
-            modelAndView.addObject("blog", searchService.search(name));
-            modelAndView.setViewName("main");
-        } catch (NotExistedDataException notExistedDataException) {
-            modelAndView.setStatus(HttpStatus.NOT_FOUND);
-        }
+        modelAndView.addObject("blog", searchService.search(name));
+        modelAndView.setViewName("main");
         return modelAndView;
     }
 }
