@@ -1,6 +1,6 @@
 package io.zerogone.service.search;
 
-import io.zerogone.exception.NotExistedDataException;
+import io.zerogone.exception.NotExistDataException;
 import io.zerogone.model.dto.PostDto;
 import io.zerogone.model.entity.Post;
 import io.zerogone.repository.PostDao;
@@ -24,7 +24,7 @@ public class PostSearchService implements SearchService<Integer, PostDto> {
     public PostDto search(Integer id) {
         Post entity = postDao.findById(id);
         if (entity == null) {
-            throw new NotExistedDataException(Post.class, "id로 게시글 검색", id.toString());
+            throw new NotExistDataException("해당 아이디를 가진 게시글이 없습니다", id);
         }
         entity.hit();
         return converter.convert(entity);
