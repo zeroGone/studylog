@@ -20,6 +20,7 @@ public class PostDao {
 
     public void save(Post post) {
         entityManager.persist(post);
+        entityManager.refresh(post);
     }
 
     public Post findById(int id) {
