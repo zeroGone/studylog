@@ -1,12 +1,9 @@
 package io.zerogone.model;
 
-import org.springframework.validation.annotation.Validated;
-
 import javax.validation.constraints.NotBlank;
 
-@Validated
 public class Email {
-    @NotBlank(message = "이메일 형식이어야 합니다")
+    @NotBlank(message = "공백이면 안됩니다")
     @javax.validation.constraints.Email(message = "이메일 형식이어야 합니다")
     private final String email;
 
