@@ -18,7 +18,7 @@ public class BlogSearchController {
     }
 
     @GetMapping("api/blog")
-    public BlogDto handleBlogSearchApi(@RequestParam @Valid BlogName name) {
+    public BlogDto handleSearchingBlogByName(@RequestParam @Valid BlogName name) {
         return searchService.search(name);
     }
 }
