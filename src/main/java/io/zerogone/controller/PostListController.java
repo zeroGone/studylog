@@ -9,9 +9,11 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
+@Validated
 public class PostListController {
     private final SearchService<BlogName, List<PostDto>> searchService;
 
@@ -20,7 +22,7 @@ public class PostListController {
     }
 
     @GetMapping("{name}/posts")
-    public String getPostListViewName(@PathVariable @Validated BlogName name, Model model) {
+    public String getPostListViewName(@PathVariable @Valid BlogName name, Model model) {
         List<PostDto> postDtos = searchService.search(name);
         model.addAttribute("posts", postDtos);
         return "post_list";
