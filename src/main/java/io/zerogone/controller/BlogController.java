@@ -3,7 +3,6 @@ package io.zerogone.controller;
 import io.zerogone.model.BlogName;
 import io.zerogone.model.dto.BlogDto;
 import io.zerogone.service.search.SearchService;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +16,7 @@ import javax.validation.Valid;
 public class BlogController {
     private final SearchService<BlogName, BlogDto> searchService;
 
-    public BlogController(@Qualifier("blogSearchService") SearchService<BlogName, BlogDto> searchService) {
+    public BlogController(SearchService<BlogName, BlogDto> searchService) {
         this.searchService = searchService;
     }
 

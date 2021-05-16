@@ -3,7 +3,6 @@ package io.zerogone.controller;
 import io.zerogone.model.Email;
 import io.zerogone.model.dto.UserDto;
 import io.zerogone.service.search.SearchService;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
@@ -17,7 +16,7 @@ import javax.validation.Valid;
 public class MyPageController {
     private final SearchService<Email, UserDto> searchService;
 
-    public MyPageController(@Qualifier("userSearchService") SearchService<Email, UserDto> searchService) {
+    public MyPageController(SearchService<Email, UserDto> searchService) {
         this.searchService = searchService;
     }
 
