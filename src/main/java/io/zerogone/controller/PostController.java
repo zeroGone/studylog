@@ -19,11 +19,6 @@ public class PostController {
         this.searchService = searchService;
     }
 
-    @GetMapping("{name}/posts/new")
-    public String getCreatePostViewName() {
-        return "post_write";
-    }
-
     @GetMapping("{name}/posts/{id}")
     public String getPostViewNameWithPostDto(@PathVariable @Positive Integer id, Model model) {
         model.addAttribute("post", searchService.search(id));
