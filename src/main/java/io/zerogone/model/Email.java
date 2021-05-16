@@ -1,13 +1,17 @@
 package io.zerogone.model;
 
-public class Email {
-    private final String value;
+import javax.validation.constraints.NotBlank;
 
-    public Email(String value) {
-        this.value = value;
+public class Email {
+    @NotBlank(message = "공백이면 안됩니다")
+    @javax.validation.constraints.Email(message = "이메일 형식이어야 합니다")
+    private final String email;
+
+    public Email(String email) {
+        this.email = email;
     }
 
-    public String getValue() {
-        return value;
+    public String get() {
+        return email;
     }
 }

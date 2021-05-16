@@ -2,7 +2,11 @@ package io.zerogone.model.dto;
 
 import io.zerogone.model.entity.MemberRole;
 
+import javax.validation.constraints.Positive;
+import java.util.Objects;
+
 public class BlogMemberDto {
+    @Positive(message = "블로그 멤버의 아이디는 명시되어야 합니다")
     private int id;//userId
     private String name;
     private String nickName;
@@ -65,5 +69,18 @@ public class BlogMemberDto {
 
     public void setRole(MemberRole role) {
         this.role = role;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BlogMemberDto that = (BlogMemberDto) o;
+        return id == that.id && blogId == that.blogId;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, blogId);
     }
 }

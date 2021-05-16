@@ -1,22 +1,17 @@
 package io.zerogone.service.fileupload;
 
-import io.zerogone.model.dto.BlogDto;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 @Service
-public class BlogImageUploadService implements ImageUploadService<BlogDto> {
-    private static final String UPLOAD_PATH = "img/blog";
-    private final AwsUploader awsUploader;
+public class BlogImageUploadService extends ImageUploadService {
+    private static final String BLOG_DEFAULT_IMAGE_URL = "/img/blog-default.png";
 
     public BlogImageUploadService(AwsUploader awsUploader) {
-        this.awsUploader = awsUploader;
+        super(awsUploader, "img/blog");
     }
 
     @Override
-    public BlogDto upload(BlogDto dto, MultipartFile image) {
-        ImageUrl imageUrl = awsUploader.upload(new Image(UPLOAD_PATH, image));
-        dto.setImageUrl(imageUrl.getValue());
-        return dto;
+    ImageUrl getDefaultImageUrl() {
+        return new ImageUrl(BLOG_DEFAULT_IMAGE_URL);
     }
 }

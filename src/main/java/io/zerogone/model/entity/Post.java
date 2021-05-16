@@ -1,9 +1,12 @@
 package io.zerogone.model.entity;
 
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -31,11 +34,12 @@ public class Post {
     @JoinColumn(name = "blog_id", referencedColumnName = "id")
     private Blog blog;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User writer;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.PERSIST)
+    @Fetch(FetchMode.JOIN)
     @JoinTable(name = "post_has_category",
             joinColumns = @JoinColumn(name = "post_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id")
@@ -57,11 +61,7 @@ public class Post {
         this.contents = contents;
         this.writer = writer;
         this.blog = blog;
-    }
-
-    public Post(String title, String contents, User writer, Blog blog, List<Category> categories) {
-        this(title, contents, writer, blog);
-        this.categories = categories;
+        categories = new ArrayList<>();
     }
 
     public int getId() {
@@ -96,8 +96,8 @@ public class Post {
         return isReviewing;
     }
 
-    public void setCategories(List<Category> categories) {
-        this.categories = categories;
+    public void addCategory(Category category) {
+        categories.add(category);
     }
 
     public List<Category> getCategories() {

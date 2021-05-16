@@ -1,4 +1,4 @@
-package io.zerogone.controller.api;
+package io.zerogone.controller.advice;
 
 import ch.qos.logback.classic.Logger;
 import io.zerogone.exception.*;
@@ -7,24 +7,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class ApiControllerAdvice {
     private final Logger logger = (Logger) LoggerFactory.getLogger(this.getClass());
-
-    @ExceptionHandler(NotExistedDataException.class)
-    public ResponseEntity<ErrorResponse> handleNotExsitedDataException(NotExistedDataException notExistedDataException) {
-        logger.info("Searching entity is failed!");
-        return new ResponseEntity<>(
-                new ErrorResponse.Builder()
-                        .exception(NotExistedDataException.class)
-                        .cause("검색 조건에 부합한 데이터가 존재하지 않음")
-                        .statusCode(HttpStatus.NOT_FOUND)
-                        .detail(notExistedDataException.getMessage())
-                        .build()
-                , HttpStatus.NOT_FOUND);
-    }
 
     @ExceptionHandler(FileUploadException.class)
     public ResponseEntity<ErrorResponse> handleFileUploadException(FileUploadException fileUploadException) {
@@ -63,5 +51,17 @@ public class ApiControllerAdvice {
                         .detail(exception.getMessage())
                         .build(),
                 HttpStatus.BAD_REQUEST);
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NotExistDataException.class)
+    public ErrorResponse handleNotExistDataException(NotExistDataException exception) {
+        return new ErrorResponse
+                .Builder()
+                .exception(NotExistDataException.class)
+                .cause(exception.getMessage())
+                .detail("입력된 값:[" + exception.getExceptionValue() + "]")
+                .statusCode(HttpStatus.NOT_FOUND)
+                .build();
     }
 }
