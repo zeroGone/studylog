@@ -1,8 +1,5 @@
 package io.zerogone.service.create;
 
-import io.zerogone.exception.NotExistDataException;
-import io.zerogone.exception.NotExistedDataException;
-import io.zerogone.exception.UniquePropertyException;
 import io.zerogone.model.dto.BlogDto;
 import io.zerogone.model.dto.BlogMemberDto;
 import io.zerogone.model.entity.Blog;
@@ -12,55 +9,57 @@ import io.zerogone.model.entity.User;
 import io.zerogone.repository.BlogDao;
 import io.zerogone.repository.UserDao;
 import io.zerogone.service.BlogInvitationService;
-import org.springframework.core.convert.converter.Converter;
+import io.zerogone.service.fileupload.ImageUploadService;
+import io.zerogone.service.fileupload.ImageUrl;
+import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
-public class BlogCreateService implements CreateService<BlogDto> {
+public class BlogCreateService implements CreateWithImageService<BlogDto> {
     private final BlogDao blogDao;
     private final UserDao userDao;
     private final BlogInvitationService blogInvitationService;
-    private final Converter<Blog, BlogDto> entityConverter;
-    private final Converter<BlogDto, Blog> dtoConverter;
+    private final ConversionService conversionService;
+    private final ImageUploadService imageUploadService;
 
     public BlogCreateService(BlogDao blogDao,
-                             UserDao userDao, BlogInvitationService blogInvitationService,
-                             Converter<Blog, BlogDto> entityConverter,
-                             Converter<BlogDto, Blog> dtoConverter) {
+                             UserDao userDao,
+                             BlogInvitationService blogInvitationService,
+                             ConversionService conversionService,
+                             @Qualifier("blogImageUploadService") ImageUploadService imageUploadService) {
         this.blogDao = blogDao;
         this.userDao = userDao;
         this.blogInvitationService = blogInvitationService;
-        this.entityConverter = entityConverter;
-        this.dtoConverter = dtoConverter;
+        this.conversionService = conversionService;
+        this.imageUploadService = imageUploadService;
+    }
+
+    @Transactional
+    @Override
+    public BlogDto create(BlogDto dto, MultipartFile image) {
+        ImageUrl imageUrl = imageUploadService.upload(image);
+        dto.setImageUrl(imageUrl.getValue());
+        return create(dto);
     }
 
     @Transactional
     @Override
     public BlogDto create(BlogDto dto) {
-        if (isOverlappedBlogName(dto.getName())) {
-            throw new UniquePropertyException("블로그 이름이 중복되었습니다", dto.getName());
-        }
-
         createBlogInvitationKey(dto);
-        Blog entity = dtoConverter.convert(dto);
+        Blog entity = conversionService.convert(dto, Blog.class);
         addBlogMemberEntities(entity, dto.getMembers());
         blogDao.save(entity);
         inviteMembers(entity);
-        return entityConverter.convert(entity);
-    }
-
-    private boolean isOverlappedBlogName(String name) {
-        try {
-            blogDao.findByName(name);
-            return true;
-        } catch (NotExistedDataException notExistedDataException) {
-            return false;
-        }
+        return conversionService.convert(entity, BlogDto.class);
     }
 
     private void createBlogInvitationKey(BlogDto dto) {
@@ -73,7 +72,9 @@ public class BlogCreateService implements CreateService<BlogDto> {
         for (BlogMemberDto member : memberDtos) {
             User user = userDao.findById(member.getId());
             if (user == null) {
-                throw new NotExistDataException("유효하지 않은 유저가 포함되어 있습니다", "id:" + member.getId());
+                String message = "유효하지 않은 유저가 포함되어 있습니다";
+                SQLException sqlException = new SQLException(message);
+                throw new ConstraintViolationException(message, sqlException, "id=" + member.getId());
             }
             blog.addMember(new BlogMember(user, blog, member.getRole()));
         }
