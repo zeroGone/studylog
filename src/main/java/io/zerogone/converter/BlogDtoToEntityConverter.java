@@ -9,6 +9,6 @@ import org.springframework.stereotype.Component;
 public class BlogDtoToEntityConverter implements Converter<BlogDto, Blog> {
     @Override
     public Blog convert(BlogDto dto) {
-        return new Blog(dto.getName(), dto.getIntroduce(), dto.getImageUrl(), dto.getInvitationKey());
+        return new Blog(dto.getId(), dto.getName(), dto.getIntroduce(), dto.getImageUrl(), dto.getInvitationKey());
     }
 }

@@ -1,29 +1,37 @@
 package io.zerogone.controller.api;
 
 import io.zerogone.model.dto.CommentDto;
+import io.zerogone.model.dto.PostDto;
 import io.zerogone.model.dto.UserDto;
 import io.zerogone.service.create.CreateService;
+import io.zerogone.service.search.SearchService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import javax.validation.constraints.Positive;
 
 @RestController
+@Validated
 public class CommentCreateController {
     private final CreateService<CommentDto> createService;
+    private final SearchService<Integer, PostDto> searchService;
 
-    public CommentCreateController(CreateService<CommentDto> createService) {
+    public CommentCreateController(CreateService<CommentDto> createService,
+                                   SearchService<Integer, PostDto> searchService) {
         this.createService = createService;
+        this.searchService = searchService;
     }
 
-    @PostMapping("api/comment")
-    public ResponseEntity<CommentDto> handleCreatingCommentApi(
-            @SessionAttribute UserDto userInfo,
-            @RequestBody CommentDto comment) {
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("blogs/{blogId}/posts/{postId}/comments")
+    public CommentDto handleCreatingCommentApi(@SessionAttribute @Valid UserDto userInfo,
+                                               @RequestBody @Valid CommentDto comment,
+                                               @PathVariable @Positive Integer postId) {
 
         comment.setWriter(userInfo);
-        return new ResponseEntity<>(createService.create(comment), HttpStatus.CREATED);
+        comment.setPost(searchService.search(postId));
+        return createService.create(comment);
     }
 }
