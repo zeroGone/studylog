@@ -1,76 +1,58 @@
 package io.zerogone.service.create;
 
-import ch.qos.logback.classic.Logger;
-import io.zerogone.exception.NotExistedDataException;
-import io.zerogone.exception.NotNullPropertyException;
-import io.zerogone.model.dto.BlogDto;
 import io.zerogone.model.dto.PostDto;
 import io.zerogone.model.dto.UserDto;
-import io.zerogone.model.entity.Blog;
 import io.zerogone.model.entity.Category;
 import io.zerogone.model.entity.Post;
-import io.zerogone.model.entity.User;
 import io.zerogone.repository.CategoryDao;
 import io.zerogone.repository.PostDao;
-import org.slf4j.LoggerFactory;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import javax.persistence.NoResultException;
+import javax.transaction.Transactional;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PostCreateService implements CreateService<PostDto> {
-    private final Logger logger = (Logger) LoggerFactory.getLogger(this.getClass());
     private final PostDao postDao;
     private final CategoryDao categoryDao;
+    private final ConversionService conversionService;
 
-    public PostCreateService(PostDao postDao, CategoryDao categoryDao) {
+    public PostCreateService(PostDao postDao, CategoryDao categoryDao, ConversionService conversionService) {
         this.postDao = postDao;
         this.categoryDao = categoryDao;
+        this.conversionService = conversionService;
     }
 
     @Override
+    @Transactional
     public PostDto create(PostDto dto) {
-        validate(dto);
-        Post entity = convert(dto);
+        Post entity = conversionService.convert(dto, Post.class);
         postDao.save(entity);
-        dto.setId(entity.getId());
-        return dto;
+
+        setCategories(entity, dto.getCategories());
+
+        PostDto createdPostDto = conversionService.convert(entity, PostDto.class);
+        createdPostDto.setWriter(conversionService.convert(entity.getWriter(), UserDto.class));
+        createdPostDto.setCategories(entity.getCategories()
+                .stream()
+                .map(category -> conversionService.convert(category, String.class))
+                .collect(Collectors.toList()));
+        return createdPostDto;
     }
 
-    private void validate(PostDto dto) {
-        logger.info("-----Validating post data start-----");
-        if (dto.getTitle() == null) {
-            throw new NotNullPropertyException(Post.class, "title");
-        }
-        if (dto.getContents() == null) {
-            throw new NotNullPropertyException(Post.class, "contents");
-        }
-        logger.info("-----Validating post data is ended-----");
-    }
-
-    private Post convert(PostDto dto) {
-        UserDto writer = dto.getWriter();
-        User user = new User(writer.getId(), writer.getName(), writer.getEmail(), writer.getNickName(), writer.getImageUrl());
-
-        BlogDto blogDto = dto.getBlog();
-        Blog blog = new Blog(blogDto.getId(), blogDto.getName(), blogDto.getIntroduce(), blogDto.getImageUrl(), blogDto.getInvitationKey());
-
-        List<Category> categories = saveCategories(dto.getCategories());
-        return new Post(dto.getTitle(), dto.getContents(), user, blog, categories);
-    }
-
-    private List<Category> saveCategories(List<String> categories) {
-        List<Category> persistedCategories = new ArrayList<>();
-        for (String category : categories) {
-            Category entity = new Category(category);
+    private void setCategories(Post post, List<String> categories) {
+        for (String categoryName : categories) {
+            Category category;
             try {
-                entity = categoryDao.findByName(category);
-            } catch (NotExistedDataException notExistedDataException) {
-                categoryDao.save(entity);
+                category = categoryDao.findByName(categoryName);
+            } catch (NoResultException noResultException) {
+                category = conversionService.convert(categoryName, Category.class);
+                categoryDao.save(category);
             }
-            persistedCategories.add(entity);
+            post.addCategory(category);
         }
-        return persistedCategories;
     }
 }

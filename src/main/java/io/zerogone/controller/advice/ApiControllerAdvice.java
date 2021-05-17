@@ -3,6 +3,7 @@ package io.zerogone.controller.advice;
 import ch.qos.logback.classic.Logger;
 import io.zerogone.exception.CustomRuntimeException;
 import io.zerogone.exception.FileUploadException;
+import io.zerogone.exception.NotAuthorizedException;
 import io.zerogone.exception.NotExistDataException;
 import io.zerogone.model.ErrorResponse;
 import org.slf4j.LoggerFactory;
@@ -55,13 +56,24 @@ public class ApiControllerAdvice {
     }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    @ExceptionHandler(value = CustomRuntimeException.class)
+    @ExceptionHandler(CustomRuntimeException.class)
     public ErrorResponse handleBlogCreateException(CustomRuntimeException exception) {
         logger.debug("catch exception : " + exception.getMessage());
         return new ErrorResponse.Builder()
                 .exception(exception.getClass())
                 .cause(exception.getMessage())
                 .statusCode(HttpStatus.INTERNAL_SERVER_ERROR)
+                .detail(exception.getExceptionValue().toString())
+                .build();
+    }
+
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(NotAuthorizedException.class)
+    public ErrorResponse handleNotAuthorizedException(NotAuthorizedException exception) {
+        return new ErrorResponse.Builder()
+                .exception(exception.getClass())
+                .cause(exception.getMessage())
+                .statusCode(HttpStatus.UNAUTHORIZED)
                 .detail(exception.getExceptionValue().toString())
                 .build();
     }

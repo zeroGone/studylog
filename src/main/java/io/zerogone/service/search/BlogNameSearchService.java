@@ -13,11 +13,11 @@ import javax.persistence.NoResultException;
 import java.util.stream.Collectors;
 
 @Service
-public class BlogSearchService implements SearchService<BlogName, BlogDto> {
+public class BlogNameSearchService implements SearchService<BlogName, BlogDto> {
     private final BlogDao blogDao;
     private final ConversionService conversionService;
 
-    public BlogSearchService(BlogDao blogDao, ConversionService conversionService) {
+    public BlogNameSearchService(BlogDao blogDao, ConversionService conversionService) {
         this.blogDao = blogDao;
         this.conversionService = conversionService;
     }

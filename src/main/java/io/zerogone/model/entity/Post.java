@@ -6,9 +6,8 @@ import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "post")
@@ -31,20 +30,20 @@ public class Post {
     private int hits;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "blog_id", referencedColumnName = "id")
+    @JoinColumn(name = "blog_id", referencedColumnName = "id", updatable = false)
     private Blog blog;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id", updatable = false)
     private User writer;
 
-    @OneToMany(cascade = CascadeType.PERSIST)
+    @ManyToMany
     @Fetch(FetchMode.JOIN)
     @JoinTable(name = "post_has_category",
             joinColumns = @JoinColumn(name = "post_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id")
     )
-    private List<Category> categories;
+    private Set<Category> categories;
 
     @Column(name = "create_date_time", insertable = false, updatable = false)
     private LocalDateTime createDateTime;
@@ -56,12 +55,15 @@ public class Post {
 
     }
 
-    public Post(String title, String contents, User writer, Blog blog) {
+    public Post(int id, String title, String contents, Blog blog, User writer) {
+        this.id = id;
         this.title = title;
         this.contents = contents;
         this.writer = writer;
         this.blog = blog;
-        categories = new ArrayList<>();
+        categories = new HashSet<>();
+        createDateTime = LocalDateTime.now();
+        updateDateTime = LocalDateTime.now();
     }
 
     public int getId() {
@@ -100,8 +102,8 @@ public class Post {
         categories.add(category);
     }
 
-    public List<Category> getCategories() {
-        return Collections.unmodifiableList(categories);
+    public Set<Category> getCategories() {
+        return categories;
     }
 
     public LocalDateTime getCreateDateTime() {
