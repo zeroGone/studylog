@@ -8,13 +8,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class BlogEntityToDtoConverter implements Converter<Blog, BlogDto> {
     @Override
-    public BlogDto convert(Blog key) {
+    public BlogDto convert(Blog entity) {
         BlogDto dto = new BlogDto();
-        dto.setId(key.getId());
-        dto.setName(key.getName());
-        dto.setIntroduce(key.getIntroduce());
-        dto.setImageUrl(key.getImageUrl());
-        dto.setInvitationKey(key.getInvitationKey());
+        dto.setId(entity.getId());
+        dto.setName(entity.getName());
+        dto.setIntroduce(entity.getIntroduce());
+        dto.setImageUrl(entity.getImageUrl());
+        dto.setInvitationKey(entity.getInvitationKey());
         return dto;
     }
 }

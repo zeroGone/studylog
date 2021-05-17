@@ -1,44 +1,52 @@
 package io.zerogone.controller.api;
 
+import io.zerogone.exception.NotAuthorizedException;
 import io.zerogone.model.dto.BlogDto;
 import io.zerogone.model.dto.PostDto;
 import io.zerogone.model.dto.UserDto;
 import io.zerogone.service.create.CreateService;
+import io.zerogone.service.search.SearchService;
+import io.zerogone.validator.NewEntity;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Positive;
 import java.util.Objects;
 
 @RestController
+@Validated
 public class PostCreateController {
     private final CreateService<PostDto> createService;
+    private final SearchService<Integer, BlogDto> searchService;
 
-    public PostCreateController(CreateService<PostDto> createService) {
+    public PostCreateController(CreateService<PostDto> createService,
+                                SearchService<Integer, BlogDto> searchService) {
         this.createService = createService;
+        this.searchService = searchService;
     }
 
-    @PostMapping("api/post")
-    public ResponseEntity<PostDto> handlePostCreateApi(@SessionAttribute UserDto userInfo,
-                                                       @RequestBody PostDto post) {
+    @PostMapping("blogs/{id}/posts")
+    @ResponseStatus(HttpStatus.CREATED)
+    public PostDto handleCreatingPost(@SessionAttribute @Valid UserDto userInfo,
+                                      @PathVariable @Positive Integer id,
+                                      @RequestBody @Validated(NewEntity.class) PostDto post) {
+
+        BlogDto targetBlog = searchService.search(id);
+        validateWritingAuth(userInfo, targetBlog);
 
         post.setWriter(userInfo);
-        post.setBlog(getTargetBlog(userInfo, post.getBlog()));
+        post.setBlog(targetBlog);
 
-        return new ResponseEntity<>(createService.create(post), HttpStatus.CREATED);
+        return createService.create(post);
     }
 
-    private BlogDto getTargetBlog(UserDto writer, BlogDto blogDto) {
-        BlogDto targetBlog = writer.getBlogs()
+    private void validateWritingAuth(UserDto userInfo, BlogDto targetBlog) {
+        userInfo.getBlogs()
                 .stream()
-                .filter(blog -> Objects.equals(blog.getName(), blogDto.getName()))
+                .filter(userBlog -> Objects.equals(userBlog.getId(), targetBlog.getId()))
                 .findAny()
-                .orElseThrow(IllegalArgumentException::new);
-
-        blogDto.setId(targetBlog.getId());
-        return blogDto;
+                .orElseThrow(new NotAuthorizedException("소속되지 않은 블로그입니다"));
     }
 }

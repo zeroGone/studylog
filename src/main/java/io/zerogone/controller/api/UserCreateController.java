@@ -1,38 +1,39 @@
 package io.zerogone.controller.api;
 
 import io.zerogone.model.dto.UserDto;
-import io.zerogone.service.create.CreateService;
-import io.zerogone.service.fileupload.ImageUploadService;
+import io.zerogone.service.create.CreateWithImageService;
+import io.zerogone.validator.NewEntity;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
 
 @RestController
 public class UserCreateController {
-    private final CreateService<UserDto> createService;
-    private final ImageUploadService<UserDto> imageUploadService;
+    private final CreateWithImageService<UserDto> createService;
 
-    public UserCreateController(CreateService<UserDto> createService, ImageUploadService<UserDto> imageUploadService) {
+    public UserCreateController(CreateWithImageService<UserDto> createService) {
         this.createService = createService;
-        this.imageUploadService = imageUploadService;
     }
 
-    @PostMapping("api/user")
-    public ResponseEntity<UserDto> handleCreateUserApi(@ModelAttribute UserDto userDto,
-                                                       @RequestPart(required = false) MultipartFile image,
-                                                       HttpSession httpSession) {
-        if (image != null) {
-            userDto = imageUploadService.upload(userDto, image);
+    @PostMapping("users")
+    @ResponseStatus(HttpStatus.CREATED)
+    public UserDto handleCreatingUser(@ModelAttribute @Validated(NewEntity.class) UserDto user,
+                                      @RequestPart(required = false) MultipartFile image,
+                                      HttpSession httpSession) {
+        UserDto userInfo;
+
+        if (image == null) {
+            userInfo = createService.create(user);
+        } else {
+            userInfo = createService.create(user, image);
         }
-        UserDto userInfo = createService.create(userDto);
+
         httpSession.setAttribute("userInfo", userInfo);
         httpSession.removeAttribute("visitor");
-        return new ResponseEntity<>(userInfo, HttpStatus.CREATED);
+        return userInfo;
     }
 }
+

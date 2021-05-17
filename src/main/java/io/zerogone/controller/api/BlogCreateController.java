@@ -4,60 +4,54 @@ import io.zerogone.model.dto.BlogDto;
 import io.zerogone.model.dto.BlogMemberDto;
 import io.zerogone.model.dto.UserDto;
 import io.zerogone.model.entity.MemberRole;
-import io.zerogone.service.create.CreateService;
-import io.zerogone.service.fileupload.ImageUploadService;
+import io.zerogone.service.create.CreateWithImageService;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.convert.converter.Converter;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.HashSet;
-import java.util.Set;
+import javax.validation.Valid;
+import java.util.ArrayList;
 
 @RestController
 public class BlogCreateController {
-    private final ImageUploadService<BlogDto> imageUploadService;
-    private final CreateService<BlogDto> createService;
+    private final CreateWithImageService<BlogDto> createService;
+    private final Converter<UserDto, BlogMemberDto> converter;
 
-    public BlogCreateController(ImageUploadService<BlogDto> imageUploadService, CreateService<BlogDto> createService) {
-        this.imageUploadService = imageUploadService;
+    public BlogCreateController(CreateWithImageService<BlogDto> createService,
+                                @Qualifier("userDtoToAdminBlogMemberDtoConverter") Converter<UserDto, BlogMemberDto> converter) {
+        this.converter = converter;
         this.createService = createService;
     }
 
-    @PostMapping("api/blog")
-    public ResponseEntity<BlogDto> handleBlogCreateApi(@SessionAttribute UserDto userInfo,
-                                                       @ModelAttribute BlogDto blogDto,
-                                                       @RequestPart(required = false) MultipartFile image) {
-        if (image != null) {
-            blogDto = imageUploadService.upload(blogDto, image);
-        }
-        blogDto.setMembers(getMembersWithAdmin(blogDto, userInfo));
-        return new ResponseEntity<>(createService.create(blogDto), HttpStatus.CREATED);
-    }
+    @PostMapping("blogs")
+    @ResponseStatus(HttpStatus.CREATED)
+    public BlogDto handleCreatingBlog(@SessionAttribute UserDto userInfo,
+                                      @ModelAttribute @Valid BlogDto blogDto,
+                                      @RequestPart(required = false) MultipartFile image) {
 
-    private Set<BlogMemberDto> getMembersWithAdmin(BlogDto dto, UserDto admin) {
-        Set<BlogMemberDto> members = getMembersWithRole(dto);
-        members.add(getAdminMember(admin));
-        return members;
-    }
+        setBlogMembersRole(blogDto);
+        addAdminBlogMember(blogDto, userInfo);
 
-    private Set<BlogMemberDto> getMembersWithRole(BlogDto dto) {
-        if (dto.getMembers() != null) {
-            dto.getMembers().forEach(member -> member.setRole(MemberRole.INVITING));
-            return dto.getMembers();
+        if (image == null) {
+            return createService.create(blogDto);
         } else {
-            return new HashSet<>();
+            return createService.create(blogDto, image);
         }
     }
 
-    private BlogMemberDto getAdminMember(UserDto admin) {
-        BlogMemberDto adminDto = new BlogMemberDto();
-        adminDto.setId(admin.getId());
-        adminDto.setImageUrl(admin.getImageUrl());
-        adminDto.setEmail(admin.getEmail());
-        adminDto.setName(admin.getName());
-        adminDto.setNickName(admin.getNickName());
-        adminDto.setRole(MemberRole.ADMIN);
-        return adminDto;
+    private void setBlogMembersRole(BlogDto blog) {
+        if (blog.getMembers() == null) {
+            return;
+        }
+        blog.getMembers().forEach(member -> member.setRole(MemberRole.INVITING));
+    }
+
+    private void addAdminBlogMember(BlogDto blog, UserDto admin) {
+        if (blog.getMembers() == null) {
+            blog.setMembers(new ArrayList<>());
+        }
+        blog.getMembers().add(converter.convert(admin));
     }
 }

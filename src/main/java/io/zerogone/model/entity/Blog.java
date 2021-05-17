@@ -22,7 +22,7 @@ public class Blog {
     @Column(name = "image_url")
     private String imageUrl;
 
-    @OneToMany(mappedBy = "blogId", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "blog", cascade = CascadeType.PERSIST)
     private final Set<BlogMember> members = new HashSet<>();
 
     @Column(name = "invitation_key", nullable = false, updatable = false)
@@ -32,15 +32,11 @@ public class Blog {
 
     }
 
-    public Blog(String name, String introduce, String imageUrl, String invitationKey) {
+    public Blog(int id, String name, String introduce, String imageUrl, String invitationKey) {
         this.name = name;
         this.introduce = introduce;
         this.imageUrl = imageUrl;
         this.invitationKey = invitationKey;
-    }
-
-    public Blog(int id, String name, String introduce, String imageUrl, String invitationKey) {
-        this(name, introduce, imageUrl, invitationKey);
         this.id = id;
     }
 

@@ -1,7 +1,7 @@
 package io.zerogone.service;
 
 import ch.qos.logback.classic.Logger;
-import io.zerogone.exception.BlogMembersStateException;
+import io.zerogone.exception.CustomRuntimeException;
 import org.slf4j.LoggerFactory;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -37,7 +37,7 @@ public class BlogInvitationService {
             javaMailSender.send(message);
         } catch (MessagingException messagingException) {
             logger.error("이메일 전송에 실패하였습니다. 원인 : " + messagingException.getMessage());
-            throw new BlogMembersStateException("초대 메일 전송에 실패하였습니다!");
+            throw new CustomRuntimeException("초대 메일 전송에 실패하였습니다!", "전송될 이메일 주소=" + memberEmail);
         }
     }
 }

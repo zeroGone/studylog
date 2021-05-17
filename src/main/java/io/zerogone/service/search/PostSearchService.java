@@ -1,22 +1,24 @@
 package io.zerogone.service.search;
 
-import io.zerogone.exception.NotExistedDataException;
+import io.zerogone.exception.NotExistDataException;
 import io.zerogone.model.dto.PostDto;
+import io.zerogone.model.dto.UserDto;
 import io.zerogone.model.entity.Post;
 import io.zerogone.repository.PostDao;
-import org.springframework.core.convert.converter.Converter;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.stream.Collectors;
 
 @Service
 public class PostSearchService implements SearchService<Integer, PostDto> {
     private final PostDao postDao;
-    private final Converter<Post, PostDto> converter;
+    private final ConversionService conversionService;
 
-    public PostSearchService(PostDao postDao, Converter<Post, PostDto> converter) {
+    public PostSearchService(PostDao postDao, ConversionService conversionService) {
         this.postDao = postDao;
-        this.converter = converter;
+        this.conversionService = conversionService;
     }
 
     @Transactional
@@ -24,9 +26,16 @@ public class PostSearchService implements SearchService<Integer, PostDto> {
     public PostDto search(Integer id) {
         Post entity = postDao.findById(id);
         if (entity == null) {
-            throw new NotExistedDataException(Post.class, "id로 게시글 검색", Integer.toString(id));
+            throw new NotExistDataException("해당 아이디를 가진 게시글이 없습니다", id);
         }
         entity.hit();
-        return converter.convert(entity);
+
+        PostDto dto = conversionService.convert(entity, PostDto.class);
+        dto.setCategories(entity.getCategories()
+                .stream()
+                .map(category -> conversionService.convert(category, String.class))
+                .collect(Collectors.toList()));
+        dto.setWriter(conversionService.convert(entity.getWriter(), UserDto.class));
+        return dto;
     }
 }

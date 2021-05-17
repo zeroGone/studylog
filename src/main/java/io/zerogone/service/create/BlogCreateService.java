@@ -1,9 +1,5 @@
 package io.zerogone.service.create;
 
-import ch.qos.logback.classic.Logger;
-import io.zerogone.exception.BlogMembersStateException;
-import io.zerogone.exception.NotNullPropertyException;
-import io.zerogone.exception.UniquePropertyException;
 import io.zerogone.model.dto.BlogDto;
 import io.zerogone.model.dto.BlogMemberDto;
 import io.zerogone.model.entity.Blog;
@@ -11,74 +7,77 @@ import io.zerogone.model.entity.BlogMember;
 import io.zerogone.model.entity.MemberRole;
 import io.zerogone.model.entity.User;
 import io.zerogone.repository.BlogDao;
+import io.zerogone.repository.UserDao;
 import io.zerogone.service.BlogInvitationService;
-import org.slf4j.LoggerFactory;
-import org.springframework.core.convert.converter.Converter;
+import io.zerogone.service.fileupload.ImageUploadService;
+import io.zerogone.service.fileupload.ImageUrl;
+import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.PersistenceException;
 import javax.transaction.Transactional;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
-public class BlogCreateService implements CreateService<BlogDto> {
-    private static final String BLOG_DEFAULT_IMAGE_URL = "/img/blog-default.png";
-
-    private final Logger logger = (Logger) LoggerFactory.getLogger(this.getClass());
+public class BlogCreateService implements CreateWithImageService<BlogDto> {
     private final BlogDao blogDao;
+    private final UserDao userDao;
     private final BlogInvitationService blogInvitationService;
-    private final Converter<Blog, BlogDto> entityConverter;
+    private final ConversionService conversionService;
+    private final ImageUploadService imageUploadService;
 
-    public BlogCreateService(BlogDao blogDao, BlogInvitationService blogInvitationService, Converter<Blog, BlogDto> entityConverter) {
+    public BlogCreateService(BlogDao blogDao,
+                             UserDao userDao,
+                             BlogInvitationService blogInvitationService,
+                             ConversionService conversionService,
+                             @Qualifier("blogImageUploadService") ImageUploadService imageUploadService) {
         this.blogDao = blogDao;
+        this.userDao = userDao;
         this.blogInvitationService = blogInvitationService;
-        this.entityConverter = entityConverter;
+        this.conversionService = conversionService;
+        this.imageUploadService = imageUploadService;
+    }
+
+    @Transactional
+    @Override
+    public BlogDto create(BlogDto dto, MultipartFile image) {
+        ImageUrl imageUrl = imageUploadService.upload(image);
+        dto.setImageUrl(imageUrl.getValue());
+        return create(dto);
     }
 
     @Transactional
     @Override
     public BlogDto create(BlogDto dto) {
-        validate(dto);
-        Blog entity = initializeEntity(dto);
-        try {
-            blogDao.save(entity);
-        } catch (PersistenceException persistenceException) {
-            logger.error("Blog name is duplicated ! " + persistenceException.getMessage());
-            throw new UniquePropertyException("블로그 이름이 중복되었습니다");
-        }
+        createBlogInvitationKey(dto);
+        Blog entity = conversionService.convert(dto, Blog.class);
+        addBlogMemberEntities(entity, dto.getMembers());
+        blogDao.save(entity);
         inviteMembers(entity);
-        return entityConverter.convert(entity);
+        return conversionService.convert(entity, BlogDto.class);
     }
 
-    private void validate(BlogDto dto) {
-        if (dto.getName() == null) {
-            throw new NotNullPropertyException(Blog.class, "name");
-        }
-        Set<BlogMemberDto> members = dto.getMembers();
-        if (members.stream().map(BlogMemberDto::getId).distinct().count() < members.size()) {
-            throw new BlogMembersStateException("한 블로그에 같은 사람이 두 번 포함될 수 없습니다");
-        }
-        if (members.stream().anyMatch(member -> Objects.equals(member.getId(), 0))) {
-            throw new BlogMembersStateException("유효하지 않은 아이디를 가진 유저가 존재합니다");
-        }
-    }
-
-    private Blog initializeEntity(BlogDto dto) {
-        if (dto.getImageUrl() == null) {
-            dto.setImageUrl(BLOG_DEFAULT_IMAGE_URL);
-        }
+    private void createBlogInvitationKey(BlogDto dto) {
         StringBuilder keyBuilder = new StringBuilder();
         dto.getName().codePoints().forEach(keyBuilder::append);
+        dto.setInvitationKey(keyBuilder.toString());
+    }
 
-        Blog entity = new Blog(dto.getName(), dto.getIntroduce(), dto.getImageUrl(), keyBuilder.toString());
-        dto.getMembers().stream().map(memberDto -> {
-            User user = new User(memberDto.getId(), memberDto.getName(), memberDto.getEmail(), memberDto.getNickName(), memberDto.getImageUrl());
-            return new BlogMember(user, entity.getId(), memberDto.getRole());
-        }).forEach(entity::addMember);
-        return entity;
+    private void addBlogMemberEntities(Blog blog, List<BlogMemberDto> memberDtos) {
+        for (BlogMemberDto member : memberDtos) {
+            User user = userDao.findById(member.getId());
+            if (user == null) {
+                String message = "유효하지 않은 유저가 포함되어 있습니다";
+                SQLException sqlException = new SQLException(message);
+                throw new ConstraintViolationException(message, sqlException, "id=" + member.getId());
+            }
+            blog.addMember(new BlogMember(user, blog, member.getRole()));
+        }
     }
 
     private void inviteMembers(Blog entity) {
