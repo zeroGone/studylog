@@ -1,49 +1,39 @@
 package io.zerogone.controller.api;
 
 import io.zerogone.model.dto.UserDto;
-import io.zerogone.service.create.CreateService;
-import io.zerogone.service.fileupload.ImageUploadService;
-import io.zerogone.service.fileupload.ImageUrl;
-import org.springframework.beans.factory.annotation.Qualifier;
+import io.zerogone.service.create.CreateWithImageService;
+import io.zerogone.validator.NewEntity;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
 
 @RestController
 public class UserCreateController {
-    private final CreateService<UserDto> createService;
-    private final ImageUploadService imageUploadService;
+    private final CreateWithImageService<UserDto> createService;
 
-    public UserCreateController(CreateService<UserDto> createService,
-                                @Qualifier("userImageUploadService") ImageUploadService imageUploadService) {
+    public UserCreateController(CreateWithImageService<UserDto> createService) {
         this.createService = createService;
-        this.imageUploadService = imageUploadService;
     }
 
-    @PostMapping("api/user")
-    public ResponseEntity<UserDto> handleCreateUserApi(@ModelAttribute @Valid UserDto userDto,
-                                                       @RequestPart(required = false) MultipartFile image,
-                                                       HttpSession httpSession) {
+    @PostMapping("users")
+    @ResponseStatus(HttpStatus.CREATED)
+    public UserDto handleCreatingUser(@ModelAttribute @Validated(NewEntity.class) UserDto user,
+                                      @RequestPart(required = false) MultipartFile image,
+                                      HttpSession httpSession) {
+        UserDto userInfo;
 
-        setImageUrl(userDto, image);
-        UserDto userInfo = createService.create(userDto);
+        if (image == null) {
+            userInfo = createService.create(user);
+        } else {
+            userInfo = createService.create(user, image);
+        }
+
         httpSession.setAttribute("userInfo", userInfo);
         httpSession.removeAttribute("visitor");
-        return new ResponseEntity<>(userInfo, HttpStatus.CREATED);
-    }
-
-    private void setImageUrl(UserDto userDto, MultipartFile image) {
-        if (userDto.getImageUrl() != null) {
-            return;
-        }
-        ImageUrl imageUrl = imageUploadService.upload(image);
-        userDto.setImageUrl(imageUrl.getValue());
+        return userInfo;
     }
 }
+

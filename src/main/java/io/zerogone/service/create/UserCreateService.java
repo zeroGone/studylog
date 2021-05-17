@@ -1,56 +1,44 @@
 package io.zerogone.service.create;
 
-import io.zerogone.exception.UniquePropertyException;
 import io.zerogone.model.dto.UserDto;
 import io.zerogone.model.entity.User;
 import io.zerogone.repository.UserDao;
-import org.springframework.core.convert.converter.Converter;
+import io.zerogone.service.fileupload.ImageUploadService;
+import io.zerogone.service.fileupload.ImageUrl;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.NoResultException;
 import javax.transaction.Transactional;
 
 @Service
-public class UserCreateService implements CreateService<UserDto> {
+public class UserCreateService implements CreateWithImageService<UserDto> {
     private final UserDao userDao;
-    private final Converter<User, UserDto> entityConverter;
-    private final Converter<UserDto, User> dtoConverter;
+    private final ConversionService conversionService;
+    private final ImageUploadService imageUploadService;
 
-    public UserCreateService(UserDao userDao, Converter<User, UserDto> entityConverter, Converter<UserDto, User> dtoConverter) {
+    public UserCreateService(UserDao userDao,
+                             ConversionService conversionService,
+                             @Qualifier("userImageUploadService") ImageUploadService imageUploadService) {
         this.userDao = userDao;
-        this.entityConverter = entityConverter;
-        this.dtoConverter = dtoConverter;
+        this.conversionService = conversionService;
+        this.imageUploadService = imageUploadService;
+    }
+
+    @Transactional
+    @Override
+    public UserDto create(UserDto dto, MultipartFile image) {
+        ImageUrl imageUrl = imageUploadService.upload(image);
+        dto.setImageUrl(imageUrl.getValue());
+        return create(dto);
     }
 
     @Transactional
     @Override
     public UserDto create(UserDto dto) {
-        if (isNotUniqueEmail(dto.getEmail())) {
-            throw new UniquePropertyException("이메일이 중복되었습니다", dto.getEmail());
-        }
-        if (isNotUniqueNickName(dto.getNickName())) {
-            throw new UniquePropertyException("닉네임이 중복되었습니다", dto.getNickName());
-        }
-        User entity = dtoConverter.convert(dto);
+        User entity = conversionService.convert(dto, User.class);
         userDao.save(entity);
-        return entityConverter.convert(entity);
-    }
-
-    private boolean isNotUniqueNickName(String nickName) {
-        try {
-            userDao.findByNickName(nickName);
-            return true;
-        } catch (NoResultException noResultException) {
-            return false;
-        }
-    }
-
-    private boolean isNotUniqueEmail(String email) {
-        try {
-            userDao.findByEmail(email);
-            return true;
-        } catch (NoResultException noResultException) {
-            return false;
-        }
+        return conversionService.convert(entity, UserDto.class);
     }
 }

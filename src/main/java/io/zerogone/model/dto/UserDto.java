@@ -6,7 +6,6 @@ import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Null;
 import javax.validation.constraints.Positive;
 import javax.validation.groups.Default;
 import java.util.List;
@@ -20,10 +19,9 @@ public class UserDto {
     private String name;
 
     @NotBlank(message = "유저의 닉네임이 있어야 합니다", groups = {NewEntity.class, Default.class})
-    @Null(groups = Login.class)
     private String nickName;
 
-    @Email(message = "이메일 형식이어야 합니다", groups = {Login.class})
+    @Email(message = "이메일 형식이어야 합니다", groups = {NewEntity.class, Login.class})
     @NotBlank(message = "유저의 이메일이 있어야 합니다", groups = {NewEntity.class, Default.class, Login.class})
     private String email;
     private String imageUrl;
