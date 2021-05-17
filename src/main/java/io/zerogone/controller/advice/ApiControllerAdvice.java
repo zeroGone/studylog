@@ -1,7 +1,10 @@
 package io.zerogone.controller.advice;
 
 import ch.qos.logback.classic.Logger;
-import io.zerogone.exception.*;
+import io.zerogone.exception.CustomRuntimeException;
+import io.zerogone.exception.FileUploadException;
+import io.zerogone.exception.NotAuthorizedException;
+import io.zerogone.exception.NotExistDataException;
 import io.zerogone.model.ErrorResponse;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -27,19 +30,6 @@ public class ApiControllerAdvice {
                 HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @ExceptionHandler(value = {BlogMembersStateException.class, UniquePropertyException.class, NotNullPropertyException.class})
-    public ResponseEntity<ErrorResponse> handleBlogCreateException(Exception exception) {
-        logger.debug("catch exception : " + exception.getMessage());
-        return new ResponseEntity<>(
-                new ErrorResponse.Builder()
-                        .exception(exception.getClass())
-                        .cause("데이터베이스 관련 조건에서 벗어남")
-                        .statusCode(HttpStatus.BAD_REQUEST)
-                        .detail(exception.getMessage())
-                        .build(),
-                HttpStatus.BAD_REQUEST);
-    }
-
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ErrorResponse> handleIllegalArgumentException(Exception exception) {
         logger.debug("catch exception : " + exception.getMessage());
@@ -62,6 +52,29 @@ public class ApiControllerAdvice {
                 .cause(exception.getMessage())
                 .detail("입력된 값:[" + exception.getExceptionValue() + "]")
                 .statusCode(HttpStatus.NOT_FOUND)
+                .build();
+    }
+
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(CustomRuntimeException.class)
+    public ErrorResponse handleBlogCreateException(CustomRuntimeException exception) {
+        logger.debug("catch exception : " + exception.getMessage());
+        return new ErrorResponse.Builder()
+                .exception(exception.getClass())
+                .cause(exception.getMessage())
+                .statusCode(HttpStatus.INTERNAL_SERVER_ERROR)
+                .detail(exception.getExceptionValue().toString())
+                .build();
+    }
+
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(NotAuthorizedException.class)
+    public ErrorResponse handleNotAuthorizedException(NotAuthorizedException exception) {
+        return new ErrorResponse.Builder()
+                .exception(exception.getClass())
+                .cause(exception.getMessage())
+                .statusCode(HttpStatus.UNAUTHORIZED)
+                .detail(exception.getExceptionValue().toString())
                 .build();
     }
 }

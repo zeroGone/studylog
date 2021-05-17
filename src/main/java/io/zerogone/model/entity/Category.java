@@ -1,6 +1,8 @@
 package io.zerogone.model.entity;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "category")
@@ -9,7 +11,11 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @Column(unique = true, updatable = false)
     private String name;
+
+    @ManyToMany(mappedBy = "categories")
+    private Set<Post> posts;
 
     Category() {
 
@@ -17,11 +23,7 @@ public class Category {
 
     public Category(String name) {
         this.name = name;
-    }
-
-    public Category(int id, String name) {
-        this(name);
-        this.id = id;
+        posts = new HashSet<>();
     }
 
     public int getId() {
@@ -30,5 +32,13 @@ public class Category {
 
     public String getName() {
         return name;
+    }
+
+    public Set<Post> getPosts() {
+        return posts;
+    }
+
+    public void addPost(Post post) {
+        posts.add(post);
     }
 }

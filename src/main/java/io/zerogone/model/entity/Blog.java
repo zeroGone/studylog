@@ -32,15 +32,11 @@ public class Blog {
 
     }
 
-    public Blog(String name, String introduce, String imageUrl, String invitationKey) {
+    public Blog(int id, String name, String introduce, String imageUrl, String invitationKey) {
         this.name = name;
         this.introduce = introduce;
         this.imageUrl = imageUrl;
         this.invitationKey = invitationKey;
-    }
-
-    public Blog(int id, String name, String introduce, String imageUrl, String invitationKey) {
-        this(name, introduce, imageUrl, invitationKey);
         this.id = id;
     }
 

@@ -16,8 +16,9 @@ public class Comment {
     @Column(name = "create_date_time", insertable = false, updatable = false)
     private LocalDateTime createDateTime;
 
-    @Column(name = "post_id", nullable = false)
-    private int postId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "post_id", referencedColumnName = "id", nullable = false)
+    private Post post;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
@@ -27,15 +28,11 @@ public class Comment {
 
     }
 
-    public Comment(String contents, int postId, User writer) {
-        this.contents = contents;
-        this.postId = postId;
-        this.writer = writer;
-    }
-
-    public Comment(int id, String contents, int postId, User writer) {
-        this(contents, postId, writer);
+    public Comment(int id, String contents, Post post, User writer) {
         this.id = id;
+        this.contents = contents;
+        this.post = post;
+        this.writer = writer;
     }
 
     public int getId() {
@@ -50,8 +47,8 @@ public class Comment {
         return createDateTime;
     }
 
-    public int getPostId() {
-        return postId;
+    public Post getPost() {
+        return post;
     }
 
     public User getWriter() {

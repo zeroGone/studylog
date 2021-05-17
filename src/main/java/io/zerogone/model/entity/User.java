@@ -39,15 +39,11 @@ public class User {
 
     }
 
-    public User(String name, String email, String nickName, String imageUrl) {
+    public User(int id, String name, String email, String nickName, String imageUrl) {
         this.name = name;
         this.email = email;
         this.nickName = nickName;
         this.imageUrl = imageUrl;
-    }
-
-    public User(int id, String name, String email, String nickName, String imageUrl) {
-        this(name, email, nickName, imageUrl);
         this.id = id;
     }
 

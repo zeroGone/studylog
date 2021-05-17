@@ -1,11 +1,19 @@
 package io.zerogone.model.dto;
 
+import io.zerogone.validator.NewEntity;
+import org.hibernate.validator.constraints.Range;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.groups.Default;
 import java.time.LocalDate;
 import java.util.List;
 
 public class PostDto {
+    @Range(min = 0, max = 0, groups = NewEntity.class, message = "생성 시 id를 가지고 있으면 안됩니다")
     private int id;
+    @NotBlank(message = "게시글의 제목이 있어야 합니다", groups = {Default.class, NewEntity.class})
     private String title;
+    @NotBlank(message = "게시글의 내용이 있어야 합니다", groups = {Default.class, NewEntity.class})
     private String contents;
     private int hits;
     private UserDto writer;

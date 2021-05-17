@@ -28,7 +28,7 @@ public class AwsUploader {
             amazonS3.putObject(new PutObjectRequest(bucketName, image.getPath(), image.getInputStream(), null));
         } catch (IOException ioException) {
             logger.error("Uploading file is failed!");
-            throw new FileUploadException(Image.class, image.getPath());
+            throw new FileUploadException(image.getPath());
         }
         logger.info("-----Uploading file to AWS s3 is ended-----");
         return new ImageUrl(amazonS3.getUrl(bucketName, image.getPath()).toString());

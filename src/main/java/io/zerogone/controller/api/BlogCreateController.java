@@ -1,15 +1,13 @@
 package io.zerogone.controller.api;
 
-import io.zerogone.converter.UserDtoToBlogMemberDtoConverter;
 import io.zerogone.model.dto.BlogDto;
+import io.zerogone.model.dto.BlogMemberDto;
 import io.zerogone.model.dto.UserDto;
 import io.zerogone.model.entity.MemberRole;
-import io.zerogone.service.create.CreateService;
-import io.zerogone.service.fileupload.ImageUploadService;
-import io.zerogone.service.fileupload.ImageUrl;
+import io.zerogone.service.create.CreateWithImageService;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.convert.converter.Converter;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,34 +16,29 @@ import java.util.ArrayList;
 
 @RestController
 public class BlogCreateController {
-    private final UserDtoToBlogMemberDtoConverter converter;
-    private final ImageUploadService imageUploadService;
-    private final CreateService<BlogDto> createService;
+    private final CreateWithImageService<BlogDto> createService;
+    private final Converter<UserDto, BlogMemberDto> converter;
 
-    public BlogCreateController(@Qualifier("userDtoToAdminBlogMemberDtoConverter") UserDtoToBlogMemberDtoConverter converter,
-                                @Qualifier("blogImageUploadService") ImageUploadService imageUploadService,
-                                CreateService<BlogDto> createService) {
+    public BlogCreateController(CreateWithImageService<BlogDto> createService,
+                                @Qualifier("userDtoToAdminBlogMemberDtoConverter") Converter<UserDto, BlogMemberDto> converter) {
         this.converter = converter;
-        this.imageUploadService = imageUploadService;
         this.createService = createService;
     }
 
-    @PostMapping("api/blog")
-    public ResponseEntity<Object> handleBlogCreateApi(@SessionAttribute UserDto userInfo,
-                                                      @ModelAttribute @Valid BlogDto blogDto,
-                                                      @RequestPart(required = false) MultipartFile image) {
+    @PostMapping("blogs")
+    @ResponseStatus(HttpStatus.CREATED)
+    public BlogDto handleCreatingBlog(@SessionAttribute UserDto userInfo,
+                                      @ModelAttribute @Valid BlogDto blogDto,
+                                      @RequestPart(required = false) MultipartFile image) {
 
         setBlogMembersRole(blogDto);
         addAdminBlogMember(blogDto, userInfo);
-        setBlogImageUrl(blogDto, image);
-        BlogDto createdBlogDto = createService.create(blogDto);
 
-        return new ResponseEntity<>(createdBlogDto, HttpStatus.CREATED);
-    }
-
-    private void setBlogImageUrl(BlogDto blogDto, MultipartFile image) {
-        ImageUrl imageUrl = imageUploadService.upload(image);
-        blogDto.setImageUrl(imageUrl.getValue());
+        if (image == null) {
+            return createService.create(blogDto);
+        } else {
+            return createService.create(blogDto, image);
+        }
     }
 
     private void setBlogMembersRole(BlogDto blog) {

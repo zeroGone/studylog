@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,8 +54,8 @@ public class ValidationControllerAdvice {
                 .build();
     }
 
-    @ExceptionHandler(ConstraintViolationException.class)
-    public ErrorResponse handleConstraintViolationException(ConstraintViolationException exception) {
+    @ExceptionHandler(javax.validation.ConstraintViolationException.class)
+    public ErrorResponse handleConstraintViolationException(javax.validation.ConstraintViolationException exception) {
         List<String> causes = new ArrayList<>();
         List<String> params = new ArrayList<>();
         for (ConstraintViolation<?> constraintViolation : exception.getConstraintViolations()) {
@@ -69,7 +68,18 @@ public class ValidationControllerAdvice {
                 .Builder()
                 .exception(IllegalArgumentException.class)
                 .cause(causes.toString())
-                .detail("잘못 입력된 속성:" + params + "")
+                .detail("잘못된 속성:" + params)
+                .statusCode(HttpStatus.BAD_REQUEST)
+                .build();
+    }
+
+    @ExceptionHandler(org.hibernate.exception.ConstraintViolationException.class)
+    public ErrorResponse handleConstraintViolationException(org.hibernate.exception.ConstraintViolationException exception) {
+        return new ErrorResponse
+                .Builder()
+                .exception(IllegalArgumentException.class)
+                .cause(exception.getSQLException().getMessage())
+                .detail("잘못된 속성:" + exception.getConstraintName())
                 .statusCode(HttpStatus.BAD_REQUEST)
                 .build();
     }
