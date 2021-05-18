@@ -1,62 +1,55 @@
 package io.zerogone.controller.api;
 
+import io.zerogone.exception.NotAuthorizedException;
 import io.zerogone.model.dto.BlogDto;
-import io.zerogone.model.dto.BlogMemberDto;
 import io.zerogone.model.dto.UserDto;
 import io.zerogone.model.entity.MemberRole;
 import io.zerogone.service.BlogUpdateService;
-import io.zerogone.service.fileupload.ImageUploadService;
-import io.zerogone.service.fileupload.ImageUrl;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.ResponseEntity;
+import io.zerogone.service.search.SearchService;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.constraints.Positive;
 import java.util.Objects;
 
 @RestController
+@Validated
 public class BlogUpdateController {
-    private final ImageUploadService imageUploadService;
     private final BlogUpdateService updateService;
+    private final SearchService<Integer, BlogDto> searchService;
 
-    public BlogUpdateController(@Qualifier("blogImageUploadService") ImageUploadService imageUploadService,
-                                BlogUpdateService updateService) {
-        this.imageUploadService = imageUploadService;
+    public BlogUpdateController(BlogUpdateService updateService, SearchService<Integer, BlogDto> searchService) {
         this.updateService = updateService;
+        this.searchService = searchService;
     }
 
-    @PutMapping("api/blog/{id}")
-    public ResponseEntity<BlogDto> handleUpdatingBlog(
-            @SessionAttribute UserDto userInfo,
-            @RequestBody BlogDto blog) {
+    @PutMapping("blogs/{id}")
+    public BlogDto handleUpdatingBlog(@SessionAttribute UserDto userInfo,
+                                      @PathVariable @Positive Integer id,
+                                      @RequestBody BlogDto blog) {
 
         validateAuth(userInfo, blog);
 
-        return ResponseEntity.ok(updateService.updateBlog(blog));
+        return updateService.updateBlog(blog);
     }
 
-    @PostMapping("api/blog/{id}")
-    public ResponseEntity<BlogDto> handleUpdatingBlogWithImage(
-            @SessionAttribute UserDto userInfo,
-            @RequestBody BlogDto blog,
-            MultipartFile image) {
+    @PostMapping("blogs/{id}")
+    public BlogDto handleUpdatingBlogWithImage(@SessionAttribute UserDto userInfo,
+                                               @PathVariable @Positive Integer id,
+                                               @ModelAttribute BlogDto blog,
+                                               MultipartFile image) {
 
         validateAuth(userInfo, blog);
-        ImageUrl newImageUrl = imageUploadService.upload(image);
-        blog.setImageUrl(newImageUrl.getValue());
 
-        return ResponseEntity.ok(updateService.updateBlog(blog));
+        return updateService.updateBlog(blog, image);
     }
 
     private void validateAuth(UserDto user, BlogDto blog) {
-        BlogMemberDto admin = blog.getMembers()
+        blog.getMembers()
                 .stream()
-                .filter(member -> Objects.equals(member.getId(), user.getId()))
+                .filter(member -> Objects.equals(member.getId(), user.getId()) && Objects.equals(member.getRole(), MemberRole.ADMIN))
                 .findAny()
-                .orElseThrow(IllegalAccessError::new);
-
-        if (admin.getRole() != MemberRole.ADMIN) {
-            throw new IllegalArgumentException("관리자가 아닙니다!");
-        }
+                .orElseThrow(new NotAuthorizedException("관리자가 아닙니다!"));
     }
 }
