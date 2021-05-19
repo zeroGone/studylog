@@ -1,11 +1,11 @@
-package io.zerogone.controller.api;
+package io.zerogone.blog.controller;
 
-import io.zerogone.exception.NotAuthorizedException;
-import io.zerogone.model.dto.BlogDto;
-import io.zerogone.model.dto.UserDto;
-import io.zerogone.model.entity.MemberRole;
-import io.zerogone.service.BlogUpdateService;
-import io.zerogone.service.search.SearchService;
+import io.zerogone.blog.exception.NotAuthorizedException;
+import io.zerogone.blog.model.BlogDto;
+import io.zerogone.blog.model.MemberRole;
+import io.zerogone.blog.service.BlogUpdateService;
+import io.zerogone.common.service.SearchService;
+import io.zerogone.user.model.UserDto;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;

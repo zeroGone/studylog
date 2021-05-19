@@ -1,11 +1,11 @@
-package io.zerogone.service;
+package io.zerogone.blog.service;
 
-import io.zerogone.model.dto.BlogDto;
-import io.zerogone.model.entity.Blog;
-import io.zerogone.model.entity.BlogMember;
-import io.zerogone.repository.BlogDao;
-import io.zerogone.service.fileupload.ImageUploadService;
-import io.zerogone.service.fileupload.ImageUrl;
+import io.zerogone.blog.BlogDao;
+import io.zerogone.blog.model.Blog;
+import io.zerogone.blog.model.BlogDto;
+import io.zerogone.blog.model.BlogMember;
+import io.zerogone.common.fileupload.ImageUploadService;
+import io.zerogone.common.fileupload.ImageUrl;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
