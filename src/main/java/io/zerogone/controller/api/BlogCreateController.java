@@ -2,7 +2,7 @@ package io.zerogone.controller.api;
 
 import io.zerogone.model.dto.BlogDto;
 import io.zerogone.model.dto.BlogMemberDto;
-import io.zerogone.model.dto.UserDto;
+import io.zerogone.user.model.UserDto;
 import io.zerogone.model.entity.MemberRole;
 import io.zerogone.service.create.CreateWithImageService;
 import org.springframework.beans.factory.annotation.Qualifier;

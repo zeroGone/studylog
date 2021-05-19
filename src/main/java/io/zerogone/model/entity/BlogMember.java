@@ -1,6 +1,7 @@
 package io.zerogone.model.entity;
 
 import io.zerogone.converter.MemberRoleConverter;
+import io.zerogone.user.model.User;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;

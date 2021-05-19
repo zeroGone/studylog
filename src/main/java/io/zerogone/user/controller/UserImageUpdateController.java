@@ -1,8 +1,8 @@
-package io.zerogone.controller.api;
+package io.zerogone.user.controller;
 
 import io.zerogone.model.ErrorResponse;
-import io.zerogone.model.dto.UserDto;
-import io.zerogone.service.UserImageUpdateService;
+import io.zerogone.user.model.UserDto;
+import io.zerogone.user.service.UserImageUpdateService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

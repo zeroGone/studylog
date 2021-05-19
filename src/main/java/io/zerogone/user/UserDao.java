@@ -1,7 +1,7 @@
-package io.zerogone.repository;
+package io.zerogone.user;
 
 import ch.qos.logback.classic.Logger;
-import io.zerogone.model.entity.User;
+import io.zerogone.user.model.User;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 

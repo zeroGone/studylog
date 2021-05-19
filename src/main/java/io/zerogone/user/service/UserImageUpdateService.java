@@ -1,8 +1,8 @@
-package io.zerogone.service;
+package io.zerogone.user.service;
 
-import io.zerogone.model.dto.UserDto;
-import io.zerogone.model.entity.User;
-import io.zerogone.repository.UserDao;
+import io.zerogone.user.model.UserDto;
+import io.zerogone.user.model.User;
+import io.zerogone.user.UserDao;
 import io.zerogone.service.fileupload.ImageUploadService;
 import io.zerogone.service.fileupload.ImageUrl;
 import org.springframework.beans.factory.annotation.Qualifier;

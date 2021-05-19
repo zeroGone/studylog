@@ -1,7 +1,7 @@
 package io.zerogone.service.create;
 
 import io.zerogone.model.dto.PostDto;
-import io.zerogone.model.dto.UserDto;
+import io.zerogone.user.model.UserDto;
 import io.zerogone.model.entity.Category;
 import io.zerogone.model.entity.Post;
 import io.zerogone.repository.CategoryDao;

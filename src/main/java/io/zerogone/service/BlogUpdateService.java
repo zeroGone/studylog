@@ -3,7 +3,8 @@ package io.zerogone.service;
 import io.zerogone.model.dto.BlogDto;
 import io.zerogone.model.entity.Blog;
 import io.zerogone.model.entity.BlogMember;
-import io.zerogone.model.entity.User;
+import io.zerogone.model.entity.MemberRole;
+import io.zerogone.user.model.User;
 import io.zerogone.repository.BlogDao;
 import org.springframework.stereotype.Service;
 
@@ -40,7 +41,7 @@ public class BlogUpdateService {
                 .stream()
                 .map(memberDto -> {
                     User user = new User(memberDto.getId(), memberDto.getName(), memberDto.getEmail(), memberDto.getNickName(), memberDto.getImageUrl());
-                    return new BlogMember(user, entity.getId());
+                    return new BlogMember(user, new Blog(entity.getId(), null, null, null, null), MemberRole.MEMBER);
                 })
                 .collect(Collectors.toList());
 

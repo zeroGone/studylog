@@ -1,7 +1,7 @@
-package io.zerogone.controller;
+package io.zerogone.user.controller;
 
-import io.zerogone.model.Email;
-import io.zerogone.model.dto.UserDto;
+import io.zerogone.user.model.Email;
+import io.zerogone.user.model.UserDto;
 import io.zerogone.service.search.SearchService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

@@ -1,6 +1,6 @@
 package io.zerogone.controller;
 
-import io.zerogone.model.dto.UserDto;
+import io.zerogone.user.model.UserDto;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;

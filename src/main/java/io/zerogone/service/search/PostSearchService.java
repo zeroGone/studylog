@@ -2,7 +2,7 @@ package io.zerogone.service.search;
 
 import io.zerogone.exception.NotExistDataException;
 import io.zerogone.model.dto.PostDto;
-import io.zerogone.model.dto.UserDto;
+import io.zerogone.user.model.UserDto;
 import io.zerogone.model.entity.Post;
 import io.zerogone.repository.PostDao;
 import org.springframework.core.convert.ConversionService;

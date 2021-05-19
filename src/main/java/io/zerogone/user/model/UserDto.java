@@ -1,5 +1,6 @@
-package io.zerogone.model.dto;
+package io.zerogone.user.model;
 
+import io.zerogone.model.dto.BlogDto;
 import io.zerogone.validator.Login;
 import io.zerogone.validator.NewEntity;
 import org.hibernate.validator.constraints.Range;

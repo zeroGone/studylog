@@ -1,5 +1,6 @@
 package io.zerogone.model.entity;
 
+import io.zerogone.user.model.User;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;

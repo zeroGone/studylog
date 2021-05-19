@@ -1,7 +1,7 @@
 package io.zerogone.converter;
 
 import io.zerogone.model.dto.BlogMemberDto;
-import io.zerogone.model.dto.UserDto;
+import io.zerogone.user.model.UserDto;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 

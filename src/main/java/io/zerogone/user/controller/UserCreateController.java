@@ -1,6 +1,6 @@
-package io.zerogone.controller.api;
+package io.zerogone.user.controller;
 
-import io.zerogone.model.dto.UserDto;
+import io.zerogone.user.model.UserDto;
 import io.zerogone.service.create.CreateWithImageService;
 import io.zerogone.validator.NewEntity;
 import org.springframework.http.HttpStatus;

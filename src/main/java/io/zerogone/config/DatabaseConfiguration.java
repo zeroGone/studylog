@@ -40,7 +40,7 @@ public class DatabaseConfiguration {
                 = new LocalContainerEntityManagerFactoryBean();
 
         entityManagerFactory.setDataSource(dataSource());
-        entityManagerFactory.setPackagesToScan("io.zerogone.model.entity");
+        entityManagerFactory.setPackagesToScan("io.zerogone.model.entity", "io.zerogone.user.model");
 
         entityManagerFactory.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
         entityManagerFactory.setJpaProperties(getJpaProperties());
@@ -52,7 +52,6 @@ public class DatabaseConfiguration {
         properties.setProperty("hibernate.dialect", environment.getProperty("hibernate.dialect"));
         properties.setProperty("hibernate.show_sql", environment.getProperty("hibernate.show_sql"));
         properties.setProperty("hibernate.format_sql", environment.getProperty("hibernate.format_sql"));
-        properties.setProperty("hibernate.hbm2ddl.auto", environment.getProperty("hibernate.hbm2ddl.auto"));
         return properties;
     }
 

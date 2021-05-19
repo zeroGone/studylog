@@ -1,6 +1,6 @@
-package io.zerogone.converter;
+package io.zerogone.user.converter;
 
-import io.zerogone.model.Email;
+import io.zerogone.user.model.Email;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 

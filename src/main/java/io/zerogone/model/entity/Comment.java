@@ -1,5 +1,7 @@
 package io.zerogone.model.entity;
 
+import io.zerogone.user.model.User;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
