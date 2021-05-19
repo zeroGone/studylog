@@ -1,7 +1,6 @@
 package io.zerogone.user.model;
 
 import io.zerogone.blog.model.BlogDto;
-import io.zerogone.user.Login;
 import io.zerogone.common.NewEntity;
 import org.hibernate.validator.constraints.Range;
 
@@ -16,14 +15,14 @@ public class UserDto {
     @Positive(message = "유저 식별자를 포함하고 있어야합니다")
     private int id;
 
-    @NotBlank(message = "유저의 이름이 있어야 합니다", groups = {NewEntity.class, Default.class, Login.class})
+    @NotBlank(message = "유저의 이름이 있어야 합니다", groups = {NewEntity.class, Default.class})
     private String name;
 
     @NotBlank(message = "유저의 닉네임이 있어야 합니다", groups = {NewEntity.class, Default.class})
     private String nickName;
 
-    @Email(message = "이메일 형식이어야 합니다", groups = {NewEntity.class, Login.class})
-    @NotBlank(message = "유저의 이메일이 있어야 합니다", groups = {NewEntity.class, Default.class, Login.class})
+    @Email(message = "이메일 형식이어야 합니다", groups = NewEntity.class)
+    @NotBlank(message = "유저의 이메일이 있어야 합니다", groups = {NewEntity.class, Default.class})
     private String email;
     private String imageUrl;
     private List<BlogDto> blogs;

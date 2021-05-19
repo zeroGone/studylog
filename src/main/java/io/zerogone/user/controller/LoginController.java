@@ -1,35 +1,34 @@
 package io.zerogone.user.controller;
 
+import io.zerogone.blog.exception.NotAuthorizedException;
 import io.zerogone.common.exception.NotExistDataException;
-import io.zerogone.user.model.Email;
-import io.zerogone.user.model.UserDto;
 import io.zerogone.common.service.SearchService;
-import io.zerogone.user.Login;
-import org.springframework.validation.annotation.Validated;
+import io.zerogone.user.model.LoginRequest;
+import io.zerogone.user.model.UserDto;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.persistence.NoResultException;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 @RestController
 public class LoginController {
-    private final SearchService<Email, UserDto> searchService;
+    private final SearchService<LoginRequest, UserDto> searchService;
 
-    public LoginController(SearchService<Email, UserDto> searchService) {
+    public LoginController(SearchService<LoginRequest, UserDto> searchService) {
         this.searchService = searchService;
     }
 
-    @PostMapping("api/login")
-    public UserDto doLogin(@RequestBody @Validated(Login.class) UserDto userDto, HttpSession httpSession) {
+    @PostMapping("login")
+    public UserDto doLogin(@RequestBody @Valid LoginRequest loginRequest, HttpSession httpSession) {
         try {
-            UserDto dto = searchService.search(new Email(userDto.getEmail()));
+            UserDto dto = searchService.search(loginRequest);
             httpSession.setAttribute("userInfo", dto);
             return dto;
-        } catch (NoResultException noResultException) {
-            httpSession.setAttribute("visitor", userDto);
-            throw new NotExistDataException("로그인 실패", userDto);
+        } catch (NotExistDataException notExistDataException) {
+            httpSession.setAttribute("visitor", loginRequest);
+            throw new NotAuthorizedException("회원가입 대상입니다");
         }
     }
 }

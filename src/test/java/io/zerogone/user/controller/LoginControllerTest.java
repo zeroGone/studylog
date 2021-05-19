@@ -1,8 +1,8 @@
-package io.zerogone.controller.api;
+package io.zerogone.user.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.zerogone.config.WebConfiguration;
-import io.zerogone.model.dto.UserDto;
+import io.zerogone.user.model.LoginRequest;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,46 +35,31 @@ public class LoginControllerTest {
 
     @Test
     public void doLogin() throws Exception {
-        UserDto userDto = new UserDto();
-        userDto.setName("김영곤");
-        userDto.setEmail("dudrhs571@gmail.com");
+        LoginRequest loginRequest = new LoginRequest();
+        loginRequest.setEmail("dudrhs571@gmail.com");
+        loginRequest.setName("김영곤");
 
         mockMvc.perform(MockMvcRequestBuilders
-                .post("/api/login")
+                .post("/login")
                 .contentType("application/json")
                 .characterEncoding("utf-8")
-                .content(new ObjectMapper().writeValueAsString(userDto)))
+                .content(new ObjectMapper().writeValueAsString(loginRequest)))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
 
     @Test
-    public void doLogin_NotHavingBlog_ReturnOk() throws Exception {
-        UserDto userDto = new UserDto();
-        userDto.setName("모세현");
-        userDto.setEmail("ahtpgus@naver.com");
+    public void doLogin_NotExistedUser_ReturnUnauthorized() throws Exception {
+        LoginRequest loginRequest = new LoginRequest();
+        loginRequest.setEmail("dudrhs571@gmail.com");
+        loginRequest.setName("누구게");
 
         mockMvc.perform(MockMvcRequestBuilders
-                .post("/api/login")
+                .post("/login")
                 .contentType("application/json")
                 .characterEncoding("utf-8")
-                .content(new ObjectMapper().writeValueAsString(userDto)))
+                .content(new ObjectMapper().writeValueAsString(loginRequest)))
                 .andDo(print())
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    public void doLogin_NotExistedUser_ReturnNotFound() throws Exception {
-        UserDto userDto = new UserDto();
-        userDto.setName("이게누구여");
-        userDto.setEmail("모르는사람이여");
-
-        mockMvc.perform(MockMvcRequestBuilders
-                .post("/api/login")
-                .contentType("application/json")
-                .characterEncoding("utf-8")
-                .content(new ObjectMapper().writeValueAsString(userDto)))
-                .andDo(print())
-                .andExpect(status().isNotFound());
+                .andExpect(status().isUnauthorized());
     }
 }
