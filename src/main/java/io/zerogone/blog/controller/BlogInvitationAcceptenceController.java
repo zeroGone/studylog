@@ -1,7 +1,7 @@
-package io.zerogone.controller;
+package io.zerogone.blog.controller;
 
 import io.zerogone.user.model.UserDto;
-import io.zerogone.service.BlogInvitationAcceptenceService;
+import io.zerogone.blog.service.BlogInvitationAcceptenceService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

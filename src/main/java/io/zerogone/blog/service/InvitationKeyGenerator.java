@@ -1,4 +1,4 @@
-package io.zerogone.service;
+package io.zerogone.blog.service;
 
 public class InvitationKeyGenerator {
     private static final String VALUES =

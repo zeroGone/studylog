@@ -1,10 +1,10 @@
-package io.zerogone.service;
+package io.zerogone.blog.service;
 
-import io.zerogone.model.dto.BlogDto;
+import io.zerogone.blog.model.BlogDto;
 import io.zerogone.user.model.UserDto;
-import io.zerogone.model.entity.Blog;
-import io.zerogone.model.entity.BlogMember;
-import io.zerogone.repository.BlogDao;
+import io.zerogone.blog.model.Blog;
+import io.zerogone.blog.model.BlogMember;
+import io.zerogone.blog.BlogDao;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Service;
 

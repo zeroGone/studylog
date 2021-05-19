@@ -1,4 +1,4 @@
-package io.zerogone.model;
+package io.zerogone.blog.model;
 
 import javax.validation.constraints.NotBlank;
 

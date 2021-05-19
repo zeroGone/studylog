@@ -1,4 +1,4 @@
-package io.zerogone.model.dto;
+package io.zerogone.blog.model;
 
 import io.zerogone.validator.NewEntity;
 import io.zerogone.validator.NotOverlap;

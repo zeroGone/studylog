@@ -3,7 +3,7 @@ package io.zerogone.user.service;
 import io.zerogone.exception.NotExistDataException;
 import io.zerogone.service.search.SearchService;
 import io.zerogone.user.model.Email;
-import io.zerogone.model.dto.BlogDto;
+import io.zerogone.blog.model.BlogDto;
 import io.zerogone.user.model.UserDto;
 import io.zerogone.user.model.User;
 import io.zerogone.user.UserDao;

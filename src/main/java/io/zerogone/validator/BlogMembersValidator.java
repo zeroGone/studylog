@@ -1,6 +1,6 @@
 package io.zerogone.validator;
 
-import io.zerogone.model.dto.BlogMemberDto;
+import io.zerogone.blog.model.BlogMemberDto;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;

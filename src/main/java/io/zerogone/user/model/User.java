@@ -1,6 +1,6 @@
 package io.zerogone.user.model;
 
-import io.zerogone.model.entity.Blog;
+import io.zerogone.blog.model.Blog;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.WhereJoinTable;

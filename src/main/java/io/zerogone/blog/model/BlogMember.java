@@ -1,6 +1,7 @@
-package io.zerogone.model.entity;
+package io.zerogone.blog.model;
 
-import io.zerogone.converter.MemberRoleConverter;
+import io.zerogone.blog.converter.MemberRoleConverter;
+import io.zerogone.model.entity.MemberRole;
 import io.zerogone.user.model.User;
 import org.hibernate.annotations.DynamicUpdate;
 

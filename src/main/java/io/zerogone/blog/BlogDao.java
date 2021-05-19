@@ -1,8 +1,8 @@
-package io.zerogone.repository;
+package io.zerogone.blog;
 
 import ch.qos.logback.classic.Logger;
-import io.zerogone.model.entity.Blog;
-import io.zerogone.model.entity.BlogMember;
+import io.zerogone.blog.model.Blog;
+import io.zerogone.blog.model.BlogMember;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 

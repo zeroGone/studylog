@@ -1,6 +1,6 @@
 package io.zerogone.controller;
 
-import io.zerogone.model.BlogName;
+import io.zerogone.blog.model.BlogName;
 import io.zerogone.model.dto.PostDto;
 import io.zerogone.service.search.SearchService;
 import org.springframework.stereotype.Controller;

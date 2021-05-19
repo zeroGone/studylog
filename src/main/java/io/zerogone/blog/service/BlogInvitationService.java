@@ -1,4 +1,4 @@
-package io.zerogone.service;
+package io.zerogone.blog.service;
 
 import ch.qos.logback.classic.Logger;
 import io.zerogone.exception.CustomRuntimeException;

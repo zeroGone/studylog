@@ -1,11 +1,12 @@
-package io.zerogone.service.search;
+package io.zerogone.blog.service;
 
 import io.zerogone.exception.NotExistDataException;
-import io.zerogone.model.BlogName;
-import io.zerogone.model.dto.BlogDto;
-import io.zerogone.model.dto.BlogMemberDto;
-import io.zerogone.model.entity.Blog;
-import io.zerogone.repository.BlogDao;
+import io.zerogone.blog.model.BlogName;
+import io.zerogone.blog.model.BlogDto;
+import io.zerogone.blog.model.BlogMemberDto;
+import io.zerogone.blog.model.Blog;
+import io.zerogone.blog.BlogDao;
+import io.zerogone.service.search.SearchService;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 

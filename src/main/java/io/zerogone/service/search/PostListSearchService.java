@@ -1,6 +1,6 @@
 package io.zerogone.service.search;
 
-import io.zerogone.model.BlogName;
+import io.zerogone.blog.model.BlogName;
 import io.zerogone.model.dto.PostDto;
 import io.zerogone.model.entity.Post;
 import io.zerogone.repository.PostDao;

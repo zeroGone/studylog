@@ -1,11 +1,11 @@
-package io.zerogone.service;
+package io.zerogone.blog.service;
 
-import io.zerogone.model.dto.BlogDto;
-import io.zerogone.model.entity.Blog;
-import io.zerogone.model.entity.BlogMember;
+import io.zerogone.blog.model.BlogDto;
+import io.zerogone.blog.model.Blog;
+import io.zerogone.blog.model.BlogMember;
 import io.zerogone.model.entity.MemberRole;
 import io.zerogone.user.model.User;
-import io.zerogone.repository.BlogDao;
+import io.zerogone.blog.BlogDao;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;

@@ -1,4 +1,4 @@
-package io.zerogone.model.entity;
+package io.zerogone.blog.model;
 
 import javax.persistence.*;
 import java.util.Collections;

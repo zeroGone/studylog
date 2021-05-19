@@ -1,10 +1,10 @@
-package io.zerogone.controller.api;
+package io.zerogone.blog.controller;
 
-import io.zerogone.model.dto.BlogDto;
-import io.zerogone.model.dto.BlogMemberDto;
+import io.zerogone.blog.model.BlogDto;
+import io.zerogone.blog.model.BlogMemberDto;
 import io.zerogone.user.model.UserDto;
 import io.zerogone.model.entity.MemberRole;
-import io.zerogone.service.BlogUpdateService;
+import io.zerogone.blog.service.BlogUpdateService;
 import io.zerogone.service.fileupload.ImageUploadService;
 import io.zerogone.service.fileupload.ImageUrl;
 import org.springframework.beans.factory.annotation.Qualifier;

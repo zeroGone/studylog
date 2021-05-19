@@ -1,7 +1,7 @@
-package io.zerogone.controller.api;
+package io.zerogone.blog.controller;
 
-import io.zerogone.model.BlogName;
-import io.zerogone.model.dto.BlogDto;
+import io.zerogone.blog.model.BlogName;
+import io.zerogone.blog.model.BlogDto;
 import io.zerogone.service.search.SearchService;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
