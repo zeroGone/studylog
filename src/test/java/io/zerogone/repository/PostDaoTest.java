@@ -1,5 +1,6 @@
 package io.zerogone.repository;
 
+import io.zerogone.blog.post.PostDao;
 import io.zerogone.config.DatabaseConfiguration;
 import io.zerogone.config.WebConfiguration;
 import org.junit.Assert;

@@ -1,8 +1,9 @@
 package io.zerogone.service.search;
 
+import io.zerogone.common.service.SearchService;
 import io.zerogone.config.DatabaseConfiguration;
 import io.zerogone.config.WebConfiguration;
-import io.zerogone.model.dto.PostDto;
+import io.zerogone.blog.post.model.PostDto;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

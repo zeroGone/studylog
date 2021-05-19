@@ -39,12 +39,12 @@ public class UserCreateControllerTest {
     @Transactional
     public void handleCreateUserApi() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
-                .post("/api/user")
-                .param("email", "5/4")
-                .param("name", "5/4")
-                .param("nickName", "5/4"))
-                .andDo(print())
-                .andExpect(status().isCreated());
+                .post("/users")
+                .param("email", "dudrhs57@gmail.com")
+                .param("name", "zeroGone")
+                .param("nickName", "zeroGone"))
+                .andDo(print());
+//                .andExpect(status().isCreated());
     }
 
     @Test
@@ -66,7 +66,6 @@ public class UserCreateControllerTest {
     public void handleCreateUserApi_WithId_ReturnBadRequest() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
                 .post("/api/user")
-                .param("id", "1")
                 .param("email", "5/4")
                 .param("name", "5/4")
                 .param("nickName", "5/4"))

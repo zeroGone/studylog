@@ -1,7 +1,6 @@
 package io.zerogone.controller;
 
 import io.zerogone.config.WebConfiguration;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,13 +14,12 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = WebConfiguration.class, loader = AnnotationConfigWebContextLoader.class)
 @WebAppConfiguration
-public class IssueControllerTest {
+public class PostListControllerTest {
     @Autowired
     private WebApplicationContext webApplicationContext;
 
@@ -33,8 +31,8 @@ public class IssueControllerTest {
     }
 
     @Test
-    public void testIssuesPage() throws Exception {
-        Assert.assertNotNull(webApplicationContext.getBean(IssueController.class));
-        mockMvc.perform(get("/issues")).andExpect(status().isOk()).andExpect(view().name("issue_list"));
+    public void getPostListViewName() throws Exception {
+        mockMvc.perform(get("/studylog/posts"))
+                .andDo(print());
     }
 }
