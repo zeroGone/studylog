@@ -30,8 +30,8 @@
         </div>
     </div>
     <h2 class="blog-setting-title">블로그 설정</h2>
-    <form class="blog-create-form" enctype="multipart/form-data">
-        <div class="blog-info">
+    <form id="blog-setting-form" class="blog-setting-form" enctype="multipart/form-data">
+        <div class="blog-info" data-blog-id="${blog.id}">
             <div class="blog-info-images">
                 <input type="file" id="blog-image-input" class="blog-image-input" name="blog-image" accept="image/*"/>
                 <div id="blog-image-preview" class="blog-image-preview">
@@ -67,18 +67,20 @@
                 </div>
                 <ul class="member-list">
                     <c:forEach items="${blog.members}" var="member">
-                        <li class="member-list-item member-list-item-01">
+                        <li class="member-list-item" data-member-id="${member.id}" data-member-nickname="${member.nickName}" data-member-role="${member.role}" >
                             <img src="${member.imageUrl}" alt="user-01-image" class="member-list-item-image"/>
                             <span class="member-list-item-name">${member.name}</span>
                             <span class="member-list-item-email">${member.email}</span>
-                            <span class="member-list-item-access-level">
-                            <i class="fas fa-caret-down member-list-item-access-level-control"></i>
+                            <div class="member-list-item-access-level">
+                                <i class="fas fa-caret-down member-list-item-access-level-control"></i>
+                                <span class="member-list-item-access-level-text">
                             <c:choose>
                                 <c:when test="${member.role eq 'ADMIN'}">관리자</c:when>
                                 <c:when test="${member.role eq 'MEMBER'}">멤버</c:when>
                                 <c:when test="${member.role eq 'INVITING'}">초대중</c:when>
                             </c:choose>
-                        </span>
+                                    </span>
+                            </div>
                             <div class="member-list-item-access-level-setting">
                                 <span class="member-list-item-access-level-setting-administrator">관리자</span>
                                 <span class="member-list-item-access-level-setting-member">멤버</span>
