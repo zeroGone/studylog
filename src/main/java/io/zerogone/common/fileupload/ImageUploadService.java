@@ -19,5 +19,5 @@ public abstract class ImageUploadService {
         }
     }
 
-    abstract ImageUrl getDefaultImageUrl();
+    protected abstract ImageUrl getDefaultImageUrl();
 }

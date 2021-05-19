@@ -15,7 +15,7 @@ public class UserImageUploadService extends ImageUploadService {
     }
 
     @Override
-    ImageUrl getDefaultImageUrl() {
+    protected ImageUrl getDefaultImageUrl() {
         int randomNumber = (int) (Math.random() * 10);
         return new ImageUrl(USER_DEFAULT_IMAGE_URL + randomNumber + USER_DEFAULT_IMAGE_TYPE);
     }

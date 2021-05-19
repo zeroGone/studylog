@@ -14,7 +14,7 @@ public class BlogImageUploadService extends ImageUploadService {
     }
 
     @Override
-    ImageUrl getDefaultImageUrl() {
+    protected ImageUrl getDefaultImageUrl() {
         return new ImageUrl(BLOG_DEFAULT_IMAGE_URL);
     }
 }
