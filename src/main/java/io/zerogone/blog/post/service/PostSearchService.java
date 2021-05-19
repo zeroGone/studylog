@@ -1,10 +1,11 @@
-package io.zerogone.service.search;
+package io.zerogone.blog.post.service;
 
 import io.zerogone.exception.NotExistDataException;
-import io.zerogone.model.dto.PostDto;
+import io.zerogone.blog.post.model.PostDto;
+import io.zerogone.service.search.SearchService;
 import io.zerogone.user.model.UserDto;
-import io.zerogone.model.entity.Post;
-import io.zerogone.repository.PostDao;
+import io.zerogone.blog.post.model.Post;
+import io.zerogone.blog.post.PostDao;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 

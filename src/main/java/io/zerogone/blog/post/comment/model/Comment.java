@@ -1,5 +1,6 @@
-package io.zerogone.model.entity;
+package io.zerogone.blog.post.comment.model;
 
+import io.zerogone.blog.post.model.Post;
 import io.zerogone.user.model.User;
 
 import javax.persistence.*;

@@ -1,7 +1,7 @@
-package io.zerogone.controller.api;
+package io.zerogone.blog.post.comment.controller;
 
-import io.zerogone.model.dto.CommentDto;
-import io.zerogone.model.dto.PostDto;
+import io.zerogone.blog.post.comment.model.CommentDto;
+import io.zerogone.blog.post.model.PostDto;
 import io.zerogone.user.model.UserDto;
 import io.zerogone.service.create.CreateService;
 import io.zerogone.service.search.SearchService;

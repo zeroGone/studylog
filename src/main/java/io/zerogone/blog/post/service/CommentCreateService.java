@@ -1,8 +1,9 @@
-package io.zerogone.service.create;
+package io.zerogone.blog.post.service;
 
-import io.zerogone.model.dto.CommentDto;
-import io.zerogone.model.entity.Comment;
-import io.zerogone.repository.CommentDao;
+import io.zerogone.blog.post.comment.model.CommentDto;
+import io.zerogone.blog.post.comment.model.Comment;
+import io.zerogone.blog.post.comment.CommentDao;
+import io.zerogone.service.create.CreateService;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 

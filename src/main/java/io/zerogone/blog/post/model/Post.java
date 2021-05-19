@@ -1,4 +1,4 @@
-package io.zerogone.model.entity;
+package io.zerogone.blog.post.model;
 
 import io.zerogone.blog.model.Blog;
 import io.zerogone.user.model.User;

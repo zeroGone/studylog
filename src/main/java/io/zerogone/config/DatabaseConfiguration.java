@@ -40,7 +40,7 @@ public class DatabaseConfiguration {
                 = new LocalContainerEntityManagerFactoryBean();
 
         entityManagerFactory.setDataSource(dataSource());
-        entityManagerFactory.setPackagesToScan("io.zerogone.model.entity", "io.zerogone.user.model");
+        entityManagerFactory.setPackagesToScan("io.zerogone.user.model", "io.zerogone.blog.model", "io.zerogone.blog.post.model", "io.zerogone.blog.post.comment.model");
 
         entityManagerFactory.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
         entityManagerFactory.setJpaProperties(getJpaProperties());

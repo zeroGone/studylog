@@ -1,4 +1,4 @@
-package io.zerogone.model.dto;
+package io.zerogone.blog.post.model;
 
 public class CategoryDto {
     private int id;

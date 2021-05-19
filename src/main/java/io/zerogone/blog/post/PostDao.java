@@ -1,7 +1,7 @@
-package io.zerogone.repository;
+package io.zerogone.blog.post;
 
 import io.zerogone.blog.model.Blog;
-import io.zerogone.model.entity.Post;
+import io.zerogone.blog.post.model.Post;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;

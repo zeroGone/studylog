@@ -1,11 +1,12 @@
-package io.zerogone.service.create;
+package io.zerogone.blog.post.service;
 
-import io.zerogone.model.dto.PostDto;
+import io.zerogone.blog.post.model.PostDto;
+import io.zerogone.service.create.CreateService;
 import io.zerogone.user.model.UserDto;
-import io.zerogone.model.entity.Category;
-import io.zerogone.model.entity.Post;
-import io.zerogone.repository.CategoryDao;
-import io.zerogone.repository.PostDao;
+import io.zerogone.blog.post.model.Category;
+import io.zerogone.blog.post.model.Post;
+import io.zerogone.blog.post.CategoryDao;
+import io.zerogone.blog.post.PostDao;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 

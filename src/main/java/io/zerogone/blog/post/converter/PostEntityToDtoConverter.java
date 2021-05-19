@@ -1,7 +1,7 @@
-package io.zerogone.converter;
+package io.zerogone.blog.post.converter;
 
-import io.zerogone.model.dto.PostDto;
-import io.zerogone.model.entity.Post;
+import io.zerogone.blog.post.model.PostDto;
+import io.zerogone.blog.post.model.Post;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 

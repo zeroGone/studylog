@@ -1,4 +1,4 @@
-package io.zerogone.controller;
+package io.zerogone.blog.post.controller;
 
 import io.zerogone.user.model.UserDto;
 import org.springframework.stereotype.Controller;

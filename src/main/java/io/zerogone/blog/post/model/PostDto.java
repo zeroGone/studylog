@@ -1,4 +1,4 @@
-package io.zerogone.model.dto;
+package io.zerogone.blog.post.model;
 
 import io.zerogone.blog.model.BlogDto;
 import io.zerogone.user.model.UserDto;

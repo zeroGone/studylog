@@ -1,6 +1,6 @@
-package io.zerogone.repository;
+package io.zerogone.blog.post.comment;
 
-import io.zerogone.model.entity.Comment;
+import io.zerogone.blog.post.comment.model.Comment;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;

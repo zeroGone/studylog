@@ -1,9 +1,10 @@
-package io.zerogone.service.search;
+package io.zerogone.blog.post.service;
 
 import io.zerogone.blog.model.BlogName;
-import io.zerogone.model.dto.PostDto;
-import io.zerogone.model.entity.Post;
-import io.zerogone.repository.PostDao;
+import io.zerogone.blog.post.model.PostDto;
+import io.zerogone.blog.post.model.Post;
+import io.zerogone.blog.post.PostDao;
+import io.zerogone.service.search.SearchService;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 
