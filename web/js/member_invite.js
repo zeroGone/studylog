@@ -1,9 +1,10 @@
 class User {
-    constructor(id, name, email, nickName) {
+    constructor(id, name, email, nickName, role) {
         this.id = id;
         this.email = email;
         this.name = name;
         this.nickName = nickName;
+        this.role = role;
     }
 }
 
@@ -181,6 +182,8 @@ function activeAlertContainer(type) {
         focusLocation = 'member';
     } else if (type === 'memberInviteLinkCopy') {
         alertMessage.innerHTML = '초대 링크가 복사되었습니다.';
+    } else if(type === 'blogNotPost'){
+        alertMessage.innerHTML = '블로그를 수정할 수 없습니다. 잠시후 다시 시도해 주세요.';
     }
 
     const confirm = document.querySelector('.alert-confirm');
@@ -217,6 +220,8 @@ function hideAlertContainer(location) {
     } else if (location === 'member') {
         document.querySelector('#blog-member-input').focus();
     }
+
+    return false;
 }
 
 function informToNotRegisterOneself(email) {
