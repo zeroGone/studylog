@@ -230,6 +230,7 @@
 }
 
 .member-list-item-access-level {
+    display: inline-block;
     position: absolute;
     right: 10px;
     transform: translateY(-50%);
@@ -242,13 +243,20 @@
     position: absolute;
     bottom: 0;
     right: 0;
+    height: auto;
     transform: translateY(60%);
+    background-color: var(--white);
     border: 1px solid var(--gray);
-    padding: 10px;
 }
 
-.member-list-item-access-level-setting-administrator {
-    margin-right: 20px;
+.member-list-item-access-level-setting.active{
+    display: block;
+}
+
+.member-list-item-access-level-setting-administrator,
+.member-list-item-access-level-setting-member{
+    display: inline-block;
+    padding: 1vh;
 }
 
 .member-list-item-access-level-setting-administrator:hover,
