@@ -1,9 +1,9 @@
 package io.zerogone.converter;
 
-import io.zerogone.model.dto.BlogMemberDto;
-import io.zerogone.model.entity.Blog;
-import io.zerogone.model.entity.BlogMember;
-import io.zerogone.model.entity.User;
+import io.zerogone.blog.model.Blog;
+import io.zerogone.blog.model.BlogMember;
+import io.zerogone.blog.model.BlogMemberDto;
+import io.zerogone.user.model.User;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
