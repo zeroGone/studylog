@@ -62,4 +62,19 @@ public class LoginControllerTest {
                 .andDo(print())
                 .andExpect(status().isUnauthorized());
     }
+
+    @Test
+    public void doLogin_EmailIsBlank_ReturnBadRequest() throws Exception {
+        LoginRequest loginRequest = new LoginRequest();
+        loginRequest.setEmail(" ");
+        loginRequest.setName("누구게");
+
+        mockMvc.perform(MockMvcRequestBuilders
+                .post("/login")
+                .contentType("application/json")
+                .characterEncoding("utf-8")
+                .content(new ObjectMapper().writeValueAsString(loginRequest)))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
+    }
 }
