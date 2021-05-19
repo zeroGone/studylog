@@ -1,7 +1,7 @@
 package io.zerogone.blog.service;
 
 import ch.qos.logback.classic.Logger;
-import io.zerogone.exception.CustomRuntimeException;
+import io.zerogone.common.exception.CustomRuntimeException;
 import org.slf4j.LoggerFactory;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;

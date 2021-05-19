@@ -1,7 +1,7 @@
 package io.zerogone.blog.post.service;
 
 import io.zerogone.blog.post.model.PostDto;
-import io.zerogone.service.create.CreateService;
+import io.zerogone.common.service.CreateService;
 import io.zerogone.user.model.UserDto;
 import io.zerogone.blog.post.model.Category;
 import io.zerogone.blog.post.model.Post;

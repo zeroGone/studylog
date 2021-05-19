@@ -2,7 +2,7 @@ package io.zerogone.blog.controller;
 
 import io.zerogone.blog.model.BlogName;
 import io.zerogone.blog.model.BlogDto;
-import io.zerogone.service.search.SearchService;
+import io.zerogone.common.service.SearchService;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;

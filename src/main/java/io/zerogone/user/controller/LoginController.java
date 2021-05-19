@@ -1,10 +1,10 @@
 package io.zerogone.user.controller;
 
-import io.zerogone.exception.NotExistDataException;
+import io.zerogone.common.exception.NotExistDataException;
 import io.zerogone.user.model.Email;
 import io.zerogone.user.model.UserDto;
-import io.zerogone.service.search.SearchService;
-import io.zerogone.validator.Login;
+import io.zerogone.common.service.SearchService;
+import io.zerogone.user.Login;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

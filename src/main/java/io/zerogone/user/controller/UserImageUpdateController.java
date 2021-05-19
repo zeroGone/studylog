@@ -1,6 +1,6 @@
 package io.zerogone.user.controller;
 
-import io.zerogone.model.ErrorResponse;
+import io.zerogone.common.ErrorResponse;
 import io.zerogone.user.model.UserDto;
 import io.zerogone.user.service.UserImageUpdateService;
 import org.springframework.http.HttpStatus;

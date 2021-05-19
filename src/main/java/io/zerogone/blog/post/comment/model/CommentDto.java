@@ -2,7 +2,7 @@ package io.zerogone.blog.post.comment.model;
 
 import io.zerogone.blog.post.model.PostDto;
 import io.zerogone.user.model.UserDto;
-import io.zerogone.validator.NewEntity;
+import io.zerogone.common.NewEntity;
 import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.NotBlank;

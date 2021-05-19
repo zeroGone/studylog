@@ -1,8 +1,8 @@
 package io.zerogone.user.model;
 
 import io.zerogone.blog.model.BlogDto;
-import io.zerogone.validator.Login;
-import io.zerogone.validator.NewEntity;
+import io.zerogone.user.Login;
+import io.zerogone.common.NewEntity;
 import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.Email;

@@ -1,8 +1,8 @@
 package io.zerogone.blog.post.service;
 
-import io.zerogone.exception.NotExistDataException;
+import io.zerogone.common.exception.NotExistDataException;
 import io.zerogone.blog.post.model.PostDto;
-import io.zerogone.service.search.SearchService;
+import io.zerogone.common.service.SearchService;
 import io.zerogone.user.model.UserDto;
 import io.zerogone.blog.post.model.Post;
 import io.zerogone.blog.post.PostDao;

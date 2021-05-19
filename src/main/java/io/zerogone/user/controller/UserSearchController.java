@@ -2,7 +2,7 @@ package io.zerogone.user.controller;
 
 import io.zerogone.user.model.Email;
 import io.zerogone.user.model.UserDto;
-import io.zerogone.service.search.SearchService;
+import io.zerogone.common.service.SearchService;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;

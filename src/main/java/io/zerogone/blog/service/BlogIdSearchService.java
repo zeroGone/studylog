@@ -1,10 +1,10 @@
 package io.zerogone.blog.service;
 
-import io.zerogone.exception.NotExistDataException;
+import io.zerogone.common.exception.NotExistDataException;
 import io.zerogone.blog.model.BlogDto;
 import io.zerogone.blog.model.Blog;
 import io.zerogone.blog.BlogDao;
-import io.zerogone.service.search.SearchService;
+import io.zerogone.common.service.SearchService;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 

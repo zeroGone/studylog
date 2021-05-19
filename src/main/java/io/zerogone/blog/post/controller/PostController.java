@@ -1,7 +1,7 @@
 package io.zerogone.blog.post.controller;
 
 import io.zerogone.blog.post.model.PostDto;
-import io.zerogone.service.search.SearchService;
+import io.zerogone.common.service.SearchService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;

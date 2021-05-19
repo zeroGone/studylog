@@ -1,6 +1,6 @@
 package io.zerogone.blog.converter;
 
-import io.zerogone.model.entity.MemberRole;
+import io.zerogone.blog.model.MemberRole;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;

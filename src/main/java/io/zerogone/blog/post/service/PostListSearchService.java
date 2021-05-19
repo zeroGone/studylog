@@ -4,7 +4,7 @@ import io.zerogone.blog.model.BlogName;
 import io.zerogone.blog.post.model.PostDto;
 import io.zerogone.blog.post.model.Post;
 import io.zerogone.blog.post.PostDao;
-import io.zerogone.service.search.SearchService;
+import io.zerogone.common.service.SearchService;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 

@@ -3,7 +3,7 @@ package io.zerogone.blog.post.service;
 import io.zerogone.blog.post.comment.model.CommentDto;
 import io.zerogone.blog.post.comment.model.Comment;
 import io.zerogone.blog.post.comment.CommentDao;
-import io.zerogone.service.create.CreateService;
+import io.zerogone.common.service.CreateService;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 

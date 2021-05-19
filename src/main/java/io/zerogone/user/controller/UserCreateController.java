@@ -1,8 +1,8 @@
 package io.zerogone.user.controller;
 
 import io.zerogone.user.model.UserDto;
-import io.zerogone.service.create.CreateWithImageService;
-import io.zerogone.validator.NewEntity;
+import io.zerogone.common.service.CreateWithImageService;
+import io.zerogone.common.NewEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;

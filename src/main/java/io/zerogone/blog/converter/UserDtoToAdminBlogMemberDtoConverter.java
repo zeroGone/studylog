@@ -1,7 +1,7 @@
 package io.zerogone.blog.converter;
 
 import io.zerogone.blog.model.BlogMemberDto;
-import io.zerogone.model.entity.MemberRole;
+import io.zerogone.blog.model.MemberRole;
 import org.springframework.stereotype.Component;
 
 @Component

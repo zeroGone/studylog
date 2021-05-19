@@ -1,7 +1,7 @@
 package io.zerogone.blog.model;
 
-import io.zerogone.validator.NewEntity;
-import io.zerogone.validator.NotOverlap;
+import io.zerogone.common.NewEntity;
+import io.zerogone.blog.validator.NotOverlap;
 import org.hibernate.validator.constraints.Range;
 
 import javax.validation.Valid;

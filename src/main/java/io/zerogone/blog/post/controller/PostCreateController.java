@@ -1,12 +1,12 @@
 package io.zerogone.blog.post.controller;
 
-import io.zerogone.exception.NotAuthorizedException;
+import io.zerogone.blog.exception.NotAuthorizedException;
 import io.zerogone.blog.model.BlogDto;
 import io.zerogone.blog.post.model.PostDto;
 import io.zerogone.user.model.UserDto;
-import io.zerogone.service.create.CreateService;
-import io.zerogone.service.search.SearchService;
-import io.zerogone.validator.NewEntity;
+import io.zerogone.common.service.CreateService;
+import io.zerogone.common.service.SearchService;
+import io.zerogone.common.NewEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;

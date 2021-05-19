@@ -1,7 +1,5 @@
 package io.zerogone.blog.model;
 
-import io.zerogone.model.entity.MemberRole;
-
 import javax.validation.constraints.Positive;
 import java.util.Objects;
 
