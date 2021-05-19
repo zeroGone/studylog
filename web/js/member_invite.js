@@ -1,17 +1,18 @@
 class User {
-    constructor(id, name, email, nickName) {
+    constructor(id, name, email, nickName, role) {
         this.id = id;
         this.email = email;
         this.name = name;
         this.nickName = nickName;
+        this.role = role;
     }
 }
 
 let userInfoData;
 
 const userSearchButton = document.querySelector('.blog-member-search');
-userSearchButton.addEventListener('click', getUserInfo);
-document.querySelector('#blog-member-input').setAttribute('onkeypress', 'if( event.keyCode == 13 ){getUserInfo();}');
+// userSearchButton.addEventListener('click', getUserInfo);
+// document.querySelector('#blog-member-input').setAttribute('onkeypress', 'if( event.keyCode == 13 ){getUserInfo();}');
 
 function createElement(tagName, className, text, attributeNames, attributeValues) {
     const element = document.createElement(tagName);
@@ -179,6 +180,10 @@ function activeAlertContainer(type) {
     } else if (type === 'notValidEmail') {
         alertMessage.innerHTML = '올바른 이메일 형식을 입력해 주세요.';
         focusLocation = 'member';
+    } else if (type === 'memberInviteLinkCopy') {
+        alertMessage.innerHTML = '초대 링크가 복사되었습니다.';
+    } else if(type === 'blogNotPost'){
+        alertMessage.innerHTML = '블로그를 수정할 수 없습니다. 잠시후 다시 시도해 주세요.';
     }
 
     const confirm = document.querySelector('.alert-confirm');
@@ -215,6 +220,8 @@ function hideAlertContainer(location) {
     } else if (location === 'member') {
         document.querySelector('#blog-member-input').focus();
     }
+
+    return false;
 }
 
 function informToNotRegisterOneself(email) {

@@ -3,22 +3,41 @@ package io.zerogone.service;
 import io.zerogone.model.dto.BlogDto;
 import io.zerogone.model.entity.Blog;
 import io.zerogone.model.entity.BlogMember;
-import io.zerogone.model.entity.User;
 import io.zerogone.repository.BlogDao;
+import io.zerogone.service.fileupload.ImageUploadService;
+import io.zerogone.service.fileupload.ImageUrl;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
 public class BlogUpdateService {
     private final BlogDao blogDao;
     private final BlogInvitationService blogInvitationService;
+    private final ImageUploadService imageUploadService;
+    private final ConversionService conversionService;
 
-    public BlogUpdateService(BlogDao blogDao, BlogInvitationService blogInvitationService) {
+    public BlogUpdateService(BlogDao blogDao,
+                             BlogInvitationService blogInvitationService,
+                             @Qualifier("blogImageUploadService") ImageUploadService imageUploadService,
+                             ConversionService conversionService) {
         this.blogDao = blogDao;
         this.blogInvitationService = blogInvitationService;
+        this.imageUploadService = imageUploadService;
+        this.conversionService = conversionService;
+    }
+
+    @Transactional
+    public BlogDto updateBlog(BlogDto dto, MultipartFile image) {
+        ImageUrl imageUrl = imageUploadService.upload(image);
+        dto.setImageUrl(imageUrl.getValue());
+        return updateBlog(dto);
     }
 
     @Transactional
@@ -36,15 +55,10 @@ public class BlogUpdateService {
     }
 
     private List<BlogMember> getNewMembers(Blog entity, BlogDto dto) {
-        List<BlogMember> dtoMembers = dto.getMembers()
+        return dto.getMembers()
                 .stream()
-                .map(memberDto -> {
-                    User user = new User(memberDto.getId(), memberDto.getName(), memberDto.getEmail(), memberDto.getNickName(), memberDto.getImageUrl());
-                    return new BlogMember(user, entity.getId());
-                })
+                .filter(memberDto -> entity.getMembers().stream().noneMatch(member -> Objects.equals(member.getUserId(), memberDto.getId())))
+                .map(memberDto -> conversionService.convert(memberDto, BlogMember.class))
                 .collect(Collectors.toList());
-
-        dtoMembers.removeAll(entity.getMembers());
-        return dtoMembers;
     }
 }
