@@ -1,4 +1,4 @@
-package io.zerogone.config;
+package io.zerogone;
 
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
