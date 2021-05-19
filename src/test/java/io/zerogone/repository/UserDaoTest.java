@@ -2,8 +2,8 @@ package io.zerogone.repository;
 
 import io.zerogone.config.DatabaseConfiguration;
 import io.zerogone.config.WebConfiguration;
-import io.zerogone.exception.NotExistedDataException;
-import io.zerogone.model.entity.User;
+import io.zerogone.user.UserDao;
+import io.zerogone.user.model.User;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -115,36 +115,23 @@ public class UserDaoTest {
         Assert.assertNotEquals(0, user.getId());
         Assert.assertEquals("dudrhs571@gmail.com", user.getEmail());
     }
-
-    @Test
-    public void fidnUserByEmail_GivenNull_ThrowNotExistedDataException() {
-        expectedException.expect(NotExistedDataException.class);
-        Assert.assertNotEquals(0, userDao.findByEmail(null).getId());
-    }
-
-    @Test
-    public void findUserByEmail_GivenEmptyString_ThrowNotExistedDataException() {
-        expectedException.expect(NotExistedDataException.class);
-        Assert.assertNotEquals(0, userDao.findByEmail("").getId());
-    }
-
-    @Test
-    public void findWithBlogsByEmail() {
-        User user = userDao.findWithBlogsByEmail("dudrhs571@gmail.com");
-        Assert.assertNotNull(user);
-        Assert.assertNotEquals(0, user.getId());
-        Assert.assertEquals("dudrhs571@gmail.com", user.getEmail());
-    }
-
-    @Test
-    public void findWithBlogsByEmail_NotHavingBlog_ReturnEntity() {
-        User user = userDao.findWithBlogsByEmail("ahtpgus@naver.com");
-        Assert.assertNotNull(user);
-    }
-
-    @Test
-    public void findWithBlogsByEmail_GivenEmptyString_ThrowNotExistedDataException() {
-        expectedException.expect(NotExistedDataException.class);
-        Assert.assertNotEquals(0, userDao.findWithBlogsByEmail("").getId());
-    }
+//    @Test
+//    public void findWithBlogsByEmail() {
+//        User user = userDao.findWithBlogsByEmail("dudrhs571@gmail.com");
+//        Assert.assertNotNull(user);
+//        Assert.assertNotEquals(0, user.getId());
+//        Assert.assertEquals("dudrhs571@gmail.com", user.getEmail());
+//    }
+//
+//    @Test
+//    public void findWithBlogsByEmail_NotHavingBlog_ReturnEntity() {
+//        User user = userDao.findWithBlogsByEmail("ahtpgus@naver.com");
+//        Assert.assertNotNull(user);
+//    }
+//
+//    @Test
+//    public void findWithBlogsByEmail_GivenEmptyString_ThrowNotExistedDataException() {
+//        expectedException.expect(NotExistedDataException.class);
+//        Assert.assertNotEquals(0, userDao.findWithBlogsByEmail("").getId());
+//    }
 }
