@@ -33,21 +33,41 @@ public class UserSearchControllerTest {
     }
 
     @Test
-    public void handleUserSearchApi() throws Exception {
-        mockMvc.perform(get("/api/user").param("email", "ahtpgus@naver.com"))
+    public void handleSearchingUserByEmail() throws Exception {
+        mockMvc.perform(get("/api/user")
+                .param("email", "dudrhs571@naver.com"))
                 .andExpect(status().isOk())
-                .andDo(print());
-
-        mockMvc.perform(get("/api/user").param("email", "%"))
-                .andExpect(status().isNotFound())
                 .andDo(print());
     }
 
     @Test
-    public void handleUserSearchApi_ParamIsEmptystring_ReturnNotFound() throws Exception {
+    public void handleSearchingUserByEmail_ParamIsEmptystring_ReturnBadRequest() throws Exception {
         mockMvc.perform(get("/api/user")
-                .param("email", ""))
-                .andExpect(status().isNotFound())
+                .param("email", " "))
+                .andExpect(status().isBadRequest())
+                .andDo(print());
+    }
+
+    @Test
+    public void handleSearchingUserByEmail_EmailIsNull_ReturnBadRequest() throws Exception {
+        mockMvc.perform(get("/api/user"))
+                .andExpect(status().isBadRequest())
+                .andDo(print());
+    }
+
+    @Test
+    public void handleSearchingUserByEmail_EmailIsNotEmailString_ReturnNotFound() throws Exception {
+        mockMvc.perform(get("/api/user")
+                .param("email", "dudrhs571"))
+                .andExpect(status().isBadRequest())
+                .andDo(print());
+    }
+
+    @Test
+    public void handleSearchingUserByEmail_ParamIsEmptystring_ReturnNotFound() throws Exception {
+        mockMvc.perform(get("/api/user")
+                .param("email", " "))
+                .andExpect(status().isBadRequest())
                 .andDo(print());
     }
 }

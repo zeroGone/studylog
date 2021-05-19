@@ -2,11 +2,12 @@ package io.zerogone.controller.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.zerogone.config.WebConfiguration;
-import io.zerogone.model.dto.BlogDto;
-import io.zerogone.model.dto.BlogMemberDto;
-import io.zerogone.model.dto.UserDto;
-import io.zerogone.service.search.BlogWithMembersSearchService;
-import io.zerogone.service.search.UserWithBlogsSearchService;
+import io.zerogone.user.model.Email;
+import io.zerogone.blog.model.BlogDto;
+import io.zerogone.blog.model.BlogMemberDto;
+import io.zerogone.user.model.UserDto;
+import io.zerogone.blog.model.MemberRole;
+import io.zerogone.user.service.UserSearchService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,8 +21,9 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.util.Arrays;
+
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = WebConfiguration.class, loader = AnnotationConfigWebContextLoader.class)
@@ -31,31 +33,37 @@ public class BlogUpdateControllerTest {
     private WebApplicationContext webApplicationContext;
     private MockMvc mockMvc;
     private UserDto userInfo;
-    private BlogDto blogDto;
 
     @Before
     public void setUp() {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-        userInfo = webApplicationContext.getBean(UserWithBlogsSearchService.class).search("dudrhs571@gmail.com");
-        blogDto = webApplicationContext.getBean(BlogWithMembersSearchService.class).search("studylog");
+        userInfo = webApplicationContext.getBean(UserSearchService.class).search(new Email("dudrhs571@gmail.com"));
     }
 
     @Test
     public void handleUpdatingBlog() throws Exception {
-        BlogMemberDto blogMemberDto = new BlogMemberDto();
-        blogMemberDto.setId(4);
-        blogMemberDto.setEmail("dudrhs571@naver.com");
-        blogDto.setIntroduce("test");
-        blogDto.setImageUrl("test image");
-        blogDto.getMembers().add(blogMemberDto);
+        BlogDto blogDto = new BlogDto();
+        blogDto.setId(1);
+        blogDto.setName("studylog");
+        blogDto.setIntroduce("test123");
+
+        BlogMemberDto blogMemberDto1 = new BlogMemberDto();
+        blogMemberDto1.setId(1);
+        blogMemberDto1.setEmail("dudrhs571@gmail.com");
+        blogMemberDto1.setRole(MemberRole.ADMIN);
+
+        BlogMemberDto blogMemberDto2 = new BlogMemberDto();
+        blogMemberDto2.setId(4);
+        blogMemberDto2.setEmail("dudrhs571@gmail.com");
+
+        blogDto.setMembers(Arrays.asList(blogMemberDto1, blogMemberDto2));
         mockMvc.perform(MockMvcRequestBuilders
-                .put("/api/blog/1")
+                .put("/blogs/1")
                 .sessionAttr("userInfo", userInfo)
                 .contentType("application/json")
                 .characterEncoding("utf-8")
                 .content(new ObjectMapper().writeValueAsString(blogDto)))
-                .andDo(print())
-                .andExpect(status().isOk());
+                .andDo(print());
     }
 
     @Test

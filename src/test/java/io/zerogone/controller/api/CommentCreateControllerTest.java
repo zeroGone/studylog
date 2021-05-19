@@ -2,9 +2,10 @@ package io.zerogone.controller.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.zerogone.config.WebConfiguration;
-import io.zerogone.model.dto.CommentDto;
-import io.zerogone.model.dto.UserDto;
-import io.zerogone.service.search.UserWithBlogsSearchService;
+import io.zerogone.user.model.Email;
+import io.zerogone.blog.post.comment.model.CommentDto;
+import io.zerogone.user.model.UserDto;
+import io.zerogone.user.service.UserSearchService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,8 +19,9 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import javax.transaction.Transactional;
+
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = WebConfiguration.class, loader = AnnotationConfigWebContextLoader.class)
@@ -30,28 +32,24 @@ public class CommentCreateControllerTest {
 
     private MockMvc mockMvc;
 
-    private UserDto userInfo;
-
     @Before
     public void setUp() {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-        userInfo = webApplicationContext.getBean(UserWithBlogsSearchService.class).search("dudrhs571@gmail.com");
     }
 
     @Test
+    @Transactional
     public void handleCreatingCommentApi() throws Exception {
+        UserDto userInfo = webApplicationContext.getBean(UserSearchService.class).search(new Email("dudrhs571@gmail.com"));
         CommentDto commentDto = new CommentDto();
-        commentDto.setPostId(1);
         commentDto.setContents("test");
-        commentDto.setWriter(new UserDto());
 
         mockMvc.perform(MockMvcRequestBuilders
-                .post("/api/comment")
+                .post("/blogs/1/posts/1/comments")
                 .sessionAttr("userInfo", userInfo)
                 .contentType("application/json")
                 .characterEncoding("utf-8")
                 .content(new ObjectMapper().writeValueAsString(commentDto)))
-                .andDo(print())
-                .andExpect(status().isCreated());
+                .andDo(print());
     }
 }

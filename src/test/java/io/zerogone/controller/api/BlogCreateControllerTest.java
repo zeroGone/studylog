@@ -1,8 +1,9 @@
 package io.zerogone.controller.api;
 
 import io.zerogone.config.WebConfiguration;
-import io.zerogone.model.dto.UserDto;
-import io.zerogone.service.search.UserWithBlogsSearchService;
+import io.zerogone.user.model.Email;
+import io.zerogone.user.model.UserDto;
+import io.zerogone.user.service.UserSearchService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,19 +36,36 @@ public class BlogCreateControllerTest {
     @Before
     public void setUp() {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-        userInfo = webApplicationContext.getBean(UserWithBlogsSearchService.class).search("dudrhs571@naver.com");
+        userInfo = webApplicationContext.getBean("userSearchService", UserSearchService.class).search(new Email("dudrhs571@naver.com"));
     }
 
     @Test
     @Transactional
     public void handleBlogCreateApi() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
-                .post("/api/blog").sessionAttr("userInfo", userInfo)
-                .param("name", "5월 5일 테스트")
-                .param("members[0].id", "1")
+                .post("/blogs").sessionAttr("userInfo", userInfo)
+                .param("name", "studylog")
+                .param("members[0].id", "123213")
                 .param("members[0].name", "김영곤")
                 .param("members[0].email", "dudrhs571@gmail.com")
                 .param("members[0].nickName", "zeroGone"))
+                .andDo(print());
+    }
+
+    @Test
+    public void handleBlogCreateApi_ModelTypeIsNotEquals_ReturnError() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders
+                .post("/api/blog").sessionAttr("userInfo", userInfo)
+                .param("test", "hi"))
+                .andDo(print())
+                .andExpect(status().isCreated());
+    }
+
+    @Test
+    public void handleBlogCreateApi_BlogNameIsBlank_ReturnError() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders
+                .post("/api/blog").sessionAttr("userInfo", userInfo)
+                .param("name", ""))
                 .andDo(print())
                 .andExpect(status().isCreated());
     }
@@ -57,7 +75,8 @@ public class BlogCreateControllerTest {
         mockMvc.perform(MockMvcRequestBuilders
                 .post("/api/blog").sessionAttr("userInfo", userInfo)
                 .param("name", "test dto")
-                .param("members[0].id", Integer.toString(Integer.MAX_VALUE)))
+                .param("members[0].id", "1")
+                .param("members[1].id", "1"))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
     }
