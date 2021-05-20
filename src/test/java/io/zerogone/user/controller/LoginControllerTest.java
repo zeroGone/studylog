@@ -18,6 +18,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = WebConfiguration.class, loader = AnnotationConfigWebContextLoader.class)
@@ -45,11 +46,12 @@ public class LoginControllerTest {
                 .characterEncoding("utf-8")
                 .content(new ObjectMapper().writeValueAsString(loginRequest)))
                 .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isFound())
+                .andExpect(view().name("redirect:/mypage"));
     }
 
     @Test
-    public void doLogin_NotExistedUser_ReturnUnauthorized() throws Exception {
+    public void doLogin_NotExistedUser_RedirectSignupPage() throws Exception {
         LoginRequest loginRequest = new LoginRequest();
         loginRequest.setEmail("dudrhs571@gmail.com");
         loginRequest.setName("누구게");
@@ -60,7 +62,8 @@ public class LoginControllerTest {
                 .characterEncoding("utf-8")
                 .content(new ObjectMapper().writeValueAsString(loginRequest)))
                 .andDo(print())
-                .andExpect(status().isUnauthorized());
+                .andExpect(status().isFound())
+                .andExpect(view().name("redirect:/signup"));
     }
 
     @Test
