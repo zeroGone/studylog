@@ -1,11 +1,11 @@
 package io.zerogone.common.controlleradvice;
 
 import ch.qos.logback.classic.Logger;
-import io.zerogone.common.exception.CustomRuntimeException;
-import io.zerogone.common.fileupload.FileUploadException;
-import io.zerogone.blog.exception.NotAuthorizedException;
-import io.zerogone.common.exception.NotExistDataException;
 import io.zerogone.common.ErrorResponse;
+import io.zerogone.common.exception.CustomRuntimeException;
+import io.zerogone.common.exception.NotAuthorizedAccessException;
+import io.zerogone.common.exception.NotExistDataException;
+import io.zerogone.common.fileupload.FileUploadException;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -68,8 +68,8 @@ public class ApiControllerAdvice {
     }
 
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    @ExceptionHandler(NotAuthorizedException.class)
-    public ErrorResponse handleNotAuthorizedException(NotAuthorizedException exception) {
+    @ExceptionHandler(NotAuthorizedAccessException.class)
+    public ErrorResponse handleNotAuthorizedException(NotAuthorizedAccessException exception) {
         return new ErrorResponse.Builder()
                 .exception(exception.getClass())
                 .cause(exception.getMessage())
