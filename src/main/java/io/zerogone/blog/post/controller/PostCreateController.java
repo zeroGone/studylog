@@ -1,6 +1,6 @@
 package io.zerogone.blog.post.controller;
 
-import io.zerogone.blog.exception.NotAuthorizedException;
+import io.zerogone.common.exception.NotAuthorizedAccessException;
 import io.zerogone.blog.model.BlogDto;
 import io.zerogone.blog.post.model.PostDto;
 import io.zerogone.user.model.UserDto;
@@ -47,6 +47,6 @@ public class PostCreateController {
                 .stream()
                 .filter(userBlog -> Objects.equals(userBlog.getId(), targetBlog.getId()))
                 .findAny()
-                .orElseThrow(new NotAuthorizedException("소속되지 않은 블로그입니다"));
+                .orElseThrow(new NotAuthorizedAccessException("소속되지 않은 블로그입니다"));
     }
 }

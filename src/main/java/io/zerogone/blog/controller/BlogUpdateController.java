@@ -1,6 +1,6 @@
 package io.zerogone.blog.controller;
 
-import io.zerogone.blog.exception.NotAuthorizedException;
+import io.zerogone.common.exception.NotAuthorizedAccessException;
 import io.zerogone.blog.model.BlogDto;
 import io.zerogone.blog.model.MemberRole;
 import io.zerogone.blog.service.BlogUpdateService;
@@ -50,6 +50,6 @@ public class BlogUpdateController {
                 .stream()
                 .filter(member -> Objects.equals(member.getId(), user.getId()) && Objects.equals(member.getRole(), MemberRole.ADMIN))
                 .findAny()
-                .orElseThrow(new NotAuthorizedException("관리자가 아닙니다!"));
+                .orElseThrow(new NotAuthorizedAccessException("관리자가 아닙니다!"));
     }
 }
