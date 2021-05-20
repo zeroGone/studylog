@@ -3,7 +3,7 @@ package io.zerogone.user.model;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
-public class LoginRequest {
+public class LoginRequestForm {
     @NotBlank(message = "로그인 시 이메일이 있어야 합니다")
     @Email(message = "이메일 형식이어야 합니다")
     private String email;
