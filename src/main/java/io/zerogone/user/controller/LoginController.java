@@ -5,8 +5,8 @@ import io.zerogone.common.service.SearchService;
 import io.zerogone.user.model.LoginRequestForm;
 import io.zerogone.user.model.UserDto;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -20,7 +20,7 @@ public class LoginController {
     }
 
     @PostMapping("login")
-    public String doLogin(@RequestBody @Valid LoginRequestForm loginRequestForm, HttpSession httpSession) {
+    public String doLogin(@ModelAttribute @Valid LoginRequestForm loginRequestForm, HttpSession httpSession) {
         try {
             UserDto dto = searchService.search(loginRequestForm);
             httpSession.setAttribute("userInfo", dto);

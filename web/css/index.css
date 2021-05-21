@@ -237,3 +237,7 @@ body {
         opacity: 1;
     }
 }
+
+#login-form {
+    display: none;
+}
