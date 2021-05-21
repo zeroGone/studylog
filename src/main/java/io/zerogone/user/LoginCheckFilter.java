@@ -1,59 +1,62 @@
 package io.zerogone.user;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.core.annotation.Order;
-import org.springframework.web.filter.OncePerRequestFilter;
+import ch.qos.logback.classic.Logger;
+import io.zerogone.user.model.UserDto;
+import org.slf4j.LoggerFactory;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
+import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.Set;
 
-@WebFilter(description = "Check Login Information In Session",
-        filterName = "Login Checker", urlPatterns = "*")
-@Order(2)
-public class LoginCheckFilter extends OncePerRequestFilter {
-    private static final String LOGIN_PROPERTY_IN_SESSION = "userInfo";
-    private static final String[] UNKNOWN_ACCESSIBLE_URLS = new String[]{
-            "/", "/api/login", "/signup", "/api/user", "/blog/accept"
-    };
-
-    private static final Log logger = LogFactory.getLog(LoginCheckFilter.class);
+@WebFilter("/logout")
+public class LoginCheckFilter implements Filter {
+    private final Logger logger = (Logger) LoggerFactory.getLogger(this.getClass());
+    private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
     @Override
-    protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
-        if (hasUserInfoInSession(httpServletRequest.getSession())
-                || isUnknownAccessible(httpServletRequest.getRequestURI())) {
-            filterChain.doFilter(httpServletRequest, httpServletResponse);
+    public void init(FilterConfig filterConfig) {
+        logger.info("init login check filter");
+    }
+
+    @Override
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+        logger.info("filt this request has login info");
+
+        UserDto userInfo = getUserInfo(servletRequest);
+
+        if (hasLoginUserInfo(userInfo)) {
+            logger.info("this request has user info!");
+            filterChain.doFilter(servletRequest, servletResponse);
         } else {
-            logger.info("Unknown access");
-            httpServletResponse.sendRedirect("/");
+            HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
+            httpServletResponse.setHeader("location", "/unautorized");
+            httpServletResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED);
         }
     }
 
-    private boolean hasUserInfoInSession(HttpSession httpSession) {
-        return httpSession.getAttribute(LOGIN_PROPERTY_IN_SESSION) != null;
+    private UserDto getUserInfo(ServletRequest servletRequest) {
+        HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
+        HttpSession session = httpServletRequest.getSession();
+        return (UserDto) session.getAttribute("userInfo");
     }
 
-    private boolean isUnknownAccessible(String requestUri) {
-        return Arrays.asList(UNKNOWN_ACCESSIBLE_URLS).contains(requestUri);
+    private boolean hasLoginUserInfo(UserDto userInfo) {
+        if (userInfo == null) {
+            return false;
+        }
+        Set<ConstraintViolation<UserDto>> constraintViolationSet = validator.validate(userInfo);
+        return constraintViolationSet.isEmpty();
     }
 
     @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) {
-        return isWebResources(request.getRequestURI());
-    }
-
-    private boolean isWebResources(String uri) {
-        return uri.matches("\\/css\\/.*\\.css|" +
-                "\\/js\\/.*\\.js|" +
-                "\\/img\\/.*\\.jpg|" +
-                "\\/img\\/.*\\.png|" +
-                "\\/img\\/logo.ico");
+    public void destroy() {
+        logger.info("destory login check filter");
     }
 }
