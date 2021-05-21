@@ -1,8 +1,6 @@
 package io.zerogone.user.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.zerogone.config.WebConfiguration;
-import io.zerogone.user.model.LoginRequestForm;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,15 +34,10 @@ public class LoginControllerTest {
 
     @Test
     public void doLogin() throws Exception {
-        LoginRequestForm loginRequestForm = new LoginRequestForm();
-        loginRequestForm.setEmail("dudrhs571@gmail.com");
-        loginRequestForm.setName("김영곤");
-
         mockMvc.perform(MockMvcRequestBuilders
                 .post("/login")
-                .contentType("application/json")
-                .characterEncoding("utf-8")
-                .content(new ObjectMapper().writeValueAsString(loginRequestForm)))
+                .param("email", "dudrhs571@gmail.com")
+                .param("name", "김영곤"))
                 .andDo(print())
                 .andExpect(status().isFound())
                 .andExpect(view().name("redirect:/mypage"));
@@ -52,15 +45,10 @@ public class LoginControllerTest {
 
     @Test
     public void doLogin_NotExistedUser_RedirectSignupPage() throws Exception {
-        LoginRequestForm loginRequestForm = new LoginRequestForm();
-        loginRequestForm.setEmail("dudrhs571@gmail.com");
-        loginRequestForm.setName("누구게");
-
         mockMvc.perform(MockMvcRequestBuilders
                 .post("/login")
-                .contentType("application/json")
-                .characterEncoding("utf-8")
-                .content(new ObjectMapper().writeValueAsString(loginRequestForm)))
+                .param("email", "dudrhs571@gmail.com")
+                .param("name", "누구게"))
                 .andDo(print())
                 .andExpect(status().isFound())
                 .andExpect(view().name("redirect:/signup"));
@@ -68,15 +56,9 @@ public class LoginControllerTest {
 
     @Test
     public void doLogin_EmailIsBlank_ReturnBadRequest() throws Exception {
-        LoginRequestForm loginRequestForm = new LoginRequestForm();
-        loginRequestForm.setEmail(" ");
-        loginRequestForm.setName("누구게");
-
         mockMvc.perform(MockMvcRequestBuilders
                 .post("/login")
-                .contentType("application/json")
-                .characterEncoding("utf-8")
-                .content(new ObjectMapper().writeValueAsString(loginRequestForm)))
+                .param("name", "누구게"))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
     }
