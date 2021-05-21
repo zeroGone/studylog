@@ -60,3 +60,5 @@
         <span class="user-info-item-logout">로그아웃</span>
     </li>
 </ul>
+
+<form id="logout-form" action="logout" method="post" style="display: none"></form>
