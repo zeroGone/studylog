@@ -1,12 +1,14 @@
 package io.zerogone.user.controller;
 
-import io.zerogone.common.ErrorResponse;
+import io.zerogone.blog.exception.NotAuthorizedException;
+import io.zerogone.common.fileupload.ImageUrl;
 import io.zerogone.user.model.UserDto;
 import io.zerogone.user.service.UserImageUpdateService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.validation.constraints.Positive;
 
 @RestController
 public class UserImageUpdateController {
@@ -16,22 +18,18 @@ public class UserImageUpdateController {
         this.userImageUpdateService = userImageUpdateService;
     }
 
-    @PostMapping(value = "api/user/{id}")
-    public ResponseEntity<Object> handleUpdatingUserImage(
-            @PathVariable int id,
+    @PostMapping(value = "user/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void handleUpdatingUserImage(
+            @PathVariable @Positive int id,
             @SessionAttribute UserDto userInfo,
             @RequestPart MultipartFile image) {
 
         if (id != userInfo.getId()) {
-            return ResponseEntity.badRequest().body(new ErrorResponse
-                    .Builder()
-                    .exception(IllegalAccessException.class)
-                    .cause("다른 유저 정보에 접근할 수 없습니다")
-                    .detail("세션에 저장되있는 현재 유저와 이미지 업데이트할 유저의 아이디가 다릅니다")
-                    .statusCode(HttpStatus.BAD_REQUEST)
-                    .build());
+            throw new NotAuthorizedException("다른 회원의 정보에 접근할 수 없습니다");
         }
 
-        return ResponseEntity.ok(userImageUpdateService.updateUserImage(userInfo, image));
+        ImageUrl updatedImageUrl = userImageUpdateService.updateUserImage(id, image);
+        userInfo.setImageUrl(updatedImageUrl.getValue());
     }
 }

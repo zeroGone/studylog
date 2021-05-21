@@ -15,7 +15,7 @@ import javax.validation.Validator;
 import java.io.IOException;
 import java.util.Set;
 
-@WebFilter("/logout")
+@WebFilter(urlPatterns = {"/logout", "/user/{id}"})
 public class LoginCheckFilter implements Filter {
     private final Logger logger = (Logger) LoggerFactory.getLogger(this.getClass());
     private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();

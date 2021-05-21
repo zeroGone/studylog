@@ -1,11 +1,10 @@
 package io.zerogone.user.service;
 
-import io.zerogone.user.model.UserDto;
-import io.zerogone.user.model.User;
-import io.zerogone.user.UserDao;
-import io.zerogone.common.fileupload.ImageUploadService;
+import io.zerogone.common.fileupload.AwsUploader;
+import io.zerogone.common.fileupload.Image;
 import io.zerogone.common.fileupload.ImageUrl;
-import org.springframework.beans.factory.annotation.Qualifier;
+import io.zerogone.user.UserDao;
+import io.zerogone.user.model.User;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -13,20 +12,22 @@ import javax.transaction.Transactional;
 
 @Service
 public class UserImageUpdateService {
-    private final ImageUploadService imageUploadService;
+    private static final String USER_UPLOAD_PATH = "img/user";
+    private final AwsUploader awsUploader;
     private final UserDao userDao;
 
-    public UserImageUpdateService(@Qualifier("userImageUploadService") ImageUploadService imageUploadService,
-                                  UserDao userDao) {
-        this.imageUploadService = imageUploadService;
+    public UserImageUpdateService(AwsUploader awsUploader, UserDao userDao) {
+        this.awsUploader = awsUploader;
         this.userDao = userDao;
     }
 
     @Transactional
-    public UserDto updateUserImage(UserDto user, MultipartFile imageFile) {
-        ImageUrl newImageUrl = imageUploadService.upload(imageFile);
-        User entity = new User(user.getId(), user.getName(), user.getEmail(), user.getNickName(), newImageUrl.getValue());
-        userDao.updateImageUrl(entity);
-        return user;
+    public ImageUrl updateUserImage(int id, MultipartFile image) {
+        ImageUrl imageUrl = awsUploader.upload(new Image(USER_UPLOAD_PATH, image));
+
+        User user = userDao.findById(id);
+        user.setImageUrl(imageUrl.getValue());
+
+        return imageUrl;
     }
 }

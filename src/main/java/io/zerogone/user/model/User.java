@@ -13,16 +13,15 @@ import java.util.List;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(updatable = false, insertable = false)
     private int id;
 
     @Column(nullable = false, updatable = false)
     private String name;
 
-    @Column(nullable = false, unique = true, updatable = false)
+    @Column(nullable = false, updatable = false)
     private String email;
 
-    @Column(name = "nick_name", nullable = false, unique = true, updatable = false)
+    @Column(name = "nick_name", nullable = false, updatable = false)
     private String nickName;
 
     @Column(name = "image_url")
@@ -38,6 +37,13 @@ public class User {
 
     User() {
 
+    }
+
+    public User(String name, String email, String nickName, String imageUrl) {
+        this.name = name;
+        this.email = email;
+        this.nickName = nickName;
+        this.imageUrl = imageUrl;
     }
 
     public User(int id, String name, String email, String nickName, String imageUrl) {
@@ -66,6 +72,10 @@ public class User {
 
     public String getImageUrl() {
         return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public List<Blog> getBlogs() {
