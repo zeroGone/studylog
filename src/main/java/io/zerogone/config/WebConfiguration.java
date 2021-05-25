@@ -9,31 +9,24 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.support.ConversionServiceFactoryBean;
-import org.springframework.core.convert.ConversionService;
-import org.springframework.core.convert.converter.Converter;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
-import org.springframework.web.bind.support.ConfigurableWebBindingInitializer;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
 import java.util.Properties;
-import java.util.Set;
 
 @EnableWebMvc
 @Configuration
-@ComponentScan(basePackages = "io.zerogone")
+@ComponentScan(basePackages = "io.zerogone.web")
 public class WebConfiguration extends WebMvcConfigurerAdapter {
-    private static final int TEN_MEGA_BYTE = 10 * 1024 * 1024;
-
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/css/**").addResourceLocations("/css/");
@@ -50,11 +43,18 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
         return viewResolver;
     }
 
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addViewController("/").setViewName("index");
+    }
+
     @Bean
     public MultipartResolver multipartResolver() {
+        int tenMegaByte = 10 * 1024 * 1024;
+
         CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
-        multipartResolver.setMaxUploadSize(TEN_MEGA_BYTE);
-        multipartResolver.setMaxUploadSizePerFile(TEN_MEGA_BYTE);
+        multipartResolver.setMaxUploadSize(tenMegaByte);
+        multipartResolver.setMaxUploadSizePerFile(tenMegaByte);
         return multipartResolver;
     }
 
@@ -87,29 +87,29 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
         return mailSender;
     }
 
-    @Bean
-    public ConversionServiceFactoryBean conversionServiceFactory(Set<Converter<?, ?>> converters) {
-        ConversionServiceFactoryBean conversionServiceFactory = new ConversionServiceFactoryBean();
-        conversionServiceFactory.setConverters(converters);
-        return conversionServiceFactory;
-    }
-
-    @Bean
-    public ConversionService conversionService(ConversionServiceFactoryBean factory) {
-        return factory.getObject();
-    }
-
-    @Bean
-    public ConfigurableWebBindingInitializer webBindingInitializer(ConversionService conversionService) {
-        ConfigurableWebBindingInitializer configurableWebBindingInitializer = new ConfigurableWebBindingInitializer();
-        configurableWebBindingInitializer.setConversionService(conversionService);
-        return configurableWebBindingInitializer;
-    }
-
-    @Bean
-    public MethodValidationPostProcessor methodValidationPostProcessor() {
-        MethodValidationPostProcessor postProcessor = new MethodValidationPostProcessor();
-        postProcessor.setProxyTargetClass(true);
-        return postProcessor;
-    }
+//    @Bean
+//    public ConversionServiceFactoryBean conversionServiceFactory(Set<Converter<?, ?>> converters) {
+//        ConversionServiceFactoryBean conversionServiceFactory = new ConversionServiceFactoryBean();
+//        conversionServiceFactory.setConverters(converters);
+//        return conversionServiceFactory;
+//    }
+//
+//    @Bean
+//    public ConversionService conversionService(ConversionServiceFactoryBean factory) {
+//        return factory.getObject();
+//    }
+//
+//    @Bean
+//    public ConfigurableWebBindingInitializer webBindingInitializer(ConversionService conversionService) {
+//        ConfigurableWebBindingInitializer configurableWebBindingInitializer = new ConfigurableWebBindingInitializer();
+//        configurableWebBindingInitializer.setConversionService(conversionService);
+//        return configurableWebBindingInitializer;
+//    }
+//
+//    @Bean
+//    public MethodValidationPostProcessor methodValidationPostProcessor() {
+//        MethodValidationPostProcessor postProcessor = new MethodValidationPostProcessor();
+//        postProcessor.setProxyTargetClass(true);
+//        return postProcessor;
+//    }
 }
