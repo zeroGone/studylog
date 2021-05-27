@@ -1,15 +1,15 @@
-package io.zerogone;
+package io.zerogone.web;
 
+import io.zerogone.domain.entity.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-
-import javax.servlet.http.HttpSession;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 @Controller
 public class IndexController {
     @GetMapping("/")
-    public String getIndexViewName(HttpSession session) {
-        if (session.getAttribute("userInfo") == null) {
+    public String getIndexViewName(@SessionAttribute(required = false) User user) {
+        if (user == null) {
             return "index";
         } else {
             return "redirect:/mypage";
