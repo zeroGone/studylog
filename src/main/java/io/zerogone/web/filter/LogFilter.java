@@ -1,6 +1,7 @@
-package io.zerogone.common.filter;
+package io.zerogone.web.filter;
 
-import org.springframework.core.annotation.Order;
+import ch.qos.logback.classic.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -10,15 +11,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebFilter(description = "Filter for encoding",
-        filterName = "encoder", urlPatterns = "*")
-@Order(2)
-public class EncodingFilter extends OncePerRequestFilter {
-    private static final String UTF8 = "UTF-8";
+@WebFilter(urlPatterns = "*")
+public class LogFilter extends OncePerRequestFilter {
+    private final Logger logger = (Logger) LoggerFactory.getLogger(this.getClass());
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
-        httpServletRequest.setCharacterEncoding(UTF8);
+        logger.info("Request URL path : "
+                + httpServletRequest.getRequestURI());
+
         filterChain.doFilter(httpServletRequest, httpServletResponse);
     }
 }

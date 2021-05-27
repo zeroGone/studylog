@@ -14,8 +14,8 @@
     </c:if>
     <div class="header-information">
         <div class="user-info">
-            <span class="user-info-nickname">${userInfo.nickName}</span>
-            <img src=${userInfo.imageUrl} alt="current-user" class="user-info-image">
+            <span class="user-info-nickname">${user.name.nickName}</span>
+            <img src=${user.imageUrl} alt="current-user" class="user-info-image">
         </div>
         <div class="header-notice">
             <img src="/img/header/notice-active.png" alt="notice-icon" class="header-notice-icon"/>
@@ -51,7 +51,7 @@
 </ul>
 <ul class="user-info-list">
     <li class="user-info-item">
-        <span class="user-info-item-email">${userInfo.email}</span>
+        <span class="user-info-item-email">${user.email}</span>
     </li>
     <li class="user-info-item">
         <a class="user-info-item-name" href="/mypage">내 정보 관리</a>

@@ -51,7 +51,7 @@
 <form id="login-form" action="login" method="post">
     <input id="login-form-user-name" type="text" name="name"/>
     <input id="login-form-user-email" type="email" name="email"/>
-    <input id="login-form-user-image-url" type="text" name="image-url"/>
+    <input id="login-form-user-image-url" type="text" name="imageUrl"/>
 </form>
 <jsp:include page="include/footer.jsp"/>
 </body>

@@ -36,7 +36,7 @@
             <div class="profile-image-container">
                 <input type="file" id="user-image-input" class="user-image-input" name="user-image" accept="image/*"/>
                 <div id="user-image-preview" class="user-image-preview">
-                    <img class="profile-image" src="${userInfo.imageUrl}" alt="user profile img">
+                    <img class="profile-image" src="${user.imageUrl}" alt="user profile img">
                 </div>
                 <button type="button" class="user-image-edit-button">
                     <i class="fas fa-plus user-image-edit-icon"></i>
@@ -48,7 +48,7 @@
                     <div class="profile-text">
                         <div>
                             <i class="far fa-user"></i>
-                            <span class="profile-content">${user.name}</span>
+                            <span class="profile-content">${user.name.realName}</span>
                         </div>
                     </div>
                 </article>
@@ -66,14 +66,14 @@
                     <div class="profile-text">
                         <div>
                             <i class="fas fa-user-secret"></i>
-                            <span class="profile-content">${user.nickName}</span>
+                            <span class="profile-content">${user.name.nickName}</span>
                         </div>
                     </div>
                 </article>
             </div>
         </section>
         <section class="blog">
-            <c:forEach items="${user.blogs}" var="blog">
+            <c:forEach items="${blogs}" var="blog">
                 <article class="blog-item">
                     <c:choose>
                         <c:when test="${blog.imageUrl ne null}">

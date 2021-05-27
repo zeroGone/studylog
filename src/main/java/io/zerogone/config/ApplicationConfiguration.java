@@ -32,7 +32,7 @@ import java.util.Set;
 @Configuration
 @PropertySource("classpath:application.properties")
 @EnableTransactionManagement
-@ComponentScan(basePackages = {"io.zerogone.service", "io.zerogone.repository"})
+@ComponentScan(basePackages = {"io.zerogone.service", "io.zerogone.repository", "io.zerogone.converter"})
 public class ApplicationConfiguration {
     private final Environment environment;
 
