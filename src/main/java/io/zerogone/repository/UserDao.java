@@ -1,28 +1,32 @@
-package io.zerogone.user.repository;
+package io.zerogone.repository;
 
 import com.querydsl.jpa.impl.JPAQuery;
-import io.zerogone.user.model.LoginRequestForm;
-import io.zerogone.user.model.QUser;
-import io.zerogone.user.model.User;
+import io.zerogone.domain.entity.QUser;
+import io.zerogone.domain.entity.User;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 @Repository
-public class FindUserDao {
+public class UserDao {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public Optional<User> findByLoginRequest(@NotNull @Valid LoginRequestForm loginRequestForm) {
+    @Transactional
+    public void save(User user) {
+        entityManager.persist(user);
+    }
+
+    public Optional<User> findByEmail(String email) {
+        System.out.println(entityManager.find(User.class, 1L));
         JPAQuery<User> query = new JPAQuery<>(entityManager);
         QUser user = QUser.user;
         return Optional.ofNullable(query
                 .from(user)
-                .where(user.email.eq(loginRequestForm.getEmail()), user.name.eq(loginRequestForm.getName()))
+                .where(user.email.eq(email))
                 .fetchOne());
     }
 }

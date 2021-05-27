@@ -1,4 +1,4 @@
-package io.zerogone.user.model;
+package io.zerogone.domain;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
