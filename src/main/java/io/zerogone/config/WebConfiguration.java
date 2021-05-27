@@ -3,6 +3,7 @@ package io.zerogone.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.orm.jpa.support.OpenEntityManagerInViewInterceptor;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
@@ -19,6 +20,7 @@ import javax.persistence.EntityManagerFactory;
 @EnableWebMvc
 @Configuration
 @ComponentScan(basePackages = "io.zerogone.web")
+@Import(ApplicationConfiguration.class)
 public class WebConfiguration extends WebMvcConfigurerAdapter {
     private final EntityManagerFactory entityManagerFactory;
 
