@@ -1,4 +1,4 @@
-package io.zerogone.user;
+package io.zerogone.web.filter;
 
 import ch.qos.logback.classic.Logger;
 import io.zerogone.user.model.UserDto;

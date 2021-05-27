@@ -2,6 +2,7 @@ package io.zerogone.web;
 
 import io.zerogone.config.WebConfiguration;
 import io.zerogone.domain.entity.User;
+import io.zerogone.web.filter.LoginCheckFilter;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,7 +31,7 @@ public class LogoutControllerTest {
 
     @Before
     public void setUp() {
-        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).addFilter(new LoginCheckFilter()).build();
     }
 
     @Test
@@ -45,12 +46,11 @@ public class LogoutControllerTest {
     }
 
     @Test
-    public void WhenLogout_GivenNotThing_ThenRedriectIndexPage() throws Exception {
+    public void WhenLogout_GivenNotThing_ThenReturnUnAuthorized() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
                 .post("/logout"))
                 .andDo(print())
-                .andExpect(status().isFound())
-                .andExpect(redirectedUrl("/"))
+                .andExpect(status().isUnauthorized())
                 .andDo(print());
     }
 }
