@@ -1,4 +1,4 @@
-package io.zerogone.user.controller;
+package io.zerogone.web;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -9,7 +9,7 @@ import javax.servlet.http.HttpSession;
 public class LogoutController {
     @PostMapping("logout")
     public String doLogout(HttpSession httpSession) {
-        httpSession.removeAttribute("userInfo");
+        httpSession.removeAttribute("user");
         return "redirect:/";
     }
 }
